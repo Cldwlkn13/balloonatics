@@ -25,11 +25,20 @@ body {
     z-index: 100;
 }
 
+.div-bg-opacity{
+    background: rgba(0,0,0,0.3);
+}
+
+#delivery-banner {
+    min-height: 75px;
+}
+
 a.nav-link {
     color: #fff;
 }
 
-a.nav-link:hover{
+a.nav-link:hover,
+.nav-item > a:hover {
     color: pink;
 }
 
@@ -74,5 +83,9 @@ a.nav-link:hover{
 
     body {
         height: calc(100vh - 116px);
+    }
+
+    .bg-opacity {
+        top: 42.5px;
     }
 }
