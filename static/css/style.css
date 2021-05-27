@@ -1,0 +1,78 @@
+html {
+    height: 100%;
+}
+
+body {
+    background: url('/media/balloons-bg.jpg') no-repeat center center fixed;
+    background-size: cover;
+    height: calc(100vh - 164px);
+    color: #555;
+    font-family: 'Quicksand';
+    font-weight: 500;
+}
+
+.bg-site {
+    background-color: #0a0e16;
+}
+
+.bg-opacity {
+    background: rgba(0,0,0,0.3);
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 66px;
+    z-index: 100;
+}
+
+a.nav-link {
+    color: #fff;
+}
+
+a.nav-link:hover{
+    color: pink;
+}
+
+/* from Bulma */
+.icon {
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
+    height: 1.5rem;
+    width: 1.5rem;
+}
+
+.main-logo-link {
+    width: fit-content;
+}
+
+/* ---------------MEDIA QUERIES */
+@media (min-width: 1200px) {
+  .container {
+    max-width: 80%;
+  }
+}
+
+@media (min-width: 992px) {
+    .fixed-top-desktop-only {
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: 1030;
+    }
+
+    .header-container {
+        padding-top: 164px;
+    }
+}
+
+@media (max-width: 991px) {
+    .header-container {
+        padding-top: 116px;
+    }
+
+    body {
+        height: calc(100vh - 116px);
+    }
+}
