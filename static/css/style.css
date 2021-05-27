@@ -6,9 +6,10 @@ body {
     background: url('/media/balloons-bg.jpg') no-repeat center center fixed;
     background-size: cover;
     height: calc(100vh - 164px);
-    color: #555;
+    color: #fff;
     font-family: 'Quicksand';
     font-weight: 500;
+    z-index: -10;
 }
 
 .bg-site {
@@ -22,24 +23,32 @@ body {
     width: 100%;
     position: absolute;
     top: 66px;
-    z-index: 100;
+    z-index: -10;
 }
 
 .div-bg-opacity{
-    background: rgba(0,0,0,0.3);
+    background: rgba(0,0,0,0.8);
 }
 
 #delivery-banner {
     min-height: 75px;
 }
 
-a.nav-link {
+.nav-link {
     color: #fff;
+    margin-right: 30px;
 }
 
-a.nav-link:hover,
-.nav-item > a:hover {
+a.nav-link:hover {
     color: pink;
+}
+
+#home-container {
+    margin-top: 200px;
+}
+
+.home-product-row {
+    min-height: 100px;
 }
 
 /* from Bulma */
