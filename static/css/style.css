@@ -10,6 +10,16 @@ body {
     font-family: 'Quicksand';
     font-weight: 500;
     z-index: -10;
+    min-height: 90vh;
+}
+
+.header-container {
+    min-height: 164px;
+}
+
+.content-container {
+    min-height: 90vh;
+    padding-top: 50px;
 }
 
 .bg-site {
@@ -24,6 +34,7 @@ body {
     position: absolute;
     top: 66px;
     z-index: -10;
+    min-height: 90vh;
 }
 
 .div-bg-opacity{
@@ -44,11 +55,12 @@ a.nav-link:hover {
 }
 
 #home-container {
-    margin-top: 200px;
+    margin-top: 50px;
 }
 
 .home-product-row {
     min-height: 100px;
+    border-radius: 10px
 }
 
 /* from Bulma */
