@@ -62,8 +62,12 @@
                     <li class="list-inline-item dropdown">
                         <a class="text-black nav-link" href="#" id="user-options" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <div class="text-center">
-                                <div><i class="fas fa-user fa-lg"></i></div>
-                                <p class="my-0">My Account</p>
+                                <div><i class="fas fa-user fa-lg" id="account-icon"></i></div>
+                                {% if request.user.is_authenticated %}
+                                    <p class="my-0" id="account-text">{{ request.user }}</p>
+                                {% else %}
+                                    <p class="my-0" id="account-text">My Account</p>
+                                {% endif %}
                             </div>
                         </a>
                         <div class="dropdown-menu border-0" aria-labelledby="user-options">
@@ -172,6 +176,19 @@
 
 
       {% block postloadjs %}
+
+        {% if request.user.is_authenticated %}
+            <script>
+                $('#account-icon').css('color', 'green');
+                $('#account-text').css('color', 'green');
+            </script>
+        {% else %}
+            <script>
+                $('#account-icon').css('color', 'white');
+                $('#account-text').css('color', 'white');
+            </script>
+        {% endif %}
+
       {% endblock %}
 
   </body>

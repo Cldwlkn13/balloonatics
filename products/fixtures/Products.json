@@ -1,0 +1,24 @@
+[
+  {
+    "pk": 1,
+    "model": "products.product",
+    "fields": {
+      "category": 1,
+      "sub_category": 1,
+      "material": 1,
+      "uuid": "bb014454343",
+      "name": "plain latex balloon red",
+      "display_name": "Plain Latex Balloon Red",
+      "description": "A plain latex balloon in colour red",
+      "price": 1.00, 
+      "discounted_price": 1.00, 
+      "rating": 4.22,
+      "image_url": null,
+      "image": null,
+      "message": null,
+      "is_printable": true,
+      "age": null,
+      "qty_held": 100
+    }
+  }
+]

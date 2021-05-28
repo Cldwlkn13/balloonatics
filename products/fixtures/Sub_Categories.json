@@ -1,0 +1,66 @@
+[
+  {
+    "pk": 1,
+    "model": "products.sub_category",
+    "fields": {
+      "name": "plain",
+      "display_name": "Plain"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "products.sub_category",
+    "fields": {
+      "name": "messaged",
+      "display_name": "Messaged"
+    }
+  },
+  {
+    "pk": 3,
+    "model": "products.sub_category",
+    "fields": {
+      "name": "character",
+      "display_name": "Character"
+    }
+  },
+  {
+    "pk": 4,
+    "model": "products.sub_category",
+    "fields": {
+      "name": "shaped",
+      "display_name": "Shaped"
+    }
+  },
+  {
+    "pk": 5,
+    "model": "products.sub_category",
+    "fields": {
+      "name": "letter",
+      "display_name": "Letter"
+    }
+  },
+  {
+    "pk": 6,
+    "model": "products.sub_category",
+    "fields": {
+      "name": "number",
+      "display_name": "Number"
+    }
+  },
+  {
+    "pk": 7,
+    "model": "products.sub_category",
+    "fields": {
+      "name": "confetti",
+      "display_name": "Confetti"
+    }
+  },
+  {
+    "pk": 8,
+    "model": "products.sub_category",
+    "fields": {
+      "name": "themed",
+      "display_name": "Themed"
+    }
+  }
+]
