@@ -37,6 +37,19 @@ body {
     min-height: 90vh;
 }
 
+.bg-white {
+    background-color: #fff;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+    z-index: -9;
+    min-height: 90vh;
+}
+
+#products-container {
+    margin-top: -50px;
+}
+
 .div-bg-opacity{
     background: rgba(0,0,0,0.8);
 }
