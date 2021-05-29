@@ -6,15 +6,15 @@
             </a>
         </li>
         <li class="nav-item dropdown">
-            <a class="font-weight-bold nav-link" href="#" id="shop-balloons-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="font-weight-bold nav-link" href="{% url 'categories' %}" id="shop-balloons-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Shop Balloons
             </a>
             <div class="dropdown-menu border-0" aria-labelledby="shop-balloons-link">
                 {% for category in menu_context.categories %}
-                    <a href="#" class="dropdown-item text-bold">{{ category.display_name }}</a>
+                    <a href="{% url 'categories' %}" class="dropdown-item text-bold">{{ category.display_name }}</a>
                     {% if category.name == 'balloons' %}
                         {% for sub_cat in menu_context.sub_categories %}
-                            <a href="#" class="dropdown-item text-muted" style="margin-left: 5px;">{{ sub_cat.display_name }}</a>
+                            <a href="{% url 'sub_categories' %}?sub_category={{ sub_cat.name }}" class="dropdown-item text-muted" style="margin-left: 5px;">{{ sub_cat.display_name }}</a>
                         {% endfor %}
                     {% endif %}
                 {% endfor %}
