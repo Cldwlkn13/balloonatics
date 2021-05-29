@@ -8,23 +8,18 @@ import itertools
 def products(request):
 
     products = Product.objects.all()
+    sub_category = 'all'
 
+    if 'sub_category' in request.GET:
+        sub_category = request.GET['sub_category']
+        products = Product.objects.filter(sub_category__name=sub_category)
+        
     context = {
         "products": products,
+        'sub_category': sub_category
     }
 
     return render(request, 'products/products.html', context)
-
-
-def categories(request):
-
-    categories = Category.objects.all()
-
-    context = {
-        "categories": categories,
-    }
-
-    return render(request, 'products/categories.html', context)
 
 
 def sub_categories(request):
@@ -35,15 +30,15 @@ def sub_categories(request):
         category = request.GET['category']
         matching_sub_categories = Product.objects.filter(category__name=category).distinct().values('sub_category')
         sub_category_pks = []
-        for i in matching_sub_categories:
-            for y in i.values():
-                sub_category_pks.append(y)
+        for sc in matching_sub_categories:
+            for v in sc.values():
+                sub_category_pks.append(v)
 
         sub_categories = Sub_Category.objects.filter(id__in=sub_category_pks)
 
     context = {
         "sub_categories": sub_categories,
-        'b': 'true'
+        'category': category
     }
 
     return render(request, 'products/sub_categories.html', context)
