@@ -6,10 +6,15 @@
         <div class="row">
             {% for product in products %}
             <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                <div class="card bg-dark text-white">
+                <div class="card bg-dark text-dark text-bold">
                     <img src="../../media/balloons-bg.jpg" class="card-img" alt="...">
                     <div class="card-img-overlay">
-                        <h5 class="card-title">{{ product.name }}</h5>
+                        <div style="background-color: rgba(255,255,255,0.6)">
+                            <h5 class="card-title"><strong>{{ product.name }}</strong></h5>
+                        </div>
+                    </div>
+                    <div class="card-body bg-light">
+                        <h5>€{{ product.price }}</h5>
                     </div>
                 </div>
             </div>
