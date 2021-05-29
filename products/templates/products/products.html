@@ -3,6 +3,17 @@
 
 {% block content %}
     <div class="container bg-white" id="products-container">
-        <p>{{ products }}</p>
+        <div class="row">
+            {% for product in products %}
+            <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+                <div class="card bg-dark text-white">
+                    <img src="../../media/balloons-bg.jpg" class="card-img" alt="...">
+                    <div class="card-img-overlay">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}

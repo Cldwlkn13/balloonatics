@@ -48,6 +48,9 @@ body {
 
 #products-container {
     margin-top: -50px;
+    padding-top: 50px;
+    padding-left: 50px;
+    padding-right: 50px;
 }
 
 .div-bg-opacity{
@@ -60,6 +63,7 @@ body {
 
 .nav-link {
     color: #fff;
+    margin-left: 30px;
     margin-right: 30px;
 }
 
