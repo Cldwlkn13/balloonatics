@@ -16,7 +16,7 @@
                         <a href="{% url 'products' %}?sub_category={{ sub_cat }}" class="dropdown-item text-muted ml-2 pr-0">{{ sub_cat }}</a>
                     {% endfor %}
                     {% if not forloop.last %}
-                        <hr>
+                        <hr class="ml-2">
                     {% endif %}
                 {% endfor %}
             </div>
