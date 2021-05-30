@@ -16,8 +16,52 @@
             <h6>&nbsp{{ product.category }} > {{ product.sub_category }}</h6>
             <hr>
             <p>{{ product.description }}</p>
+            <br>
+            {% if product.message %}
+                <p><span class="text-muted">printed message: </span><span>"{{ product.message }}"</span></p>
+            {% endif %}
+            {% if product.age %}
+                <p><span class="text-muted">for age: </span><span>{{ product.age }}</span></p>
+            {% endif %}
+            {% if product.color %}
+                <p><span class="text-muted">color: </span><span>{{ product.color.name }}</span></p>
+            {% endif %}
+            {% if product.size %}
+                <p><span class="text-muted">size: </span><span>{{ product.size.name }}</span></p>
+            {% endif %}
+            <form method="#" action="POST">
+            {% csrf_token %}
+                <div class="form-row">
+                    <div class="col-12 align-content-left mb-3">
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                                <button type="button" class="quantity-left-minus btn btn-dark btn-number" data-type="minus"
+                                    data-field="">
+                                    <span class="fas fa-minus"></span>
+                                </button>
+                            </span>
+                            <input type="text" id="quantity" name="quantity" class="form-control input-number text-center" value="0"
+                                min="0" max="100">
+                            <span class="input-group-btn">
+                                <button type="button" class="quantity-right-plus btn btn-dark btn-number" data-type="plus"
+                                    data-field="">
+                                    <span class="fas fa-plus"></span>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-12 align-content-left">
+                        <input type="submit" class="btn btn-light text-dark text-center py-1" value="add">
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 
 </div>   
+{% endblock %}
+
+{% block postloadjs %}
+{{ block.super }}
+    {% include './includes/quantity-updown.html' %}
 {% endblock %}

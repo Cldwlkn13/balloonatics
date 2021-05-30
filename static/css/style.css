@@ -58,6 +58,10 @@ body {
     padding-right: 50px;
 }
 
+input[name="quantity"] {
+    max-width: 40px;
+}
+
 .product-card {
     height: 241px;
 }

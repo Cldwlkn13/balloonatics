@@ -1,8 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.forms.models import model_to_dict
 from .models import Product, Category, Sub_Category
-
-import itertools
 
 
 def products(request):
@@ -13,13 +10,24 @@ def products(request):
     if 'sub_category' in request.GET:
         sub_category = request.GET['sub_category']
         products = Product.objects.filter(sub_category__name=sub_category)
-        
+       
     context = {
         "products": products,
         'sub_category': sub_category
     }
 
     return render(request, 'products/products.html', context)
+
+
+def categories(request):
+
+    categories = Category.objects.all()
+       
+    context = {
+        'categories': categories
+    }
+
+    return render(request, 'products/categories.html', context)
 
 
 def sub_categories(request):
