@@ -14,5 +14,10 @@
                     {% include './includes/card.html' with result=sub_category cntxt='sub_categories' %}
                 {% endfor %}
         </div>
+        <div class="row">
+            <div class="col-12">
+                <a href="{% url 'categories' %}" class="btn btn-dark"><i class="fas fa-chevron-left"></i> back</a>
+            </div>
+        </div>
     </div>
 {% endblock %}
