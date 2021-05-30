@@ -4,9 +4,25 @@
 {% block content %}
     <div class="container bg-white" id="products-container">
         <div class="row">
-            <div class="col text-center text-lg-left text-dark my-5">
+            <div class="col-8 text-center text-lg-left text-dark my-5">
                 <h2><strong>{{ sub_category }}</strong></h2>
                 <hr>
+            </div>
+            <div class="col-4 text-center text-lg-left text-dark my-5">
+                <div class="dropdown">
+                    <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {% if current_sort == None %}sort{% else %}{{ current_sort }} {{ current_dir }}{% endif %}
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        {% if current_sort != None %}
+                            <a href="{% url 'products' %}?sub_category={{ sub_category }}" class="dropdown-item" >none</a>
+                        {% endif %}
+                        <a href="{% url 'products' %}?sub_category={{ sub_category }}&sort=price&dir=asc" class="dropdown-item" >by price asc</a>
+                        <a href="{% url 'products' %}?sub_category={{ sub_category }}&sort=price&dir=desc" class="dropdown-item" >by price desc</a>
+                        <a href="{% url 'products' %}?sub_category={{ sub_category }}&sort=name&dir=asc" class="dropdown-item" >by name asc</a>
+                        <a href="{% url 'products' %}?sub_category={{ sub_category }}&sort=name&dir=desc" class="dropdown-item" >by name desc</a>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row">
@@ -15,4 +31,8 @@
                 {% endfor %}
         </div>
     </div>
+{% endblock %}
+
+{% block postloadjs %}
+    {% include './includes/quantity-updown.html' %}
 {% endblock %}

@@ -1,4 +1,6 @@
 from django.shortcuts import render, get_object_or_404
+from django.db.models.functions import Lower
+
 from .models import Product, Category, Sub_Category
 
 
@@ -6,14 +8,30 @@ def products(request):
 
     products = Product.objects.all()
     sub_category = 'all'
-
+    sort = None
+    direction = None
+    
     if 'sub_category' in request.GET:
         sub_category = request.GET['sub_category']
         products = Product.objects.filter(sub_category__name=sub_category)
-       
+
+    if 'sort' in request.GET:
+        sortkey = request.GET['sort']
+        sort = sortkey
+        if sortkey == 'name':
+            sortkey = 'lower_name'
+            products = products.annotate(lower_name=Lower('name'))
+        if 'dir' in request.GET:
+            direction = request.GET['dir']
+            if direction == 'desc':
+                sortkey=f'-{sortkey}'
+        products = products.order_by(sortkey)
+
     context = {
         "products": products,
-        'sub_category': sub_category
+        'sub_category': sub_category,
+        'current_sort': sort,
+        'current_dir': direction
     }
 
     return render(request, 'products/products.html', context)
@@ -22,7 +40,7 @@ def products(request):
 def categories(request):
 
     categories = Category.objects.all()
-       
+
     context = {
         'categories': categories
     }
