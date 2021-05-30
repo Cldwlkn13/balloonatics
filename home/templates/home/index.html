@@ -4,12 +4,49 @@
 {% block content %}
         <div class="row" id="home-container bg-opacity">
             <div class="col my-auto">
+                <div class="row mb-5">
+                    <div class="col-7 offset-lg-5">
+                        <div class="row align-items-center div-bg-opacity home-product-row rounded-3">
+                            <div class="col-6">
+                                <a href="#" class="text-center text-decoration-none font-weight-bold nav-link">
+                                    <h1 class="home-cat-text">Shop Online</h1>
+                                </a>
+                            </div>
+                            <div class="col-6 pl-0">
+                                <div class="row align-items-top">
+                                    {% for key, values in menu_context.items %}
+                                    <div class="col-4 d-none d-md-block align-content-left pl-0">
+                                        <a href="{% url 'sub_categories' %}?category={{ key }}" class="text-light text-bold text-decoration-none"><strong>{{ key }}</strong></a>
+                                        {% for sub_cat in values %}
+                                            <p><a href="{% url 'products' %}?sub_category={{ sub_cat }}" class="text-light text-muted text-decoration-none pr-0">{{ sub_cat }}</a></p>
+                                        {% endfor %}
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-items-center mb-5">
+                    <div class="col-7">
+                        <div class="row align-items-center div-bg-opacity home-product-row rounded-3">
+                            <div class="col-6">
+                                <p class="text-right">Some Info</p>
+                            </div>
+                            <div class="col-6">
+                                <a href="#" class="text-center text-decoration-none font-weight-bold nav-link">
+                                    <h1 class="home-cat-text">Build A Bundle</h1>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row align-items-center mb-5">
                     <div class="col-7 offset-lg-5">
                         <div class="row align-items-center div-bg-opacity home-product-row rounded-3">
                             <div class="col-6">
                                 <a href="#" class="text-center text-decoration-none font-weight-bold nav-link">
-                                    <h1>Shop Balloons</h1>
+                                    <h1 class="home-cat-text">Balloon Printing</h1>
                                 </a>
                             </div>
                             <div class="col-6">
@@ -26,35 +63,7 @@
                             </div>
                             <div class="col-6">
                                 <a href="#" class="text-center text-decoration-none font-weight-bold nav-link">
-                                    <h1>Build A Bundle</h1>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row align-items-center mb-5">
-                    <div class="col-7 offset-lg-5">
-                        <div class="row align-items-center div-bg-opacity home-product-row rounded-3">
-                            <div class="col-6">
-                                <a href="#" class="text-center text-decoration-none font-weight-bold nav-link">
-                                    <h1>Balloon Printing</h1>
-                                </a>
-                            </div>
-                            <div class="col-6">
-                                <p>Some Info</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row align-items-center mb-5">
-                    <div class="col-7">
-                        <div class="row align-items-center div-bg-opacity home-product-row rounded-3">
-                            <div class="col-6">
-                                <p class="text-right">Some Info</p>
-                            </div>
-                            <div class="col-6">
-                                <a href="#" class="text-center text-decoration-none font-weight-bold nav-link">
-                                    <h1>Your Event</h1>
+                                    <h1 class="home-cat-text">Your Event</h1>
                                 </a>
                             </div>
                         </div>

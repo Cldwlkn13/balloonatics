@@ -37,6 +37,10 @@ body {
     min-height: 90vh;
 }
 
+.home-cat-text {
+    font-weight: 700;
+}
+
 .bg-white {
     background-color: #fff;
     background-size: cover;
