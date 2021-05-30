@@ -1,1 +1,23 @@
-<p>{{ product.name }}</p>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5 bg-white text-dark" id="product-detail-container">
+    <div class="row">
+        <div class="col-6 p-5">
+            {% if product.image %}
+                <img src="../../media/{{ product.image.name }}" class="card-img-top img-fluid" alt="{{ product.name }}">
+            {% else %}
+                <img src="../../media/noimage.png" class="card-img-top img-fluid" alt="{{ result.name }}">
+            {% endif %}
+        </div>
+        <div class="col-6">
+            <h3>{{ product.name }}</h3>
+            <h6>&nbsp{{ product.category }} > {{ product.sub_category }}</h6>
+            <hr>
+            <p>{{ product.description }}</p>
+        </div>
+    </div>
+
+</div>   
+{% endblock %}
