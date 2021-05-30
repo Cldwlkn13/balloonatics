@@ -19,14 +19,23 @@ class Category(models.Model):
 
 class Material(models.Model):
     name = models.CharField(max_length=254)
-    display_name = models.CharField(max_length=254, null=True, blank=True)
-    image = models.ImageField(null=True, blank=True)
 
     def __str__(self):
         return self.name
 
-    def get_display_name(self):
-        return self.display_name
+
+class Size(models.Model):
+    name = models.CharField(max_length=254)
+
+    def __str__(self):
+        return self.name
+
+
+class Color(models.Model):
+    name = models.CharField(max_length=254)
+
+    def __str__(self):
+        return self.name
 
 
 class Sub_Category(models.Model):
@@ -64,13 +73,16 @@ class Product(models.Model):
     image_url = models.URLField(max_length=1024, null=True, blank=True)
     image = models.ImageField(null=True, blank=True)
     message = models.CharField(max_length=254, null=True, blank=True)
-    is_printable = models.BooleanField(null=False, blank=False)
     age = models.IntegerField(null=True, blank=True)
-    color = models.CharField(max_length=254, null=True, blank=True)
+    color = models.ForeignKey('Color', null=True, blank=True,
+                              on_delete=models.SET_NULL)
+    size = models.ForeignKey('Size', null=True, blank=True,
+                             on_delete=models.SET_NULL)
     qty_held = models.IntegerField(null=False)
+    shipped_inflated = models.BooleanField(null=False, blank=False,
+                                           default=False)
+    is_printable = models.BooleanField(null=False, blank=False, default=False)
 
     def __str__(self):
         return self.name
 
-    def get_display_name(self):
-        return self.display_name

@@ -1,4 +1,4 @@
-<div class="col-12 col-md-6 col-lg-4 col-xl-3">
+<div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
     <div class="card bg-dark">
         <a href="{% if cntxt == 'categories' %}{% url 'sub_categories' %}?category={{ result.name }}{% elif cntxt == 'sub_categories' %}{% url 'products' %}?sub_category={{ result.name }}{% else %}{% url 'product_detail' result.id %}{% endif %}" class="text-dark">
             {% if result.image %}

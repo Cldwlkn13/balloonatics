@@ -1,0 +1,30 @@
+[
+    {
+        "pk": 1,
+        "model": "products.size",
+        "fields": {
+            "name": "small"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "products.size",
+        "fields": {
+            "name": "medium"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "products.size",
+        "fields": {
+            "name": "large"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "products.size",
+        "fields": {
+            "name": "giant"
+        }
+    }
+]
