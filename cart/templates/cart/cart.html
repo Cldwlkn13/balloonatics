@@ -2,15 +2,97 @@
 {% load static %}
 
 {% block content %}
-    <div class="container bg-white text-dark" id="cart_container">
-        <div class="row">
-            <div class="col-8 offset-2 align-items-center text-center">
-                <h4 class="text-bold">Your Cart</h4>
-                <hr>
-            </div>
-            <div class="col-8 offset-2">
-
-            </div>
+<div class="container bg-white text-dark pb-5" id="cart-container">
+    <div class="row">
+        <div class="col-8 offset-2 align-items-center text-center">
+            <h3><strong>Your Cart</strong></h3>
         </div>
     </div>
+    <hr>
+    {% if cart_items %}
+        {% for item in cart_items %}
+        <div class="row align-items-center">
+            <div class="col-12 col-lg-3 text-center">
+                {% if item.product.image %}
+                <img class="img-fluid" src="{{ item.product.image.url }}" alt="{{ item.product.name }}" style="max-height: 100px; max-width: 100px;">
+                {% else %}
+                <img class="img-fluid" src="{{ MEDIA_URL }}noimage.png" alt="{{ item.product.name }}" style="max-height: 100px; max-width: 100px;">
+                {% endif %}
+            </div>  
+            <div class="col-12 col-lg-9">
+                <div class="row p-0 text-center">
+                    <div class="col-12 col-lg-4 p-0 py-3 mr-2"><strong>{{ item.product.name }}</strong></div>
+                    <div class="col-12 col-lg-2 p-0 py-3 mr-2">€{{ item.product.discounted_price }} each</div>
+                    <div class="col-12 col-lg-2 p-0 py-3 mr-2">
+                        {% include 'cart/includes/qty-update-form.html' with item=item request=request %}</div>
+                    <div class="col-12 col-lg-2 p-0 py-3 mr-2"><strong>€{{ item.item_total }}</strong></div>
+                    <div class="col-12 col-lg-1 p-3 py-3 mr-2 text-decoration-none">
+                        <a href="{% url 'remove_from_cart' item.product.id %}">
+                            <i class="fas fa-trash text-danger"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        {% endfor%}
+        <div class="row mt-5">
+            <div class="col-12 col-lg-2 offset-lg-10 text-center">
+                <p class="text-muted mb-0">Delivery Charges</p>
+                <p>€{{ delivery }}</p>
+                <h6 class="text-muted text-center mt-3">Grand Total </h6>
+                <h4 class="text-center"><strong> €{{ grand_total|floatformat:2 }}</strong></h4>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-12 col-lg-2 offset-lg-10 text-center">
+                <a href="#" class="btn btn-light btn-lg">
+                <span class="text-uppercase">Secure Checkout</span>
+                <span class="icon">
+                    <i class="fas fa-lock"></i>
+                </span>
+            </a>
+            </div>
+        </div>
+
+    {% else %}
+        <h6>Your cart is empty.</h6>
+        <a href="{% url 'categories' %}" class="btn btn-light btn-lg">
+            <span class="icon">
+                <i class="fas fa-chevron-left"></i>
+            </span>
+            <span class="text-dark">shop</span>
+        </a>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block postloadjs %}
+{{block.super}}
+<script>
+    $(document).ready(function () {
+        var quantity = 0;
+        $('.quantity-right-plus').click(function (e) {
+            console.log(quantity);
+            e.preventDefault();
+            var quantity = parseInt($(this).parent().siblings('#qty').val());
+            $(this).parent().siblings('#qty').first().val(quantity + 1);
+            $(this).parent().siblings('#qty').first().trigger('change');
+        });
+
+        $('.quantity-left-minus').click(function (e) {
+            e.preventDefault();
+            var quantity = parseInt($(this).parent().siblings('#qty').val());
+            if (quantity > 1) {
+                $(this).parent().siblings('#qty').first().val(quantity - 1);
+                $(this).parent().siblings('#qty').first().trigger('change');
+            }
+        });
+
+        $('input').on('change', function () {
+            console.log($(this));
+            $(this).siblings('#update-qty').first().trigger('click');
+        });
+    });
+</script>
 {% endblock %}

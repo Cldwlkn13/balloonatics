@@ -7,7 +7,7 @@ def view_cart(request):
 
 
 def add_to_cart(request, item_id):
-    
+
     qty = int(request.POST.get('qty'))
     this_url = request.POST.get('this_url')
     cart = request.session.get('cart', {})
@@ -19,3 +19,29 @@ def add_to_cart(request, item_id):
 
     request.session['cart'] = cart
     return redirect(this_url)
+
+
+def update_cart(request, item_id):
+
+    this_url = request.POST.get('this_url')
+
+    if request.POST.get('qty') == '':
+        return redirect(this_url)
+
+    qty = int(request.POST.get('qty'))
+
+    cart = request.session.get('cart', {})
+    cart[item_id] = qty
+
+    request.session['cart'] = cart
+    return redirect(this_url)
+
+
+def remove_from_cart(request, item_id):
+
+    cart = request.session.get('cart', {})
+
+    cart.pop(item_id)
+
+    request.session['cart'] = cart
+    return render(request, 'cart/cart.html')
