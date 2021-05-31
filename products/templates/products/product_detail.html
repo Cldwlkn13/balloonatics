@@ -29,7 +29,7 @@
             {% if product.size %}
                 <p><span class="text-muted">size: </span><span>{{ product.size.name }}</span></p>
             {% endif %}
-            <form method="#" action="POST">
+            <form method="{ url 'add_to_cart' result.id }" action="POST">
             {% csrf_token %}
                 <div class="form-row">
                     <div class="col-12 align-content-left mb-3">
@@ -54,6 +54,7 @@
                         <input type="submit" class="btn btn-light text-dark text-center py-1" value="add">
                     </div>
                 </div>
+                <input type="hidden" name="this_url" value="{{ request.get_full_path }}">
             </form>
             <div class="row">
                 <div class="col-12">
@@ -62,7 +63,6 @@
             </div>
         </div>
     </div>
-
 </div>   
 {% endblock %}
 

@@ -9,7 +9,7 @@
         </div>
     </div>
     <hr>
-    <form class="form" action="#" method="POST">
+    <form class="form" action="{% url 'add_to_cart' result.id %}" method="POST">
         {% csrf_token %}
         <div class="form-row">
             <div class="col-9 align-content-center">
@@ -20,7 +20,7 @@
                             <span class="fas fa-minus"></span>
                         </button>
                     </span>
-                    <input type="text" id="quantity" name="quantity" class="form-control input-number text-center" value="1"
+                    <input type="text" id="qty" name="qty" class="form-control input-number text-center" value="1"
                         min="1" max="100">
                     <span class="input-group-btn">
                         <button type="button" class="quantity-right-plus btn btn-dark btn-number" data-type="plus"
@@ -34,5 +34,6 @@
                 <input type="submit" class="btn btn-light text-dark text-center py-1" value="add">
             </div>
         </div>
+        <input type="hidden" name="this_url" value="{{ request.get_full_path }}">
     </form>
 </div>
