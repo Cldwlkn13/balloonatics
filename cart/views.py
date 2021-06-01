@@ -20,7 +20,10 @@ def add_to_cart(request, item_id):
         cart[item_id] += qty
     else:
         cart[item_id] = qty
-        messages.success(request, f'Added {product.name} to your cart!')
+        messages.success(
+            request,
+            f'Added <strong>{product.name}</strong> to your cart!',
+            extra_tags='render_preview')
 
     request.session['cart'] = cart
     return redirect(this_url)
@@ -46,12 +49,16 @@ def update_cart(request, item_id):
 def remove_from_cart(request, item_id):
 
     product = get_object_or_404(Product, pk=item_id)
-
     cart = request.session.get('cart', {})
+    path = request.META['HTTP_REFERER']
+    print(path)
 
     if item_id in cart:
         cart.pop(item_id)
-        messages.success(request, f'{product.name} removed from your cart!')
+        messages.info(
+            request,
+            f'<strong>{product.name}</strong> removed from your cart!',
+            extra_tags='render_preview')
 
     request.session['cart'] = cart
-    return render(request, 'cart/cart.html')
+    return redirect(path)

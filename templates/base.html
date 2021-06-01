@@ -4,29 +4,29 @@
 <html lang="en">
   <head>
     {% block meta %}
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
     {% endblock %}
 
     {% block extrameta %}
     {% endblock %}
 
     {% block corecss %}
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;600&display=swap">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;600&display=swap">
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
     {% endblock %}
 
     {% block extracss %}
     {% endblock %}
 
     {% block corejs %}    
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-    <script src="https://kit.fontawesome.com/cba444aafb.js" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/cba444aafb.js" crossorigin="anonymous"></script>
     {% endblock %}
 
     {% block extrajs %}
@@ -124,15 +124,17 @@
      {% if messages %}
         <div class="message-container">
             {% for message in messages %}
-                {% if message.level == 40 %}
-                    {% include './includes/toasts/toast-error.html' %}
-                {% elif message.level == 30 %}
-                    {% include './includes/toasts/toast-warning.html' %}
-                {% elif message.level == 25 %}
-                    {% include './includes/toasts/toast-success.html' %}
-                {% else %}
-                    {% include './includes/toasts/toast-info.html' %}
-                {% endif %}
+                {% with message.extra_tags as extra_tags %}
+                    {% if message.level == 40 %}
+                        {% include './includes/toasts/toast-error.html' with extra_tags=extra_tags %}
+                    {% elif message.level == 30 %}
+                        {% include './includes/toasts/toast-warning.html' with extra_tags=extra_tags %}
+                    {% elif message.level == 25 %}
+                        {% include './includes/toasts/toast-success.html' with extra_tags=extra_tags %}
+                    {% else %}
+                        {% include './includes/toasts/toast-info.html' with extra_tags=extra_tags %}
+                    {% endif %}
+                {% endwith %}
             {% endfor %}
         </div>
       {% endif %}
@@ -204,13 +206,16 @@
       {% block postloadjs %}
 
         {% if request.user.is_authenticated %}
-            <script>
-                $('#account-icon').css('color', 'green');
-                $('#account-text').css('color', 'green');
+            <script type="text/javascript">
+                $(document).ready(function(){
+                    $('#account-icon').css('color', 'green');
+                });
             </script>
         {% else %}
-            <script>
-                $('#account-icon').css('color', 'white');
+            <script type="text/javascript">
+                $(document).ready(function(){
+                    $('#account-icon').css('color', 'white');
+                });
             </script>
         {% endif %}
 

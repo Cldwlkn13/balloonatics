@@ -1,7 +1,7 @@
-<div class="toast rounded-3" role="alert" aria-live="assertive" aria-atomic="true" data-delay="{{ toast_ delay }}" data-autohide="{{ toast_ autohide }}">
+<div class="toast rounded-3" role="alert" aria-live="assertive" aria-atomic="true" data-delay="{{ toast_delay }}" data-autohide="{{ toast_autohide }}">
     <div class="arrow-up"></div>
     <div class="toast-header bg-info text-dark border border-light">
-        <strong class="mr-auto"><i class="fas fa-check"></i>&nbsp Heads up!</strong>
+        <strong class="mr-auto"><i class="fas fa-info-circle"></i>&nbsp Heads up!</strong>
         <small> {% now "SHORT_DATETIME_FORMAT" %} </small>
         <button type="button" class="btn btn-small btn-light ml-4 mb-1 close" data-dismiss="toast" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -9,6 +9,11 @@
     </div>
 
     <div class="toast-body text-dark">
-        {{ message }}
+        <p>{{ message|safe }}</p>
+        
+        {% if extra_tags == 'render_preview' %}
+        <hr class="m-0">
+            {% include './toast-bag-preview.html' %}
+        {% endif %}
     </div>
 </div>

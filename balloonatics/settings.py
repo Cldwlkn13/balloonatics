@@ -74,6 +74,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'home.contexts.menu_context',
+                'home.contexts.configure_toasts',
                 'cart.contexts.cart_contents',
             ],
         },
@@ -82,8 +83,8 @@ TEMPLATES = [
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
-TOAST_DELAY = 3000
-TOAST_AUTOHIDE = False
+TOAST_DELAY = 5000  # keep toast on screen for ms
+TOAST_AUTOHIDE = 'false'  # auto hide toast?
 
 AUTHENTICATION_BACKENDS = [  
     # Needed to login by username in Django admin, regardless of `allauth`

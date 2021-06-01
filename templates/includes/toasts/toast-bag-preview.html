@@ -1,0 +1,29 @@
+<div class="cart-notification-wrapper m-2 text-dark">
+    <div class="row mx-auto p-1">
+        <div class="col-12 text-center">
+            <p class="m-1"><strong>{{ product_count }} item{% if product_count > 1 %}s{% endif %} in your bag!</strong>
+            </p>
+        </div>
+    </div>
+    <br class="m-0">
+    {% for item in cart_items %}
+    <div class="row align-items-center">
+        <div class="col-3 my-1">
+            {% if item.product.image %}
+            <img src="../../media/{{ item.product.image.name }}" class="w-100 h-100" alt="{{ item.product.name }}">
+            {% else %}
+            <img src="../../media/noimage.png" class="w-100 h-100" alt="{{ item.product.name }}">
+            {% endif %}
+        </div>
+        <div class="col-7 text-left ml-3 mr-1 p-1">
+            <p class="my-0"><strong>{{ item.product.name }}</strong> x {{ item.qty }}</p>
+        </div>
+        <div class="col-1 ml-0">
+            <a href="{% url 'remove_from_cart' item.product.id %}">
+                <i class="fas fa-trash text-danger"></i>
+            </a>
+        </div>
+    </div>
+    <hr class="m-0">
+    {% endfor %}
+</div>
