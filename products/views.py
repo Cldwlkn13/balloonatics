@@ -10,7 +10,7 @@ def products(request):
     sub_category = 'all'
     sort = None
     direction = None
-    
+
     if 'sub_category' in request.GET:
         sub_category = request.GET['sub_category']
         products = Product.objects.filter(sub_category__name=sub_category)
@@ -26,6 +26,11 @@ def products(request):
             if direction == 'desc':
                 sortkey=f'-{sortkey}'
         products = products.order_by(sortkey)
+
+    cart = request.session.get('cart', {})
+
+    for product in products:
+        product.qty_in_cart = product.calc_qty_in_bag(cart)
 
     context = {
         "products": products,
@@ -74,6 +79,9 @@ def product_detail(request, product_id):
     """ A view to show individual product details """
 
     product = get_object_or_404(Product, pk=product_id)
+    cart = request.session.get('cart', {})
+    qty_in_cart = product.calc_qty_in_bag(cart)
+    product.qty_in_cart = qty_in_cart
 
     context = {
         'product': product,

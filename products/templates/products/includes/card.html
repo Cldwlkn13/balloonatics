@@ -1,4 +1,4 @@
-<div class="col-12 col-md-6 col-lg-4 my-5 ">
+<div class="col-12 col-md-6 col-lg-4 col-xl-3 m-3">
     <div class="card bg-dark product-card">
         <a href="{% if cntxt == 'categories' %}{% url 'sub_categories' %}?category={{ result.name }}{% elif cntxt == 'sub_categories' %}{% url 'products' %}?sub_category={{ result.name }}{% else %}{% url 'product_detail' result.id %}{% endif %}" class="text-dark">
             {% if result.image %}
@@ -8,7 +8,8 @@
             {% endif %}
             <div class="card-img-overlay">
                 <div style="background-color: rgba(255,255,255,0.6)">
-                    <h5 class="card-title"><strong>{{ result.name }}</strong></h5>
+                    <h5 class="card-title mb-0"><strong>{{ result.name }}</strong></h5>
+                    <small class=text-danger>{% if product.qty_in_cart > 0 %}You have {{product.qty_in_cart}} of this item in your cart!{% endif %}</small>
                 </div>
             </div>
         </a>

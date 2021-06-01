@@ -65,6 +65,7 @@ input[name="quantity"] {
 
 .product-card {
     width: 225px;
+    margin: 0 auto;
 }
 
 img.card-img-top {

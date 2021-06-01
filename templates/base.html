@@ -85,7 +85,7 @@
                     <li class="list-inline-item">
                         <a class="text-light {% if grand_total %}font-weight-bold{% else %}text-light{% endif %} nav-link" href="{% url 'view_cart' %}">
                             <div class="text-center">
-                                <div><i class="fas fa-shopping-bag fa-lg"></i></div>
+                                <div><i class="fas fa-shopping-cart fa-lg"></i></div>
                                 <p class="my-1">
                                     {% if grand_total %}
                                         ${{ grand_total|floatformat:2 }}
@@ -199,6 +199,7 @@
         {% if request.user.is_authenticated %}
             <script>
                 $('#account-icon').css('color', 'green');
+                $('#account-text').css('color', 'green');
             </script>
         {% else %}
             <script>

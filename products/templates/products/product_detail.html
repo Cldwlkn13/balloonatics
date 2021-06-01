@@ -8,15 +8,15 @@
             {% if product.image %}
                 <img src="../../media/{{ product.image.name }}" class="card-img-top img-fluid" alt="{{ product.name }}">
             {% else %}
-                <img src="../../media/noimage.png" class="card-img-top img-fluid" alt="{{ result.name }}">
+                <img src="../../media/noimage.png" class="card-img-top img-fluid" alt="{{ product.name }}">
             {% endif %}
         </div>
         <div class="col-6">
             <h3>{{ product.name }}</h3>
             <h6>&nbsp{{ product.category }} > {{ product.sub_category }}</h6>
+            <p class=text-danger>{% if product.qty_in_cart > 0 %}You have {{product.qty_in_cart}} of this item in your cart!{% endif %}</p>
             <hr>
-            <p>{{ product.description }}</p>
-            <br>
+            <p><i>{{ product.description }}</i></p>
             {% if product.message %}
                 <p><span class="text-muted">printed message: </span><span>"{{ product.message }}"</span></p>
             {% endif %}
@@ -40,7 +40,7 @@
                                     <span class="fas fa-minus"></span>
                                 </button>
                             </span>
-                            <input type="text" id="quantity" name="quantity" class="form-control input-number text-center" value="1"
+                            <input type="text" id="qty" name="qty" class="form-control input-number text-center" value="1"
                                 min="1" max="100">
                             <span class="input-group-btn">
                                 <button type="button" class="quantity-right-plus btn btn-dark btn-number" data-type="plus"
@@ -50,15 +50,15 @@
                             </span>
                         </div>
                     </div>
-                    <div class="col-12 align-content-left">
-                        <input type="submit" class="btn btn-light text-dark text-center py-1" value="add">
+                    <div class="col-12 align-content-left mt-3">
+                        <input type="submit" class="btn btn-light text-dark text-center py-1 border border-dark text-uppercase" value="add">
                     </div>
                 </div>
                 <input type="hidden" name="this_url" value="{{ request.get_full_path }}">
             </form>
             <div class="row">
                 <div class="col-12">
-                    <input type=button value="back" class="btn btn-light text-dark text-center py-1 mt-3" onClick="javascript:history.go(-1);">
+                    <input type=button value="&#60; back" class="btn btn-light text-dark text-center py-1 mt-5 border border-dark text-uppercase" onClick="javascript:history.go(-1);">
                 </div>
             </div>
         </div>

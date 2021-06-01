@@ -84,7 +84,13 @@ class Product(models.Model):
     shipped_inflated = models.BooleanField(null=False, blank=False,
                                            default=False)
     is_printable = models.BooleanField(null=False, blank=False, default=False)
+    qty_in_bag = models.IntegerField(null=True, blank=True, default=0)
 
     def __str__(self):
         return self.name
 
+    def calc_qty_in_bag(self, cart):
+        if str(self.pk) in cart:
+            return cart[str(self.pk)]
+        else:
+            return 0
