@@ -14,7 +14,7 @@ body {
 }
 
 .header-container {
-    min-height: 164px;
+    min-height: 177px;
 }
 
 .content-container {
@@ -97,6 +97,13 @@ a.nav-link:hover {
 .home-product-row {
     min-height: 100px;
     border-radius: 10px
+}
+
+.message-container {
+    position: absolute;
+    top: 70px;
+    right: 20px;
+    z-index: 2000;
 }
 
 

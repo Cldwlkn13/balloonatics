@@ -22,8 +22,7 @@
     {% block extracss %}
     {% endblock %}
 
-    {% block corejs %}
-    
+    {% block corejs %}    
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
@@ -109,9 +108,9 @@
                 {% include 'includes/mobile-header.html' %}
             </nav>
         </div>
-        <div id="delivery-banner" class="row text-center border-bottom bg-dark border-light align-items-center">
+        <div id="delivery-banner" class="row text-center border-top border-bottom bg-dark border-light align-items-center">
             <div class="col">
-                <h4 class="my-1">Promo Banner</h4>            
+                <h2 class="my-1 text-warning">Some text to go here for promotions!</h2>            
             </div>            
         </div>
       </header>
@@ -122,13 +121,15 @@
         </div>
     </div>
 
-      {% if messages %}
-        <div class="message-container">
+     
+    <div class="message-container">
+        {% if messages %}
             {% for message in messages %}
-                {% include './includes/toasts/toast-success.html' with message=message %}
+                {% include './includes/toasts/toast-success.html' %}
             {% endfor %}
-        </div>
-      {% endif %}
+        {% endif %}
+    </div>
+
 
       {% block page_header %}
       {% endblock %}
@@ -205,9 +206,28 @@
             </script>
         {% endif %}
 
-        <script>
-            $('.toast').toast('show');
-        </script>
+        <script type="text/javascript">
+            
+            $(document).ready(function(){
+                var quantity=0;
+                $('.quantity-right-plus').click(function(e){
+                    console.log(quantity);
+                    e.preventDefault();
+                    var quantity = parseInt($(this).parent().siblings('#qty').val());        
+                    $(this).parent().siblings('#qty').first().val(quantity + 1);
+                });
+
+                $('.quantity-left-minus').click(function(e){
+                    e.preventDefault();
+                    var quantity = parseInt($(this).parent().siblings('#qty').val());
+                    if(quantity > 1){
+                        $(this).parent().siblings('#qty').first().val(quantity - 1);
+                    }
+                });   
+                $('.toast').toast('show');   
+            });
+            
+            </script>
 
       {% endblock %}
 
