@@ -31,6 +31,7 @@ def update_cart(request, item_id):
     this_url = request.POST.get('this_url')
 
     if request.POST.get('qty') == '':
+        messages.error(request, 'Invalid quantity')
         return redirect(this_url)
 
     qty = int(request.POST.get('qty'))
@@ -44,10 +45,13 @@ def update_cart(request, item_id):
 
 def remove_from_cart(request, item_id):
 
+    product = get_object_or_404(Product, pk=item_id)
+
     cart = request.session.get('cart', {})
 
     if item_id in cart:
         cart.pop(item_id)
+        messages.success(request, f'{product.name} removed from your cart!')
 
     request.session['cart'] = cart
     return render(request, 'cart/cart.html')

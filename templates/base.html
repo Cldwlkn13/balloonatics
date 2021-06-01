@@ -121,14 +121,21 @@
         </div>
     </div>
 
-     
-    <div class="message-container">
-        {% if messages %}
+     {% if messages %}
+        <div class="message-container">
             {% for message in messages %}
-                {% include './includes/toasts/toast-success.html' %}
+                {% if message.level == 40 %}
+                    {% include './includes/toasts/toast-error.html' %}
+                {% elif message.level == 30 %}
+                    {% include './includes/toasts/toast-warning.html' %}
+                {% elif message.level == 25 %}
+                    {% include './includes/toasts/toast-success.html' %}
+                {% else %}
+                    {% include './includes/toasts/toast-info.html' %}
+                {% endif %}
             {% endfor %}
-        {% endif %}
-    </div>
+        </div>
+      {% endif %}
 
 
       {% block page_header %}
