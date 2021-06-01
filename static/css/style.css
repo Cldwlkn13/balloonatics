@@ -64,7 +64,12 @@ input[name="quantity"] {
 }
 
 .product-card {
-    height: 241px;
+    width: 225px;
+}
+
+img.card-img-top {
+    max-height: 225px;
+    max-width: 225px;
 }
 
 .div-bg-opacity{
@@ -94,6 +99,8 @@ a.nav-link:hover {
     border-radius: 10px
 }
 
+
+*/
 /* from Bulma */
 .icon {
     align-items: center;

@@ -1,8 +1,8 @@
-<div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
-    <div class="card bg-dark">
+<div class="col-12 col-md-6 col-lg-4 my-5 ">
+    <div class="card bg-dark product-card">
         <a href="{% if cntxt == 'categories' %}{% url 'sub_categories' %}?category={{ result.name }}{% elif cntxt == 'sub_categories' %}{% url 'products' %}?sub_category={{ result.name }}{% else %}{% url 'product_detail' result.id %}{% endif %}" class="text-dark">
             {% if result.image %}
-                <img src="../../media/{{ result.image.name }}" class="card-img-top img-fluid product-card" alt="{{ result.name }}">
+                <img src="../../media/{{ result.image.name }}" class="card-img-top img-fluid" alt="{{ result.name }}">
             {% else %}
                 <img src="../../media/noimage.png" class="card-img-top img-fluid" alt="{{ result.name }}">
             {% endif %}
