@@ -1,3 +1,4 @@
+{% if 'render_toast' in extra_tags %}
 <div class="toast rounded-3" role="alert" aria-live="assertive" aria-atomic="true" data-delay="{{ toast_delay }}" data-autohide="{{ toast_autohide }}">
     <div class="arrow-up"></div>
     <div class="toast-header bg-success text-dark border border-light">
@@ -11,9 +12,10 @@
     <div class="toast-body text-dark text-center">
         <p>{{ message|safe }}</p>
         
-        {% if extra_tags == 'render_preview' %}
+        {% if 'render_preview' in extra_tags %}
         <hr class="m-0">
             {% include './toast-bag-preview.html' %}
         {% endif %}
     </div>
 </div>
+{% endif %}

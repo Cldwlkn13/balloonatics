@@ -2,28 +2,28 @@
 {% load static %}
 
 {% block content %}
-<div class="container bg-white text-dark pb-5" id="cart-container">
+<div class="container bg-container-dark text-light pb-5">
     <div class="row">
         <div class="col-8 offset-2 align-items-center text-center">
             <h3><strong>Your Cart</strong></h3>
             <p>{{ action }}</p>
         </div>
     </div>
-    <hr>
+    <hr class="bg-light">
     {% if cart_items %}
         {% for item in cart_items %}
-        <div class="row align-items-center">
-            <div class="col-12 col-lg-3 text-center">
+        <div class="row align-items-center p-1 p-lg-5">
+            <div class="col-12 col-md-6 col-lg-3 text-center px-5">
                 {% if item.product.image %}
-                <img class="img-fluid border border-dark" src="{{ item.product.image.url }}" alt="{{ item.product.name }}" style="max-height: 100px; max-width: 100px;">
+                <img class="img-fluid border border-info cart-img" src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
                 {% else %}
-                <img class="img-fluid border border-dark" src="{{ MEDIA_URL }}noimage.png" alt="{{ item.product.name }}" style="max-height: 100px; max-width: 100px;">
+                <img class="img-fluid border border-info" src="{{ MEDIA_URL }}noimage.png" alt="{{ item.product.name }}">
                 {% endif %}
             </div>  
-            <div class="col-12 col-lg-9">
+            <div class="col-12 col-md-6 col-lg-9">
                 <div class="row p-0 text-center">
-                    <div class="col-12 col-lg-4 p-0 py-3 mr-2"><strong>{{ item.product.name }}</strong></div>
-                    <div class="col-12 col-lg-2 p-0 py-3 mr-2">€{{ item.product.discounted_price }} each</div>
+                    <div class="col-12 col-lg-2 p-0 py-3 mr-2"><strong>{{ item.product.name }}</strong></div>
+                    <div class="col-12 col-lg-1 p-0 py-3 mr-2">€{{ item.product.discounted_price }} each</div>
                     <div class="col-12 col-lg-2 p-0 py-3 mr-2">
                         {% include 'cart/includes/qty-update-form.html' with item=item request=request %}</div>
                     <div class="col-12 col-lg-2 p-0 py-3 mr-2"><strong>€{{ item.item_total }}</strong></div>
@@ -35,7 +35,7 @@
                 </div>
             </div>
         </div>
-        <hr>
+        <hr class="bg-light">
         {% endfor%}
         <div class="row mt-5">
             <div class="col-12 col-lg-2 offset-lg-10 text-center">
@@ -47,7 +47,7 @@
         </div>
         <div class="row mt-5">
             <div class="col-12 col-lg-2 offset-lg-10 text-center">
-                <a href="#" class="btn btn-dark btn-lg">
+                <a href="#" class="btn btn-light btn-lg">
                 <span class="text-uppercase">Secure Checkout</span>
                 <span class="icon">
                     <i class="fas fa-lock"></i>
@@ -58,7 +58,7 @@
 
     {% else %}
         <h6>Your cart is empty.</h6>
-        <a href="{% url 'categories' %}" class="btn btn-dark btn-lg">
+        <a href="{% url 'categories' %}" class="btn btn-light btn-lg">
             <span class="icon">
                 <i class="fas fa-chevron-left"></i>
             </span>

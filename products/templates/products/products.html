@@ -2,14 +2,14 @@
 {% load static %}
 
 {% block content %}
-    <div class="container bg-white" id="products-container">
+    <div class="container bg-container-dark text-light">
         <div class="row my-1">
-            <div class="col-12 col-md-10 text-center text-lg-left text-dark my-1">
+            <div class="col-12 col-md-10 text-center text-md-left my-1">
                 <h2><strong>{{ sub_category }}</strong></h2>
             </div>
-            <div class="col-12 col-md-2 text-center text-lg-left text-dark my-1">
+            <div class="col-12 col-md-2 text-center text-lg-left my-1">
                 <div class="dropdown">
-                    <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         {% if current_sort == None %}sort{% else %}{{ current_sort }} {{ current_dir }}{% endif %}
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -24,22 +24,22 @@
                 </div>
             </div>
         </div>
-        <hr>
+        <hr class="bg-light">
         <div class="row">
             {% if products %}
                 {% for product in products %}
                     {% include './includes/card.html' with result=product cntxt='products' %}
                 {% endfor %}
             {% else %}
-                <h4 class="text-dark">We're afraid there are currently no products under this category!</h4>
+                <h4>We're afraid there are currently no products under this category!</h4>
             {% endif %}
         </div>
-        <div class="row">
+        <div class="row mt-5">
             <div class="col-12">
                 {% if products %}
-                    <a href="{% url 'sub_categories' %}?category={{ products.0.category.name }}" class="btn btn-dark"><i class="fas fa-chevron-left"></i> back</a>
+                    <a href="{% url 'sub_categories' %}?category={{ products.0.category.name }}" class="btn btn-light text-uppercase"><i class="fas fa-chevron-left"></i> back</a>
                 {% else %}
-                    <input type=button value="&#60; back" class="btn btn-dark mt-5" onClick="javascript:history.go(-1);">
+                    <input type=button value="&#60; back" class="btn btn-light mt-5 text-uppercase" onClick="javascript:history.go(-1);">
                 {% endif %}
             </div>
         </div>

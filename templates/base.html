@@ -100,17 +100,19 @@
             </div>
         </div>
         <div class="row bg-site">
-            <nav class="navbar navbar-expand-lg navbar-dark w-100">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-nav" aria-controls="main-nav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                {% include 'includes/main-nav.html' %}
-                {% include 'includes/mobile-header.html' %}
-            </nav>
+            <div class="col-8 offset-2 text-center">
+                <nav class="navbar navbar-expand-lg navbar-dark w-100">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-nav" aria-controls="main-nav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    {% include 'includes/main-nav.html' %}
+                    {% include 'includes/mobile-header.html' %}
+                </nav>
+            </div>
         </div>
-        <div id="delivery-banner" class="row text-center border-top border-bottom bg-dark border-light align-items-center">
+        <div id="delivery-banner" class="row text-center border-top border-bottom bg-info border-light align-items-center">
             <div class="col">
-                <h2 class="my-1 text-warning">Some text to go here for promotions!</h2>            
+                <h2 class="my-1 text-light">Some text to go here for promotions!</h2>            
             </div>            
         </div>
       </header>
@@ -122,7 +124,7 @@
     </div>
 
      {% if messages %}
-        <div class="message-container">
+        <div class="message-container d-none d-md-block">
             {% for message in messages %}
                 {% with message.extra_tags as extra_tags %}
                     {% if message.level == 40 %}

@@ -24,7 +24,7 @@ def add_to_cart(request, item_id):
     messages.success(
         request,
         f'Added {qty} x <strong>{product.name}</strong> to your cart!',
-        extra_tags='render_preview')
+        extra_tags='render_toast render_preview')
 
     request.session['cart'] = cart
     return redirect(this_url)
@@ -43,10 +43,10 @@ def update_cart(request, item_id):
 
     cart = request.session.get('cart', {})
     cart[item_id] = qty
-    extra_tags = ''
+    extra_tags = 'render_toast render_preview'
 
-    if 'cart' not in path:
-        extra_tags = 'render_preview'
+    if 'cart' in path:
+        extra_tags = ''
 
     messages.info(
         request,
@@ -62,10 +62,10 @@ def remove_from_cart(request, item_id):
     product = get_object_or_404(Product, pk=item_id)
     cart = request.session.get('cart', {})
     path = request.META['HTTP_REFERER']
-    extra_tags = ''
+    extra_tags = 'render_toast render_preview'
 
-    if 'cart' not in path:
-        extra_tags = 'render_preview'
+    if 'cart' in path:
+        extra_tags = ''
 
     if item_id in cart:
         cart.pop(item_id)
