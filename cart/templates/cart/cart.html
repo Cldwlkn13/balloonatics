@@ -15,9 +15,9 @@
         <div class="row align-items-center">
             <div class="col-12 col-lg-3 text-center">
                 {% if item.product.image %}
-                <img class="img-fluid" src="{{ item.product.image.url }}" alt="{{ item.product.name }}" style="max-height: 100px; max-width: 100px;">
+                <img class="img-fluid border border-dark" src="{{ item.product.image.url }}" alt="{{ item.product.name }}" style="max-height: 100px; max-width: 100px;">
                 {% else %}
-                <img class="img-fluid" src="{{ MEDIA_URL }}noimage.png" alt="{{ item.product.name }}" style="max-height: 100px; max-width: 100px;">
+                <img class="img-fluid border border-dark" src="{{ MEDIA_URL }}noimage.png" alt="{{ item.product.name }}" style="max-height: 100px; max-width: 100px;">
                 {% endif %}
             </div>  
             <div class="col-12 col-lg-9">
@@ -47,7 +47,7 @@
         </div>
         <div class="row mt-5">
             <div class="col-12 col-lg-2 offset-lg-10 text-center">
-                <a href="#" class="btn btn-light btn-lg">
+                <a href="#" class="btn btn-dark btn-lg">
                 <span class="text-uppercase">Secure Checkout</span>
                 <span class="icon">
                     <i class="fas fa-lock"></i>
@@ -58,11 +58,11 @@
 
     {% else %}
         <h6>Your cart is empty.</h6>
-        <a href="{% url 'categories' %}" class="btn btn-light btn-lg">
+        <a href="{% url 'categories' %}" class="btn btn-dark btn-lg">
             <span class="icon">
                 <i class="fas fa-chevron-left"></i>
             </span>
-            <span class="text-dark">shop</span>
+            <span>shop</span>
         </a>
     {% endif %}
 </div>
@@ -74,21 +74,14 @@
     $(document).ready(function () {
         var quantity = 0;
         $('.quantity-right-plus').click(function (e) {
-            console.log(quantity);
             e.preventDefault();
-            var quantity = parseInt($(this).parent().siblings('#qty').val());
-            $(this).parent().siblings('#qty').first().val(quantity + 1);
             $(this).parent().siblings('#qty').first().trigger('change');
         });
 
         $('.quantity-left-minus').click(function (e) {
             e.preventDefault();
-            var quantity = parseInt($(this).parent().siblings('#qty').val());
-            if (quantity > 1) {
-                $(this).parent().siblings('#qty').first().val(quantity - 1);
                 $(this).parent().siblings('#qty').first().trigger('change');
-            }
-        });
+            });
 
         $('input').on('change', function () {
             console.log($(this));
