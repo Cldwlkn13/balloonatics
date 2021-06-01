@@ -126,6 +126,18 @@ a.nav-link:hover {
     padding: .25rem .5rem !important;
 }
 
+/* from CSS-tricks.com: https://css-tricks.com/snippets/css/css-triangle/ */
+.arrow-up {
+    width: 0; 
+    height: 0; 
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent; 
+    border-bottom: 10px solid black;
+    position: absolute;
+    top: -10px;
+    right: 36px;
+}
+
 
 /* ---------------MEDIA QUERIES */
 @media (min-width: 1200px) {

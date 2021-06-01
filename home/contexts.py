@@ -1,4 +1,5 @@
 from products.models import Product, Category, Sub_Category
+from django.conf import settings
 
 
 def menu_context(request):
@@ -27,4 +28,17 @@ def menu_context(request):
 
         menu_context[c.name] = sub_categories
 
-    return {'menu_context': menu_context}
+    return {
+        'menu_context': menu_context
+        }
+
+
+def configure_toasts(request):
+    
+    toast_delay = settings.TOAST_DELAY
+    toast_autohide = settings.TOAST_AUTOHIDE
+
+    return {
+        'toast_delay': toast_delay, 
+        'toast_autohide': toast_autohide
+    }

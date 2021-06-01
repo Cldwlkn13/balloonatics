@@ -3,8 +3,6 @@ from django.shortcuts import get_object_or_404
 from products.models import Product
 from decimal import Decimal
 
-import math 
-
 
 def cart_contents(request):
 
@@ -27,7 +25,7 @@ def cart_contents(request):
             'item_total': item_total,
         })
         print(total)
-    
+ 
     if total > 0:
         delivery = round((total * Decimal(
             settings.DELIVERY_SURCHARGE)), 2)

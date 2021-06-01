@@ -1,4 +1,5 @@
-<div class="toast rounded-3" role="alert" aria-live="assertive" aria-atomic="true" data-delay="3000">
+<div class="toast rounded-3" role="alert" aria-live="assertive" aria-atomic="true" data-delay="{{ toast_ delay }}" data-autohide="{{ toast_ autohide }}">
+    <div class="arrow-up"></div>
     <div class="toast-header bg-danger text-light border border-light">
         <strong class="mr-auto"><i class="fas fa-check"></i>&nbsp Eeeeeek!</strong>
         <small> {% now "SHORT_DATETIME_FORMAT" %} </small>
