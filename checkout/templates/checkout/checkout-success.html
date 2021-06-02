@@ -5,14 +5,15 @@
     <div class="container bg-container-dark text-center">
         <div class="row">
             <div class="col-8 offset-2">
-                <h4>Woohoo!</h4>
+                <h4 class="text-success">Order Complete!</h4>
             </div>
         </div>
         <hr class="bg-light">
         <div class="row">
             <div class="col-8 offset-2">
-                <h4>Order Complete!</h4>
-                {{ data }}
+                <h6>Your Order Id: <strong>{{ order.id }}</strong></h6>
+                <p>You will shortly recieve a confirmation to your email address</p>
+                <a href="{% url 'categories' %}" class="btn btn-warning text-uppercase my-5"><i class="fas fa-chevron-left"></i>&nbsp continue shopping</a>
             </div>
         </div>
     </div>

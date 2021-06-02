@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models import Sum
 from django.conf import settings
+from decimal import Decimal
 
 from products.models import Product
 
@@ -64,13 +65,15 @@ class Order(models.Model):
     def save(self, *args, **kwargs):
         if not self.order_id:
             self.order_id = self._generate_order_number()
+        self.address.save()
         super().save(*args, **kwargs)
 
     def calc_grand_total(self):
-        self.order_total = self.order_items.aggregrate(
-            Sum('item_total'))['item_total__sum']
+        self.order_total = self.order_items.aggregate(
+            Sum('item_total'))['item_total__sum'] or 0
         self.delivery_surcharge = (
-            self.order_total * settings.DELIVERY_SURCHARGE)
+            round((self.order_total * Decimal(
+            settings.DELIVERY_SURCHARGE)), 2))
         self.grand_total = self.delivery_surcharge + self.order_total
         self.save()
 
