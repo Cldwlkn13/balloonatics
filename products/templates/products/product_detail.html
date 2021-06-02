@@ -3,10 +3,15 @@
 
 {% block content %}
 <div class="container py-5 bg-container-dark text-light" id="product-detail-container">
-    <div class="row mt-5">
-        <div class="col-6 p-5">
+    <div class="row mt-2">
+        <div class="col-6">
+            <div class="row mt-0 mb-2">
+                <div class="col-12">
+                    <input type=button value="&#60; back" class="btn btn-warning m-0 py-1 text-uppercase" onClick="javascript:history.go(-1);">
+                </div>
+            </div>
             {% if product.image %}
-                <img src="../../media/{{ product.image.name }}" class="img-fluid border border-info" alt="{{ product.name }}">
+                <img src="../../media/{{ product.image.name }}" class="img-fluid border border-info product-detail-img" alt="{{ product.name }}">
             {% else %}
                 <img src="../../media/noimage.png" class="img-fluid product-detail-img" alt="{{ product.name }}">
             {% endif %}
@@ -33,13 +38,13 @@
             {% if product.size %}
                 <p><span class="text-muted">size: </span><span>{{ product.size.name }}</span></p>
             {% endif %}
-            <form method="{ url 'add_to_cart' result.id }" action="POST">
+            <form action="{% url 'add_to_cart' product.id %}" method="POST">
             {% csrf_token %}
                 <div class="form-row">
                     <div class="col-12 align-content-left mb-3">
                         <div class="input-group">
                             <span class="input-group-btn">
-                                <button type="button" class="quantity-left-minus btn btn-light btn-number border-info" data-type="minus"
+                                <button type="button" class="quantity-left-minus btn btn-info btn-number border-info" data-type="minus"
                                     data-field="">
                                     <span class="fas fa-minus"></span>
                                 </button>
@@ -47,7 +52,7 @@
                             <input type="text" id="qty" name="qty" class="form-control input-number text-center qty-input border-top-info border-bottom-info" value="1"
                                 min="1" max="100">
                             <span class="input-group-btn">
-                                <button type="button" class="quantity-right-plus btn btn-light btn-number border-info" data-type="plus"
+                                <button type="button" class="quantity-right-plus btn btn-info btn-number border-info" data-type="plus"
                                     data-field="">
                                     <span class="fas fa-plus"></span>
                                 </button>
@@ -55,16 +60,11 @@
                         </div>
                     </div>
                     <div class="col-12 align-content-left mt-3">
-                        <input type="submit" class="btn btn-light btn-lg py-1 mt-2 mb-5 text-uppercase" value="add to cart">
+                        <input type="submit" class="btn btn-warning btn-lg py-1 mt-2 mb-5 text-uppercase" value="add to cart">
                     </div>
                 </div>
                 <input type="hidden" name="this_url" value="{{ request.get_full_path }}">
             </form>
-            <div class="row">
-                <div class="col-12">
-                    <input type=button value="&#60; back" class="btn btn-light py-1 mt-5 text-uppercase" onClick="javascript:history.go(-1);">
-                </div>
-            </div>
         </div>
     </div>
 </div>   

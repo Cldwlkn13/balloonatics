@@ -2,9 +2,9 @@
     <div class="row mb-3">
         <div class="col-8 offset-2 text-center">
             {% if result.price != result.discounted_price %}
-                <h4 class="my-0"><s class="text-muted">€{{ result.price }}</s><strong>&nbsp&nbsp€{{ result.discounted_price }}</strong><small> each</small></h4>
+                <h5 class="my-0"><s class="text-muted">€{{ result.price }}</s><strong>&nbsp&nbsp€{{ result.discounted_price }}</strong><small> each</small></h5>
             {% else %}
-                <h4 class="my-0"><strong>€{{ result.discounted_price }}</strong><small> each</small></h4>
+                <h5 class="my-0"><strong>€{{ result.discounted_price }}</strong><small> each</small></h5>
             {% endif %}
         </div>
     </div>
@@ -15,7 +15,7 @@
             <div class="col-8 align-content-center">
                 <div class="input-group">
                     <span class="input-group-btn">
-                        <button type="button" class="quantity-left-minus btn btn-dark btn-number" data-type="minus"
+                        <button type="button" class="quantity-left-minus btn btn-info btn-number" data-type="minus"
                             data-field="">
                             <span class="fas fa-minus"></span>
                         </button>
@@ -23,7 +23,7 @@
                     <input type="text" id="qty" name="qty" class="form-control input-number text-center qty-input" value="1"
                         min="1" max="100">
                     <span class="input-group-btn">
-                        <button type="button" class="quantity-right-plus btn btn-dark btn-number" data-type="plus"
+                        <button type="button" class="quantity-right-plus btn btn-info btn-number" data-type="plus"
                             data-field="">
                             <span class="fas fa-plus"></span>
                         </button>
@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="col-3 align-content-center">
-                <input type="submit" class="btn btn-dark text-center py-1 mt-1 text-uppercase" value="add">
+                <input type="submit" class="btn btn-warning text-center py-1 mt-1 text-uppercase" value="add">
             </div>
         </div>
         <input type="hidden" name="this_url" value="{{ request.get_full_path }}">

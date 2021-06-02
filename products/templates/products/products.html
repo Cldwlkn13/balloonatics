@@ -37,9 +37,9 @@
         <div class="row mt-5">
             <div class="col-12">
                 {% if products %}
-                    <a href="{% url 'sub_categories' %}?category={{ products.0.category.name }}" class="btn btn-light text-uppercase"><i class="fas fa-chevron-left"></i> back</a>
+                    <a href="{% url 'sub_categories' %}?category={{ products.0.category.name }}" class="btn btn-warning text-uppercase"><i class="fas fa-chevron-left"></i> back</a>
                 {% else %}
-                    <input type=button value="&#60; back" class="btn btn-light mt-5 text-uppercase" onClick="javascript:history.go(-1);">
+                    <input type=button value="&#60; back" class="btn btn-warning mt-5 text-uppercase" onClick="javascript:history.go(-1);">
                 {% endif %}
             </div>
         </div>
