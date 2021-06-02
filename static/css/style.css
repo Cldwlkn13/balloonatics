@@ -132,7 +132,8 @@ a.nav-link:hover {
     max-width: 175px;
 }
 
-.cart-preview-img {
+.cart-preview-img,
+.checkout-img {
     height: 70px;
     width: 60px;
 }

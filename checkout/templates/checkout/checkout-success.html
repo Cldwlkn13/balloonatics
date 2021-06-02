@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container bg-container-dark text-center">
+        <div class="row">
+            <div class="col-8 offset-2">
+                <h4>Woohoo!</h4>
+            </div>
+        </div>
+        <hr class="bg-light">
+        <div class="row">
+            <div class="col-8 offset-2">
+                <h4>Order Complete!</h4>
+                {{ data }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

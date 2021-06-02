@@ -9,6 +9,9 @@ import uuid
 
 class Address(models.Model):
 
+    class Meta:
+        verbose_name_plural = 'Addresses'
+
     street_address_1 = models.CharField(
         max_length=100, null=False, blank=False)
     street_address_2 = models.CharField(
@@ -41,9 +44,10 @@ class Order(models.Model):
     cust_name = models.CharField(max_length=50, null=False, blank=False)
     cust_email = models.EmailField(max_length=254, null=False, blank=False)
     cust_phone = models.CharField(max_length=20, null=False, blank=False)
-    address = models.ForeignKey(Address, null=False, blank=False,
-                                on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
+    address = models.ForeignKey(Address, null=False, blank=True,
+                                on_delete=models.CASCADE,
+                                related_name='address')
     delivery_surcharge = models.DecimalField(
         max_digits=6, decimal_places=2, null=False, default=0.00)
     items_total = models.DecimalField(
@@ -53,9 +57,6 @@ class Order(models.Model):
 
     def __str__(self):
         return str(self.cust_name).replace(" ", "") + self.order_id
-
-    def produce_shipping_label(self):
-        return (self.cust_name + '\n' + str(self.address))
 
     def _generate_order_number(self):
         return uuid.uuid4().hex.upper()
@@ -67,7 +68,7 @@ class Order(models.Model):
 
     def calc_grand_total(self):
         self.order_total = self.order_items.aggregrate(
-            Sum('order_item_total'))['order_item_total__sum']
+            Sum('item_total'))['item_total__sum']
         self.delivery_surcharge = (
             self.order_total * settings.DELIVERY_SURCHARGE)
         self.grand_total = self.delivery_surcharge + self.order_total
@@ -88,7 +89,7 @@ class OrderItem(models.Model):
         null=False, default=0.00, editable=False)
 
     def __str__(self):
-        return self.order_item_id + '_' + self.product.id
+        return self.order_item_id
 
     def _generate_order_number(self):
         return uuid.uuid4().hex.upper()
@@ -99,5 +100,4 @@ class OrderItem(models.Model):
         self.item_total = (
             self.product.discounted_price * self.quantity)
         super().save(*args, **kwargs)
-
 
