@@ -84,7 +84,7 @@ TEMPLATES = [
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 TOAST_DELAY = 5000  # keep toast on screen for ms
-TOAST_AUTOHIDE = 'false'  # auto hide toast?
+TOAST_AUTOHIDE = 'true'  # auto hide toast?
 
 AUTHENTICATION_BACKENDS = [  
     # Needed to login by username in Django admin, regardless of `allauth`

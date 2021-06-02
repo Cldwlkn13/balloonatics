@@ -1,18 +1,16 @@
 <div class="cart-notification-wrapper m-2 text-dark">
     <div class="row mx-auto p-1">
         <div class="col-12 text-center">
-            <p class="m-1"><strong>{{ product_count }} item{% if product_count != 1 %}s{% endif %} in your bag!</strong>
-            </p>
+            <h6 class="mt-3 mb-1"><strong>{{ product_count }} item{% if product_count != 1 %}s{% endif %} in your bag!</strong></h6>
         </div>
     </div>
-    <br class="m-0">
     {% for item in cart_items %}
     <div class="row align-items-center">
         <div class="col-3 my-1">
             {% if item.product.image %}
-            <img src="../../media/{{ item.product.image.name }}" class="w-100 h-100 border border-dark" alt="{{ item.product.name }}">
+            <img src="../../media/{{ item.product.image.name }}" class="cart-preview-img border border-dark" alt="{{ item.product.name }}">
             {% else %}
-            <img src="../../media/noimage.png" class="w-100 h-100 border border-dark" alt="{{ item.product.name }}">
+            <img src="../../media/noimage.png" class="bag-preview-img border border-dark" alt="{{ item.product.name }}">
             {% endif %}
         </div>
         <div class="col-5 text-left ml-3 mr-1 p-1">

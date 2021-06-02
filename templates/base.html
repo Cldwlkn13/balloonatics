@@ -1,0 +1,250 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    {% block meta %}
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% endblock %}
+
+    {% block extrameta %}
+    {% endblock %}
+
+    {% block corecss %}
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;600&display=swap">
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% endblock %}
+
+    {% block extracss %}
+    {% endblock %}
+
+    {% block corejs %}    
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/cba444aafb.js" crossorigin="anonymous"></script>
+    {% endblock %}
+
+    {% block extrajs %}
+    {% endblock %}
+
+    <title>Balloonatics {% block extratitle %}{% endblock %}</title>
+  </head>
+  <body>
+      <header class="container-fluid fixed-top">
+        <div id="topnav" class="row bg-site pt-lg-2 d-none d-lg-flex">
+            <div class="col-12 col-lg-4 my-auto py-1 py-lg-0 text-center text-lg-left">
+                <a href="{% url 'home' %}" class="nav-link main-logo-link">
+                    <h1 class="my-0"><strong>Balloonatics</strong></h2>
+                </a>
+            </div>
+            <div class="col-12 col-lg-4 my-auto py-1 py-lg-0">
+                <form method="GET" action="#">
+                    <div class="input-group w-100">
+                        <input class="form-control border" type="text" name="q" placeholder="Search our site">
+                        <div class="input-group-append">
+                            <button class="form-control btn btn-light border" type="submit">
+                                <span class="icon">
+                                    <i class="fas fa-search"></i>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-12 col-lg-4 my-auto py-1 py-lg-0">
+                <ul class="list-inline list-unstyled text-center text-lg-right my-0">
+                    <li class="list-inline-item dropdown">
+                        <a class="text-black nav-link" href="#" id="user-options" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <div class="text-center">
+                                <div><i class="fas fa-user fa-lg" id="account-icon"></i></div>
+                                {% if request.user.is_authenticated %}
+                                    <p class="my-0" id="account-text">{{ request.user }}</p>
+                                {% else %}
+                                    <p class="my-0" id="account-text">My Account</p>
+                                {% endif %}
+                            </div>
+                        </a>
+                        <div class="dropdown-menu border-0" aria-labelledby="user-options">
+                            {% if request.user.is_authenticated %}
+                                {% if request.user.is_superuser %}
+                                    <a href="#" class="dropdown-item">Product Management</a>
+                                {% endif %}
+                                <a href="#" class="dropdown-item">My Profile</a>
+                                <a href="{% url 'account_logout' %}" class="dropdown-item">Logout</a>
+                            {% else %}
+                                <a href="{% url 'account_signup' %}" class="dropdown-item">Register</a>
+                                <a href="{% url 'account_login' %}" class="dropdown-item">Login</a>
+                            {% endif %}
+                        </div>
+                    </li>
+                    <li class="list-inline-item">
+                        <a class="text-light {% if grand_total %}font-weight-bold{% else %}text-light{% endif %} nav-link" href="{% url 'view_cart' %}">
+                            <div class="text-center">
+                                <div><i class="fas fa-shopping-cart fa-lg"></i></div>
+                                <p class="my-1">
+                                    {% if grand_total %}
+                                        ${{ grand_total|floatformat:2 }}
+                                    {% else %}
+                                        $0.00
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row bg-site">
+            <div class="col-8 offset-2 text-center">
+                <nav class="navbar navbar-expand-lg navbar-dark w-100">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-nav" aria-controls="main-nav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    {% include 'includes/main-nav.html' %}
+                    {% include 'includes/mobile-header.html' %}
+                </nav>
+            </div>
+        </div>
+        <div id="delivery-banner" class="row text-center border-top border-bottom bg-info border-light align-items-center">
+            <div class="col">
+                <h2 class="my-1 text-light">Some text to go here for promotions!</h2>            
+            </div>            
+        </div>
+      </header>
+
+    <div class="container header-container">
+        <div class="row">
+            <div class="col"></div>
+        </div>
+    </div>
+
+     {% if messages %}
+        <div class="message-container d-none d-md-block">
+            {% for message in messages %}
+                {% with message.extra_tags as extra_tags %}
+                    {% if message.level == 40 %}
+                        {% include './includes/toasts/toast-base.html' with extra_tags=extra_tags toast_class='danger' header_message='Eeek!' %}
+                    {% elif message.level == 30 %}
+                        {% include './includes/toasts/toast-base.html' with extra_tags=extra_tags toast_class='warning' header_message='Careful now!' %}
+                    {% elif message.level == 25 %}
+                        {% include './includes/toasts/toast-base.html' with extra_tags=extra_tags toast_class='success' header_message='Woohoo!' %}
+                    {% else %}
+                        {% include './includes/toasts/toast-base.html' with extra_tags=extra_tags toast_class='info' header_message='Heads Up!' %}
+                    {% endif %}
+                {% endwith %}
+            {% endfor %}
+        </div>
+      {% endif %}
+
+
+      {% block page_header %}
+      {% endblock %}
+
+      <div class="content-container">
+      {% block content %}
+      {% endblock %}
+      </div>
+
+      <!-- Footer inspiration https://bbbootstrap.com/snippets/simple-footer-social-media-icons-37929510 -->
+    <div class="container-fluid pb-0 mb-0 justify-content-center bg-site">
+     <footer>
+         <div class="row my-0 justify-content-center py-5">
+             <div class="col-11">
+                 <div class="row ">
+                     <div class="col-xl-8 col-md-4 col-sm-4 col-12 my-auto mx-auto a">
+                         <h3 class="text-muted mb-md-0 mb-5 bold-text">Balloonatics</h3>
+                     </div>
+                     <div class="col-xl-2 col-md-4 col-sm-4 col-12">
+                         <h6 class="mb-3 mb-lg-4 bold-text "><b>MENU</b></h6>
+                         <ul class="list-unstyled">
+                             <li>Home</li>
+                             <li>Products</li>
+                             <li>Other</li>
+                             <li>Other</li>
+                         </ul>
+                     </div>
+                     <div class="col-xl-2 col-md-4 col-sm-4 col-12">
+                         <p class="mb-1">18 Biggo Street</p>
+                         <p class="mb-1">DUBLIN</p>
+                         <p class="mb-1">IRELAND</p>
+                         <p class="mb-1">D2 HG77</p>
+                     </div>
+                 </div>
+                 <div class="row ">
+                     <div class="col-xl-8 col-md-4 col-sm-4 col-auto my-md-0 mt-5 order-sm-1 order-3 align-self-end">
+                         <p class="social text-muted mb-0 pb-0 bold-text"> 
+                            <span class="mx-2">
+                                <i class="fa fa-facebook" aria-hidden="true"></i>
+                            </span> 
+                            <span class="mx-2">
+                                <i class="fa fa-linkedin-square" aria-hidden="true"></i>
+                            </span> 
+                            <span class="mx-2">
+                                <i class="fa fa-twitter" aria-hidden="true"></i>
+                            </span> 
+                            <span class="mx-2"><i class="fa fa-instagram" aria-hidden="true"></i>
+                            </span> 
+                        </p>
+                        <small class="rights">
+                            <span>&#174;</span> 
+                            Balloonatics All Rights Reserved.
+                        </small>
+                     </div>
+                     <div class="col-xl-2 col-md-4 col-sm-4 col-auto order-2 align-self-end mt-3 ">
+                         <h6 class="text-muted bold-text"><b>EMAIL US</b></h6><small><span><i class="fa fa-envelope" aria-hidden="true"></i></span> queries@balloonatics.com</small>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </footer>
+ </div>
+
+
+      {% block postloadjs %}
+
+        {% if request.user.is_authenticated %}
+            <script type="text/javascript">
+                $(document).ready(function(){
+                    $('#account-icon').css('color', 'green');
+                });
+            </script>
+        {% else %}
+            <script type="text/javascript">
+                $(document).ready(function(){
+                    $('#account-icon').css('color', 'white');
+                });
+            </script>
+        {% endif %}
+
+        <script type="text/javascript">
+
+            $(document).ready(function(){
+                var quantity=0;
+                $('.quantity-right-plus').click(function(e){
+                    console.log(quantity);
+                    e.preventDefault();
+                    var quantity = parseInt($(this).parent().siblings('#qty').val());        
+                    $(this).parent().siblings('#qty').first().val(quantity + 1);
+                });
+
+                $('.quantity-left-minus').click(function(e){
+                    e.preventDefault();
+                    var quantity = parseInt($(this).parent().siblings('#qty').val());
+                    if(quantity > 1){
+                        $(this).parent().siblings('#qty').first().val(quantity - 1);
+                    }
+                });   
+                $('.toast').toast('show');   
+            });
+
+            </script>
+
+      {% endblock %}
+
+  </body>
+</html> 
