@@ -24,7 +24,6 @@ def cart_contents(request):
             'product': product,
             'item_total': item_total,
         })
-        print(total)
 
     if total > 0:
         delivery = round((total * Decimal(

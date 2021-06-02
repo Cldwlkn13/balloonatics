@@ -1,15 +1,20 @@
 from django.shortcuts import render, redirect, reverse
 from django.contrib import messages
+from django.conf import settings
 
 from .forms import OrderForm, AddressForm
 from .models import Order, OrderItem, Address
 from products.models import Product
+from cart.contexts import cart_contents
 
+import stripe
 import json
 import uuid
 
 
 def checkout(request):
+    stripe_public_key = settings.STRIPE_PUBLIC_KEY
+    stripe_secret_key = settings.STRIPE_SECRET_KEY
 
     cart = request.session.get('cart', {})
     if request.method == 'POST':
@@ -22,7 +27,7 @@ def checkout(request):
             'country': request.POST['country'],
             'postal_code': request.POST['postal_code'],
         }
-        
+
         order_form_data = {
             'cust_name': request.POST['cust_name'],
             'cust_email': request.POST['cust_email'],
@@ -79,11 +84,22 @@ def checkout(request):
             messages.error(request, "Your cart is empty")
             return redirect(reverse('products'))
 
+        current_cart = cart_contents(request)
+        total = current_cart['grand_total']
+        stripe_total = round(total * 100)
+        stripe.api_key = stripe_secret_key
+        intent = stripe.PaymentIntent.create(
+            amount=stripe_total,
+            currency=settings.STRIPE_CURRENCY,
+        )
+
         order_form = OrderForm()
         address_form = AddressForm()
         context = {
             'order_form': order_form,
-            'address_form': address_form
+            'address_form': address_form,
+            'stripe_public_key': stripe_public_key,
+            'client_secret': '3'
         }
 
         return render(request, 'checkout/checkout.html', context)
