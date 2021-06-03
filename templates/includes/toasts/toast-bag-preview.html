@@ -30,7 +30,7 @@
             <p>€{{ delivery }}</p>
             <p class="text-muted mt-1 mb-0">Grand Total </p>
             <h6 class="text-muted mt-0"><strong> €{{ grand_total|floatformat:2 }}</strong></h6>
-            <a href="{% url 'view_cart' %}" class="btn btn-dark btn-sm mt-1">
+            <a href="{% url 'checkout' %}" class="btn btn-warning btn-sm mt-1">
                 <span class="text-uppercase">Go To Checkout</span>
                 <span class="icon">
                     <i class="fas fa-shopping-cart"></i>
