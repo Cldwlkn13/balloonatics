@@ -27,16 +27,23 @@ class Address(models.Model):
         max_length=10, null=True, blank=True)
 
     def __str__(self):
-        address = (self.street_address_1 + ', ' +
-                   self.street_address_2 + ', ' +
-                   self.city_town + ', ' +
-                   self.county_area + ', ' +
-                   self.country)
-
+        
+        address = []
+        address.append(self.street_address_1)
+        address.append(", ")
+        if self.street_address_2:
+            address.append(self.street_address_2)
+            address.append(", ")
+        address.append(self.city_town)
+        address.append(", ")
+        address.append(self.county_area)
+        address.append(", ")
+        address.append(self.country)
         if self.postal_code:
-            address = address + '\n' + self.postal_code
+            address.append(", ")
+            address.append(self.postal_code)
 
-        return address
+        return ''.join(address)
 
 
 class Order(models.Model):
