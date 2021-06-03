@@ -12,6 +12,7 @@ from cart.contexts import cart_contents
 import stripe
 import json
 import uuid
+import time
 
 
 @require_POST
@@ -20,7 +21,7 @@ def cache_checkout_data(request):
         pid = request.POST.get('client_secret').split('_secret')[0]
         stripe.api_key = settings.STRIPE_SECRET_KEY
         stripe.PaymentIntent.modify(pid, metadata={
-            'bag': json.dumps(request.session.get('cart', {})),
+            'cart': json.dumps(request.session.get('cart', {})),
             'save_info': request.POST.get('save_info'),
             'username': request.user,
         })
@@ -72,7 +73,7 @@ def checkout(request):
                           address=address)
             pid = request.POST.get('client_secret').split('_secret')[0]
             order.stripe_pid = pid
-            order.original_bag = json.dumps(cart)
+            order.original_cart = json.dumps(cart)
             order.save()
             for item_id, item_data in cart.items():
                 try:
@@ -130,8 +131,18 @@ def checkout(request):
 
 def checkout_success(request, order_id):
     save_info = request.session.get('save_info')
-    order_items = list(OrderItem.objects.filter(order__order_id=order_id))
-    order = order_items[0].order
+    order = None
+    order_items = None
+
+    try:
+        order = list(Order.objects.filter(order_id=order_id))[0]
+        order_items = list(OrderItem.objects.filter(order__order_id=order_id))
+    except Exception:
+        messages.error(request,
+                       'Could not confirm success of your Order '
+                       'Please contact us to confirm. ',
+                       extra_tags='render_toast')
+        return redirect(reverse('checkout'))
 
     if request.user.is_authenticated:
         # profile = UserProfile.objects.get(user=request.user)

@@ -83,7 +83,7 @@ class Order(models.Model):
             Sum('item_total'))['item_total__sum'] or 0
         self.delivery_surcharge = (
             round((self.items_total * Decimal(
-            settings.DELIVERY_SURCHARGE)), 2))
+                  settings.DELIVERY_SURCHARGE)), 2))
         self.grand_total = self.delivery_surcharge + self.items_total
         self.save()
 
