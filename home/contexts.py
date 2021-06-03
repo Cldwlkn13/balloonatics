@@ -35,8 +35,15 @@ def menu_context(request):
 
 def configure_toasts(request):
 
-    toast_delay = settings.TOAST_DELAY
-    toast_autohide = settings.TOAST_AUTOHIDE
+    if 'toast_autohide' in request.POST:
+        toast_autohide = request.POST['toast_autohide']
+    else:
+        toast_autohide = settings.TOAST_AUTOHIDE
+
+    if 'toast_delay' in request.POST:
+        toast_delay = request.POST['toast_delay']
+    else:
+        toast_delay = settings.TOAST_DELAY
 
     return {
         'toast_delay': toast_delay,

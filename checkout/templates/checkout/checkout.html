@@ -43,14 +43,20 @@
                         <!-- Pass the client secret to the view so we can get the payment intent id -->
                         <input type="hidden" value="{{ client_secret }}" name="client_secret">
                     </fieldset>
-                    <input type="submit" class="btn btn-warning btn-lg text-uppercase mt-3" value="Complete Order">
+                    <button id="submit-button" class="btn btn-warning btn-lg text-uppercase mt-3">
+						<span>Complete Order</span>
+						<span class="icon">
+							<i class="fas fa-lock"></i>
+						</span>
+					</button>
                 </form>
                 <p class="small text-danger my-1">
 						<span class="icon">
 							<i class="fas fa-exclamation-circle"></i>
 						</span>
 					<span>Your card will be charged <strong>${{ grand_total|floatformat:2 }}</strong></span>
-				</p>
+                </p>
+                <a href="{% url 'view_cart' %}" class="btn btn-warning text-uppercase my-5"><i class="fas fa-chevron-left"></i>&nbsp back to cart</a>
             </div>
             <div class="col-12 col-lg-6 p-5">
                 <h6>Your Order Summary</h6>

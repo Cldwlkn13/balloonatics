@@ -12,7 +12,7 @@ var elements = stripe.elements();
 var style = {
     base: {
         color: '#000',
-        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+        fontFamily: '"Quicksand", Quicksand, sans-serif',
         fontSmoothing: 'antialiased',
         fontSize: '12px',
         '::placeholder': {
@@ -78,8 +78,8 @@ form.addEventListener('submit', function(ev) {
                 }
             },
             shipping: {
-                name: $.trim(form.full_name.value),
-                phone: $.trim(form.phone_number.value),
+                name: $.trim(form.cust_name.value),
+                phone: $.trim(form.cust_phone.value),
                 address: {
                     line1: $.trim(form.street_address_1.value),
                     line2: $.trim(form.street_address_2.value),

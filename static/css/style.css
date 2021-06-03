@@ -144,7 +144,7 @@ a.nav-link:hover {
 
 .cart-notification-wrapper {
     max-height: 50vh;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
 }
 

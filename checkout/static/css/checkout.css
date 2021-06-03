@@ -1,5 +1,4 @@
-.StripeElement,
-.stripe-style-input {
+.StripeElement {
   box-sizing: border-box;
   height: 40px;
   padding: 10px 12px;

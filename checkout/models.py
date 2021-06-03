@@ -27,10 +27,10 @@ class Address(models.Model):
         max_length=10, null=True, blank=True)
 
     def __str__(self):
-        address = (self.street_address_1 + '\n' +
-                   self.street_address_2 + '\n' +
-                   self.city_town + '\n' +
-                   self.county_area + '\n' +
+        address = (self.street_address_1 + ', ' +
+                   self.street_address_2 + ', ' +
+                   self.city_town + ', ' +
+                   self.county_area + ', ' +
                    self.country)
 
         if self.postal_code:
@@ -55,9 +55,12 @@ class Order(models.Model):
         max_digits=6, decimal_places=2, null=False, default=0.00)
     grand_total = models.DecimalField(
         max_digits=6, decimal_places=2, null=False, default=0.00)
+    original_cart = models.TextField(null=False, blank=False, default='')
+    stripe_pid = models.CharField(max_length=254, null=False, blank=False,
+                                  default='')
 
     def __str__(self):
-        return str(self.cust_name).replace(" ", "") + self.order_id
+        return self.order_id
 
     def _generate_order_number(self):
         return uuid.uuid4().hex.upper()
@@ -69,12 +72,12 @@ class Order(models.Model):
         super().save(*args, **kwargs)
 
     def calc_grand_total(self):
-        self.order_total = self.order_items.aggregate(
+        self.items_total = self.order_items.aggregate(
             Sum('item_total'))['item_total__sum'] or 0
         self.delivery_surcharge = (
-            round((self.order_total * Decimal(
+            round((self.items_total * Decimal(
             settings.DELIVERY_SURCHARGE)), 2))
-        self.grand_total = self.delivery_surcharge + self.order_total
+        self.grand_total = self.delivery_surcharge + self.items_total
         self.save()
 
 

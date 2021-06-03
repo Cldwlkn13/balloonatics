@@ -1,6 +1,8 @@
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import (render, redirect, reverse,
+                              get_object_or_404, HttpResponse)
 from django.contrib import messages
 from django.conf import settings
+from django.views.decorators.http import require_POST
 
 from .forms import OrderForm, AddressForm
 from .models import Order, OrderItem, Address
@@ -12,13 +14,31 @@ import json
 import uuid
 
 
+@require_POST
+def cache_checkout_data(request):
+    try:
+        pid = request.POST.get('client_secret').split('_secret')[0]
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        stripe.PaymentIntent.modify(pid, metadata={
+            'bag': json.dumps(request.session.get('cart', {})),
+            'save_info': request.POST.get('save_info'),
+            'username': request.user,
+        })
+        return HttpResponse(status=200)
+    except Exception as e:
+        messages.error(request, ('Sorry, your payment cannot be '
+                                 'processed right now. Please try '
+                                 'again later.'))
+        return HttpResponse(content=e, status=400)
+
+
 def checkout(request):
     stripe_public_key = settings.STRIPE_PUBLIC_KEY
     stripe_secret_key = settings.STRIPE_SECRET_KEY
 
     cart = request.session.get('cart', {})
-    if request.method == 'POST':
 
+    if request.method == 'POST':
         address_form_data = {
             'street_address_1': request.POST['street_address_1'],
             'street_address_2': request.POST['street_address_2'],
@@ -33,24 +53,26 @@ def checkout(request):
             'cust_email': request.POST['cust_email'],
             'cust_phone': request.POST['cust_phone'],
         }
-
         address_form = AddressForm(address_form_data)
         order_form = OrderForm(order_form_data)
 
         if address_form.is_valid() and order_form.is_valid():
             address = Address(
-                street_address_1=address_form['street_address_1'],
-                street_address_2=address_form['street_address_2'],
-                city_town=address_form['city_town'],
-                county_area=address_form['county_area'],
-                country=address_form['country'],
-                postal_code=address_form['postal_code'])
+                street_address_1=address_form_data['street_address_1'],
+                street_address_2=address_form_data['street_address_2'],
+                city_town=address_form_data['city_town'],
+                county_area=address_form_data['county_area'],
+                country=address_form_data['country'],
+                postal_code=address_form_data['postal_code'])
             order_id = uuid.uuid4().hex.upper()
             order = Order(order_id=order_id,
-                          cust_name=order_form['cust_name'],
+                          cust_name=order_form_data['cust_name'],
                           cust_email=order_form_data['cust_email'],
                           cust_phone=order_form_data['cust_phone'],
                           address=address)
+            pid = request.POST.get('client_secret').split('_secret')[0]
+            order.stripe_pid = pid
+            order.original_bag = json.dumps(cart)
             order.save()
             for item_id, item_data in cart.items():
                 try:
@@ -63,25 +85,26 @@ def checkout(request):
                     messages.error(
                         request,
                         f"Product with id {item_id} could not be processed "
-                        "Please contact us for assistance")
+                        "Please contact us for assistance",
+                        extra_tags='render_toast')
                     order.delete()
                     return redirect(reverse('view_cart'))
 
             request.session['save_info'] = 'save-info' in request.POST
 
-            context = {
-                'order': order
-            }
-
-            return render(request, 'checkout/checkout-success.html', context)
+            return redirect(reverse('checkout_success',
+                                    args=[order_id]))
         else:
-            messages.error(request, ("Your form could not be processed. "
-                                     "Please check your information and try "
-                                     "again"))
+            messages.error(request,
+                           "Your form could not be processed. "
+                           "Please check your information and try "
+                           "again",
+                           extra_tags='render_toast')
     else:
         cart = request.session.get('cart', {})
         if not cart:
-            messages.error(request, "Your cart is empty")
+            messages.error(request, "Your cart is empty",
+                           extra_tags='render_toast')
             return redirect(reverse('products'))
 
         current_cart = cart_contents(request)
@@ -99,7 +122,54 @@ def checkout(request):
             'order_form': order_form,
             'address_form': address_form,
             'stripe_public_key': stripe_public_key,
-            'client_secret': '3'
+            'client_secret': intent.client_secret
         }
 
         return render(request, 'checkout/checkout.html', context)
+
+
+def checkout_success(request, order_id):
+    save_info = request.session.get('save_info')
+    order_items = list(OrderItem.objects.filter(order__order_id=order_id))
+    order = order_items[0].order
+
+    if request.user.is_authenticated:
+        # profile = UserProfile.objects.get(user=request.user)
+        # order.user_profile = profile
+        # order.save()
+
+        # Save the user's info
+        # if save_info:
+        address = Address(
+            street_address_1=order.address.street_address_1,
+            street_address_2=order.address.street_address_2,
+            city_town=order.address.city_town,
+            county_area=order.address.county_area,
+            country=order.address.country,
+            postal_code=order.address.postal_code)
+
+        profile_data = {
+            'cust_name': order.cust_name,
+            'cust_email': order.cust_email,
+            'cust_phone': order.cust_phone,
+            'address': address
+        }
+
+            # user_profile_form = UserProfileForm(profile_data, instance=profile)
+            # if user_profile_form.is_valid():
+                # user_profile_form.save()
+
+        messages.success(request,
+                         f'Your order with id: <strong>{order_id}</strong> has been '
+                         'confirmed!',
+                         extra_tags='render_toast')
+
+        if 'cart' in request.session:
+            del request.session['cart']
+
+        context = {
+            'order': order,
+            'order_items': order_items
+        }
+
+        return render(request, 'checkout/checkout_success.html', context)
