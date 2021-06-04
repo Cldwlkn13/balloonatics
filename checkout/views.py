@@ -1,5 +1,5 @@
 from django.shortcuts import (render, redirect, reverse,
-                              get_object_or_404, HttpResponse)
+                              HttpResponse)
 from django.contrib import messages
 from django.conf import settings
 from django.views.decorators.http import require_POST
@@ -7,12 +7,13 @@ from django.views.decorators.http import require_POST
 from .forms import OrderForm, AddressForm
 from .models import Order, OrderItem, Address
 from products.models import Product
+from profiles.models import UserProfile
+from profiles.forms import ProfileForm
 from cart.contexts import cart_contents
 
 import stripe
 import json
 import uuid
-import time
 
 
 @require_POST
@@ -40,7 +41,6 @@ def checkout(request):
     cart = request.session.get('cart', {})
 
     if request.method == 'POST':
-        print('I am a POST request')
         address_form_data = {
             'street_address_1': request.POST['street_address_1'],
             'street_address_2': request.POST['street_address_2'],
@@ -118,8 +118,31 @@ def checkout(request):
             currency=settings.STRIPE_CURRENCY,
         )
 
-        order_form = OrderForm()
-        address_form = AddressForm()
+        order_form = None
+        address_form = None
+        if request.user.is_authenticated:
+            try:
+                profile = UserProfile.objects.get(user=request.user)
+                order_form = OrderForm(initial={
+                    'cust_name': profile.cust_name,
+                    'cust_email': profile.cust_email,
+                    'cust_phone': profile.cust_phone,
+                })
+                address_form = AddressForm(initial={
+                    'street_address1': profile.street_address_1,
+                    'street_address2': profile.street_address_2,
+                    'city_town': profile.city_town,
+                    'county_area': profile.county_area,
+                    'country': profile.country,
+                    'postal_code': profile.postal_code,
+                })
+            except UserProfile.DoesNotExist:
+                order_form = OrderForm()
+                address_form = AddressForm()
+        else:
+            order_form = OrderForm()
+            address_form = AddressForm()
+
         context = {
             'order_form': order_form,
             'address_form': address_form,
@@ -131,7 +154,6 @@ def checkout(request):
 
 
 def checkout_success(request, order_id):
-    save_info = request.session.get('save_info')
     order = None
     order_items = None
 
@@ -146,34 +168,31 @@ def checkout_success(request, order_id):
         return redirect(reverse('checkout'))
 
     if request.user.is_authenticated:
-        # profile = UserProfile.objects.get(user=request.user)
-        # order.user_profile = profile
-        # order.save()
-
-        # Save the user's info
-        # if save_info:
-        address = Address(
-            street_address_1=order.address.street_address_1,
-            street_address_2=order.address.street_address_2,
-            city_town=order.address.city_town,
-            county_area=order.address.county_area,
-            country=order.address.country,
-            postal_code=order.address.postal_code)
+        profile = UserProfile.objects.get(user=request.user)
+        order.user_profile = profile
+        order.save()
 
         profile_data = {
             'cust_name': order.cust_name,
             'cust_email': order.cust_email,
             'cust_phone': order.cust_phone,
-            'address': address
+            'street_address_1': order.address.street_address_1,
+            'street_address_2': order.address.street_address_2,
+            'city_town': order.address.city_town,
+            'county_area': order.address.county_area,
+            'country': order.address.country,
+            'postal_code': order.address.postal_code
         }
 
-            # user_profile_form = UserProfileForm(profile_data, instance=profile)
-            # if user_profile_form.is_valid():
-                # user_profile_form.save()
+        save_info = request.session.get('save_info')
+        if save_info:
+            user_profile_form = ProfileForm(profile_data, instance=profile)
+            if user_profile_form.is_valid():
+                user_profile_form.save()
 
         messages.success(request,
-                         f'Your order with id: <strong>{order_id}</strong> has been '
-                         'confirmed!',
+                         f'Your order with id: <strong>{order_id}</strong> has '
+                         'been confirmed!',
                          extra_tags='render_toast')
 
         if 'cart' in request.session:

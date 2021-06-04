@@ -39,7 +39,6 @@ class AddressForm(forms.ModelForm):
             'street_address_2': 'Address 2',
             'city_town': 'Your Town or City',
             'county_area': 'County or Locality',
-            'country': 'Country',
             'postal_code': 'Post/Zip Code'
         }
 

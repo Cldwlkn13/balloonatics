@@ -1,9 +1,12 @@
 from django.db import models
 from django.db.models import Sum
 from django.conf import settings
+from django_countries.fields import CountryField
+
 from decimal import Decimal
 
 from products.models import Product
+from profiles.models import UserProfile
 
 import uuid
 
@@ -21,11 +24,21 @@ class Address(models.Model):
         max_length=20, null=False, blank=False)
     county_area = models.CharField(
         max_length=20, null=False, blank=False)
-    country = models.CharField(
-        max_length=20, null=False, blank=False)
+    country = CountryField(
+       blank_label='Country *', null=False, blank=False)
     postal_code = models.CharField(
         max_length=10, null=True, blank=True)
 
+    def __init__from_profile(self, userprofile):
+        self.street_address_2 = userprofile.street_address_1
+        if userprofile.street_address_2:
+            self.street_address_2 = userprofile.street_address_2
+        self.city_town = userprofile.city_town
+        self.county_area = userprofile.county_area
+        self.country = userprofile.country
+        if userprofile.postal_code:
+            self.postal_code = userprofile.postal_code
+  
     def __str__(self):
         
         address = []
@@ -38,7 +51,7 @@ class Address(models.Model):
         address.append(", ")
         address.append(self.county_area)
         address.append(", ")
-        address.append(self.country)
+        address.append(str(self.country))
         if self.postal_code:
             address.append(", ")
             address.append(self.postal_code)
@@ -46,9 +59,13 @@ class Address(models.Model):
         return ''.join(address)
 
 
+
 class Order(models.Model):
 
     order_id = models.CharField(max_length=56, null=False, editable=False)
+    user_profile = models.ForeignKey(UserProfile, on_delete=models.SET_NULL,
+                                     null=True, blank=True,
+                                     related_name='orders')
     cust_name = models.CharField(max_length=50, null=False, blank=False)
     cust_email = models.EmailField(max_length=254, null=False, blank=False)
     cust_phone = models.CharField(max_length=20, null=False, blank=False)
