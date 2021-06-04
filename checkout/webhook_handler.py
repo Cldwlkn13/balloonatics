@@ -3,6 +3,7 @@ from datetime import datetime, timedelta, timezone
 
 from products.models import Product
 from .models import Order, OrderItem, Address
+from profiles.models import UserProfile
 
 import json
 import time
@@ -24,12 +25,26 @@ class StripeWH_Handler:
         intent = event.data.object
         pid = intent.id
         cart = intent.metadata.cart
-        # save_info = intent.metadata.save_info
+        save_info = intent.metadata.save_info
 
         billing_details = intent.charges.data[0].billing_details
         shipping_details = intent.shipping
         grand_total = round(intent.charges.data[0].amount / 100, 2)
         
+        profile = None
+        username = intent.metadata.username
+        if username != 'AnonymousUser':
+            profile = UserProfile.objects.get(user__username=username)
+            if save_info:
+                profile.phone_number = shipping_details.phone
+                profile.street_address_1 = shipping_details.address.line1
+                profile.street_address_2 = shipping_details.address.line2
+                profile.city_town = shipping_details.address.city
+                profile.county_area = shipping_details.address.state
+                profile.country = shipping_details.address.country
+                profile.postal_code = shipping_details.address.postal_code
+                profile.save()
+
         order_exists = False
         attempt = 1
         # for customers with multiple orders in the system we only want
@@ -49,9 +64,6 @@ class StripeWH_Handler:
             orders = [order for order in orders if order.date > dt_threshold]
             if orders:
                 order = orders[0]
-                print(order)
-                print('date:' + str(order.date))
-                print('thres:' + str(dt_threshold))
                 order_exists = True
                 address = Address.objects.create(
                     street_address_1=shipping_details.address.line1,
