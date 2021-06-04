@@ -45,6 +45,27 @@
             <div class="col-12 col-md-6 p-5">
                 <h6>Your Order History</h6>
                 <hr class="bg-light">
+                {% if orders %}  
+                <table class="table border border-light text-light my-5">
+                    <thead class="bg-info">
+                        <th>order id</th>
+                        <th>order date</th>
+                        <th>grand total</th>
+                    </thead>
+                        <tbody>  
+                            {% for order in orders %}
+                                <tr>
+                                    <td><a href="{% url 'checkout_success' order.order_id %}" class="text-dcoration-none text-light">{{ order.order_id }}</a></td>
+                                    <td>{{ order.date }}</td>
+                                    <td>€{{ order.grand_total }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <h6>You have no orders yet.</h6>
+                    <a href="{% url 'categories' %}" class="btn btn-warning text-uppercase my-5"><i class="fas fa-shopping-cart"></i>&nbsp to the shop!</a>
+                {% endif %}
             </div>
         </div>
     </div>

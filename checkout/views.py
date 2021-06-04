@@ -129,8 +129,8 @@ def checkout(request):
                     'cust_phone': profile.cust_phone,
                 })
                 address_form = AddressForm(initial={
-                    'street_address1': profile.street_address_1,
-                    'street_address2': profile.street_address_2,
+                    'street_address_1': profile.street_address_1,
+                    'street_address_2': profile.street_address_2,
                     'city_town': profile.city_town,
                     'county_area': profile.county_area,
                     'country': profile.country,
@@ -189,11 +189,6 @@ def checkout_success(request, order_id):
             user_profile_form = ProfileForm(profile_data, instance=profile)
             if user_profile_form.is_valid():
                 user_profile_form.save()
-
-        messages.success(request,
-                         f'Your order with id: <strong>{order_id}</strong> has '
-                         'been confirmed!',
-                         extra_tags='render_toast')
 
         if 'cart' in request.session:
             del request.session['cart']
