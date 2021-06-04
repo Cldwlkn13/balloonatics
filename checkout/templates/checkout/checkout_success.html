@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="row mb-5">
-            <div class="col-8 offset-2 text-left text-light">
+            <div class="col-10 offset-1 text-left text-light">
                 <h5>Your Details</h5>
                 <table class="table border border-light text-light">
                     <thead class="bg-info">
@@ -38,7 +38,7 @@
             </div>
         </div>
         <div class="row mb-5">
-            <div class="col-8 offset-2 text-left text-light">
+            <div class="col-10 offset-1 text-left text-light">
                 <h5>Your Items</h5>
                 <table class="table border border-light text-light">
                     <thead class="bg-info">
@@ -63,16 +63,20 @@
             </div>
         </div>
         <div class="row mb-5">
-            <div class="col-8 offset-2 text-left text-light">
-                <h5>Your Totals</h5>
+            <div class="col-10 offset-1 text-left text-light">
+                <h5>Your Order Details</h5>
                 <table class="table border border-light text-light">
                     <thead class="bg-info">
+                        <th>id</th>
+                        <th>date</th>
                         <th>delivery charges</th>
-                        <th>item total</th>
+                        <th>items total</th>
                         <th>grand total</th>
                     </thead>
                     <tbody>
                         <tr>
+                            <td>{{ order.order_id }}</td>
+                            <td>{{ order.date }}</td>
                             <td>€{{ order.delivery_surcharge }}</td>
                             <td>€{{ order.items_total }}</td>
                             <td><strong>€{{ order.grand_total }}</strong></td>

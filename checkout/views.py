@@ -40,6 +40,7 @@ def checkout(request):
     cart = request.session.get('cart', {})
 
     if request.method == 'POST':
+        print('I am a POST request')
         address_form_data = {
             'street_address_1': request.POST['street_address_1'],
             'street_address_2': request.POST['street_address_2'],

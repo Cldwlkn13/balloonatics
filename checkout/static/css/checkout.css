@@ -8,6 +8,9 @@
   box-shadow: 0 1px 3px 0 #e6ebf1;
   -webkit-transition: box-shadow 150ms ease;
   transition: box-shadow 150ms ease;
+  background-color:#f8f9fa;
+  color: #000;
+  border-radius: 4px;
 }
 
 .StripeElement--focus,

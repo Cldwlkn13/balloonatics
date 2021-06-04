@@ -206,7 +206,7 @@
  </div>
 
 
-      {% block postloadjs %}
+    {% block postloadjs %}
 
         {% if request.user.is_authenticated %}
             <script type="text/javascript">
@@ -223,7 +223,6 @@
         {% endif %}
 
         <script type="text/javascript">
-
             $(document).ready(function(){
                 var quantity=0;
                 $('.quantity-right-plus').click(function(e){
@@ -242,10 +241,9 @@
                 });   
                 $('.toast').toast('show');   
             });
-
             </script>
 
-      {% endblock %}
+    {% endblock %}
 
   </body>
 </html> 

@@ -42,13 +42,16 @@ class StripeWH_Handler:
                 cust_name__iexact=shipping_details.name,
                 cust_email__iexact=billing_details.email,
                 cust_phone__iexact=shipping_details.phone,
-                date__gte=dt_threshold,
                 grand_total=grand_total,
                 original_cart=cart,
                 stripe_pid=pid,
             ).order_by('-date'))
+            orders = [order for order in orders if order.date > dt_threshold]
             if orders:
                 order = orders[0]
+                print(order)
+                print('date:' + str(order.date))
+                print('thres:' + str(dt_threshold))
                 order_exists = True
                 address = Address.objects.create(
                     street_address_1=shipping_details.address.line1,
