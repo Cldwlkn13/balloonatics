@@ -5,7 +5,7 @@
 
 {% block head_title %}{% trans "Sign In" %}{% endblock %}
 
-{% block content %}
+{% block inner_content %}
 
 {% get_providers as socialaccount_providers %}
 
@@ -27,25 +27,19 @@ for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
 {% include "socialaccount/snippets/login_extra.html" %}
 
 {% else %}
-<div class="container bg-container-dark">
-    <div class="row"> 
-        <div class="col-6">
-            <p>{% blocktrans %}If you have not created an account yet, then please
-            <a href="{{ signup_url }}" class="text-decoration-none text-light"><u>sign up here</u></a> first.{% endblocktrans %}</p>
-            {% endif %}
+    <p>{% blocktrans %}If you have not created an account yet, then please
+    <a href="{{ signup_url }}" class="text-decoration-none text-light"><u>sign up here</u></a> first.{% endblocktrans %}</p>
+    {% endif %}
 
-            <form class="login" method="POST" action="{% url 'account_login' %}">
-            {% csrf_token %}
-            {{ form.as_p }}
-            {% if redirect_field_value %}
-                <input type="hidden" class="" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-            {% endif %}
-            <a class="button text-decoration-none text-light" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
-            <br>
-            <button class="btn btn-warning btn-lg mt-3" type="submit">{% trans "Sign In" %}</button>
-            </form>
-        </div>
-    </div>
-</div>
+    <form class="login" method="POST" action="{% url 'account_login' %}">
+    {% csrf_token %}
+    {{ form|crispy }}
+    {% if redirect_field_value %}
+        <input type="hidden" class="" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+    {% endif %}
+    <a class="button text-decoration-none text-light" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+    <br>
+    <button class="btn btn-warning btn-lg mt-3" type="submit">{% trans "Sign In" %}</button>
+    </form>
 
 {% endblock %}
