@@ -1,0 +1,22 @@
+Hello {{ order.cust_name }}!
+
+Thank you for your order with Balloonatics for €{{ order.grand_total }}!
+
+Order Id: {{ order.order_id }}
+Order Date: {{ order.date }}
+
+Your Shipping Address:
+
+{{ order.address.street_address_1 }},
+{% if order.address.street_address_2 %}{{ order.address.street_address_2 }},{% endif %}
+{{ order.address.city_town }},
+{{ order.address.county_area }},
+{{ order.address.country }}
+{% if order.address.postal_code %}{{ order.address.postal_code }}{% endif %}
+
+Any issues then please contact us at {{ contact_email }}
+
+Kind Regards, 
+
+Balloonatics
+

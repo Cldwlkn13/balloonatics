@@ -1,4 +1,7 @@
 from django.http import HttpResponse
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.conf import settings
 from datetime import datetime, timedelta, timezone
 
 from products.models import Product
@@ -18,6 +21,27 @@ class StripeWH_Handler:
         return HttpResponse(
             content=f'Unhandled Webhook Received: {event.type}',
             status=200
+        )
+
+    def _send_confirmation_order(self, order):
+        cust_email = order.cust_email
+        subject = render_to_string(
+            './confirmation_emails/confirmation_email_subject.txt',
+            {
+                'order': order
+            })
+        body = render_to_string(
+            './confirmation_emails/confirmation_email_body.txt',
+            {
+                'order': order,
+                'contact_email': settings.DEFAULT_FROM_EMAIL
+            })
+
+        send_mail(
+            subject,
+            body,
+            settings.DEFAULT_FROM_EMAIL,
+            [cust_email]
         )
 
     def handle_payment_intent_succeeded(self, event):
@@ -47,8 +71,10 @@ class StripeWH_Handler:
 
         order_exists = False
         attempt = 1
-        # for customers with multiple orders in the system we only want
-        # to retrieve an order that was submitted within the past 10s
+        """
+            for customers with multiple orders in the system we only want
+            to retrieve an order that was submitted within the past 10s
+        """
         utc_dt = datetime.now(timezone.utc) 
         dt_threshold = utc_dt.astimezone() - timedelta(seconds=10)
         time.sleep(1)
@@ -79,6 +105,7 @@ class StripeWH_Handler:
                 attempt += 1
                 time.sleep(1)
         if order_exists:
+            self._send_confirmation_order(order)
             return HttpResponse(
                 content=(f'Webhook received: {event["type"]} | SUCCESS: '
                          'Verified order already in database'),
@@ -118,6 +145,7 @@ class StripeWH_Handler:
                     content=f'Webhook received: {event["type"]} | ERROR: {e}',
                     status=500)
 
+        self._send_confirmation_order(order)
         return HttpResponse(
             content=(f'Webhook received: {event["type"]} | SUCCESS: '
                      'Created order in webhook'),

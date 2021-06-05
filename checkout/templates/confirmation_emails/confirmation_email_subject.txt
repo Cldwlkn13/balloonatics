@@ -1,0 +1,1 @@
+Your order confirmation from Balloonatics Order: {{ order.order_id }}
