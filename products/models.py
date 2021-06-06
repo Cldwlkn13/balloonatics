@@ -94,3 +94,5 @@ class Product(models.Model):
             return cart[str(self.pk)]
         else:
             return 0
+
+

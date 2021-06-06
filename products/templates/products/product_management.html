@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container bg-container-dark text-light">
+        <div class="row my-1">
+            <div class="col-12 col-md-10 text-center text-md-left my-1">
+                <div class="row">
+                    <div class="col-10 offset-1">
+                        <h3>product management</h3>
+                        <hr class="bg-light">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-5 offset-1">
+                        <a href="{% url 'add_product' %" class="btn btn-warning text-uppercase mb-3"><i class="fas fa-plus"></i> add a product</a>
+                    </div>
+                    <div class="col-5">
+                        {% if selector_form %}
+                        <form action="{% url 'edit_product' %}" method="POST" class="mb-2">   
+                            {% csrf_token %}
+                            {{ selector_form|crispy }}
+                            <button type="submit" class="btn btn-warning text-uppercase">Select</button>
+                        </form> 
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-10 offset-1">
+                        <form action="{% url 'edit_product' %}" method="POST" class="my-5">   
+                            {% csrf_token %}
+                            {{ form|crispy }}
+                            <button type="submit" class="btn btn-warning text-uppercase">Update</button>
+                        </form> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block postloadjs %}
+{{ block.super }}
+
+<script>
+$(document).ready(function(){
+    document.getElementById('div_id_select_product').getElementsByTagName('label')[0].style.display = 'none';
+});
+</script>
+{% endblock %}

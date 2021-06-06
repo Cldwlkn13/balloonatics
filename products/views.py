@@ -1,11 +1,14 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import (render, get_object_or_404,
+                              redirect, reverse)
 from django.db.models.functions import Lower
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 from .models import Product, Category, Sub_Category
+from .forms import ProductForm, ProductSelectorForm
 
 
 def products(request):
-
     products = Product.objects.all()
     sub_category = 'all'
     sort = None
@@ -43,7 +46,6 @@ def products(request):
 
 
 def categories(request):
-
     categories = Category.objects.all()
 
     context = {
@@ -54,7 +56,6 @@ def categories(request):
 
 
 def sub_categories(request):
-
     sub_categories = Sub_Category.objects.all()
 
     if 'category' in request.GET:
@@ -76,8 +77,6 @@ def sub_categories(request):
 
 
 def product_detail(request, product_id):
-    """ A view to show individual product details """
-
     product = get_object_or_404(Product, pk=product_id)
     cart = request.session.get('cart', {})
     qty_in_cart = product.calc_qty_in_bag(cart)
@@ -88,3 +87,97 @@ def product_detail(request, product_id):
     }
 
     return render(request, 'products/product_detail.html', context)
+
+
+@login_required
+def load_products(request):
+    form = ProductForm()
+    selector_form = ProductSelectorForm()
+
+    context = {
+        'form': form,
+        'selector_form': selector_form
+    }
+    return render(request, 'products/product_management.html', context)
+
+
+@login_required
+def add_product(request, product_id):
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            product = form.save()
+            messages.success(request,
+                             f'Successfully added product: {product.name}!',
+                             extra_tags='render_toast')
+            return redirect(reverse('product_detail', args=[product.id]))
+        else:
+            messages.error(request,
+                           f'Error adding product: {product.name} '
+                            'Please check the form and try again.',
+                            extra_tags='render_toast')
+    else:
+        form = ProductForm()
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'products/add_product.html', context)
+
+
+@login_required
+def edit_product(request):
+    if not request.user.is_superuser:
+        messages.error(request,
+                       'Please log in with your store owner account',
+                       extra_tags='render_toast')
+        return redirect(reverse('home'))
+
+    if request.method == 'POST':
+        product = get_object_or_404(Product, pk=1)
+        form = ProductForm(request.POST, request.FILES, instance=product)
+        if form.is_valid():
+            form.save()
+            messages.success(request,
+                             'Successfully updated product!',
+                             extra_tags='render_toast')
+            return redirect(reverse('product_detail', args=[product.id]))
+        else:
+            form = ProductForm(instance=product)
+    else:
+        p_id = int(request.GET['select_product'])
+        if p_id != 0:
+            product = get_object_or_404(Product, pk=p_id)
+            form = ProductForm(instance=product)
+        else:
+            form = ProductForm()
+
+    selector_form = ProductSelectorForm()
+
+    context = {
+        'form': form,
+        'product': product,
+        'selector_form': selector_form,
+    }
+
+    return render(request, 'products/product_management.html', context)
+
+
+@login_required
+def delete_product(request, product_id):
+    if not request.user.is_superuser:
+        messages.error(request,
+                       'Please log in with your store owner account',
+                       extra_tags='render_toast')
+        return redirect(reverse('home'))
+
+    product = get_object_or_404(Product, pk=product_id)
+    product.delete()
+    messages.success(request,
+                     'Please log in with your store owner account',
+                     extra_tags='render_toast')
+    return redirect(reverse('products'))
+
+
+
