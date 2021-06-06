@@ -1,5 +1,5 @@
-<div class="col-12 col-md-6 col-lg-4 col-xl-3 m-0">
-    <div class="card bg-dark text-light product-card rounded-3 border border-light mb-5">
+<div class="col-12 col-md-6 col-lg-4 col-xl-3">
+    <div class="card bg-dark text-light product-card rounded-3 border border-light my-5">
         <a href="{% if cntxt == 'categories' %}{% url 'sub_categories' %}?category={{ result.name }}{% elif cntxt == 'sub_categories' %}{% url 'products' %}?sub_category={{ result.name }}{% else %}{% url 'product_detail' result.id %}{% endif %}" class="text-dark">
             {% if result.image %}
                 <img src="../../media/{{ result.image.name }}" class="card-img-top img-fluid" alt="{{ result.name }}">
