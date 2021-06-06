@@ -241,7 +241,16 @@
                 });   
                 $('.toast').toast('show');   
             });
+
+            //dynamically set header container height based on height of fixed header
+            let header = document.getElementsByTagName('header')[0];
+            let height = header.offsetHeight;
+            let headerContainer = document.getElementsByClassName('header-container')[0];
+            headerContainer.style.height = height + 'px';
+
             </script>
+
+            
 
     {% endblock %}
 
