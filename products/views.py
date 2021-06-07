@@ -95,7 +95,6 @@ def load_products(request):
     selector_form = ProductSelectorForm()
 
     context = {
-        'form': form,
         'selector_form': selector_form
     }
     return render(request, 'products/product_management.html', context)
@@ -175,9 +174,9 @@ def delete_product(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
     product.delete()
     messages.success(request,
-                     'Please log in with your store owner account',
+                     f'{product.name} has been deleted!',
                      extra_tags='render_toast')
-    return redirect(reverse('products'))
+    return redirect(reverse('load_products'))
 
 
 

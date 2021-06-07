@@ -108,6 +108,9 @@ a.nav-link:hover {
     z-index: 2000;
 }
 
+.rounded-3 {
+    border-radius: 0.25rem;
+}
 
 */
 /* from Bulma */

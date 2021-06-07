@@ -4,11 +4,11 @@ from .models import Product, Category, Material, Sub_Category, Size, Color
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = (
+        'name',
         'uuid',
         'category',
         'sub_category',
         'material',
-        'name',
         'price'
     )
 
