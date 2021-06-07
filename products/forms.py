@@ -1,5 +1,5 @@
 from django import forms
-from crispy_forms.helper import FormHelper
+from crispy_forms.helper import FormHelper, Layout
 
 from .models import Product, Category, Sub_Category
 
@@ -7,14 +7,15 @@ from .models import Product, Category, Sub_Category
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        exclude = ('qty_in_bag',)
+        exclude = ('qty_in_bag', 'bundle_items')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         categories = Category.objects.all()
         cat_display_names = [(c.id, c.get_display_name()) for c in categories]
         sub_categories = Sub_Category.objects.all()
-        sub_cat_display_names = [(c.id, c.get_display_name()) for c in sub_categories]
+        sub_cat_display_names = [(
+            c.id, c.get_display_name()) for c in sub_categories]
 
         self.fields['category'].choices = cat_display_names
         self.fields['sub_category'].choices = sub_cat_display_names

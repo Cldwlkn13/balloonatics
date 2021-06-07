@@ -59,9 +59,7 @@ class Address(models.Model):
         return ''.join(address)
 
 
-
 class Order(models.Model):
-
     order_id = models.CharField(max_length=56, null=False, editable=False)
     user_profile = models.ForeignKey(UserProfile, on_delete=models.SET_NULL,
                                      null=True, blank=True,
@@ -106,7 +104,6 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
-
     order = models.ForeignKey(Order, null=False, blank=True,
                               on_delete=models.CASCADE,
                               related_name='order_items')

@@ -1,6 +1,10 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.contrib.postgres.fields import ArrayField
+
 from decimal import Decimal
+
+import uuid
 
 
 class Category(models.Model):
@@ -57,7 +61,7 @@ class Sub_Category(models.Model):
 
 
 class Product(models.Model):
-    name = models.CharField(max_length=254)
+    name = models.CharField(max_length=254, null=False, blank=False)
     category = models.ForeignKey('Category', null=True, blank=True,
                                  on_delete=models.SET_NULL)
     sub_category = models.ForeignKey('Sub_Category', null=True, blank=True,
@@ -92,9 +96,6 @@ class Product(models.Model):
                                            default=False)
     is_printable = models.BooleanField(null=False, blank=False, default=False)
     qty_in_bag = models.PositiveIntegerField(null=True, blank=True, default=0)
-    is_bundle = models.BooleanField(null=False, blank=False,
-                                           default=False)
-    bundle_items = models.ManyToManyField('BundleItem')
 
     def __str__(self):
         return self.name
@@ -106,10 +107,29 @@ class Product(models.Model):
             return 0
 
 
-class BundleItem(models.Model):
-    key = models.ForeignKey(Product, on_delete=models.CASCADE, null=False,
-                            blank=False)
-    value = models.PositiveIntegerField(null=False, blank=False)
+class Bundle(models.Model):
+    bundle_id = models.CharField(max_length=56, null=True, editable=False)
+    name = models.CharField(max_length=254, null=False, blank=False)
 
     def __str__(self):
-        return str(self.value) + ' x ' + self.key.name
+        return self.bundle_id
+
+    def _generate_bundle_id(self):
+        return uuid.uuid4().hex.upper()
+
+    def save(self, *args, **kwargs):
+        if not self.bundle_id:
+            self.bundle_id = self._generate_bundle_id()
+        super().save(*args, **kwargs)
+
+
+class BundleItem(models.Model):
+    bundle = models.ForeignKey(Bundle, null=True, blank=True,
+                               on_delete=models.CASCADE,
+                               related_name='bundle_items')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE,
+                                null=True,
+                                blank=True)
+
+    def __str__(self):
+        return self.product.name

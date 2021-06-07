@@ -1,5 +1,5 @@
 from django.shortcuts import (render, get_object_or_404,
-                              redirect, reverse)
+                              redirect, reverse, HttpResponse)
 from django.db.models.functions import Lower
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -40,7 +40,7 @@ def products(request):
         "products": products,
         'sub_category': sub_category,
         'current_sort': sort,
-        'current_dir': direction, 
+        'current_dir': direction,
         'product_alert_qty_threshold': settings.QTY_LOW_ALERT_THRESHOLD,
     }
 
@@ -115,13 +115,15 @@ def add_product(request):
         else:
             messages.error(request,
                            f'Error adding product: {product.name} '
-                            'Please check the form and try again.',
-                            extra_tags='render_toast')
+                           'Please check the form and try again.',
+                           extra_tags='render_toast')
     else:
         form = ProductForm()
+        bundle_form = BundleItemForm()
 
     context = {
         'form': form,
+        'bundle_form': bundle_form
     }
 
     return render(request, 'products/add_product.html', context)
@@ -177,6 +179,5 @@ def delete_product(request, product_id):
                      f'{product.name} has been deleted!',
                      extra_tags='render_toast')
     return redirect(reverse('load_products'))
-
 
 
