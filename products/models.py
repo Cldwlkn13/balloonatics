@@ -1,4 +1,6 @@
 from django.db import models
+from django.core.validators import MaxValueValidator, MinValueValidator
+from decimal import Decimal
 
 
 class Category(models.Model):
@@ -65,26 +67,32 @@ class Product(models.Model):
     uuid = models.CharField(max_length=254, null=True, blank=True)
     description = models.TextField()
     price = models.DecimalField(max_digits=6, decimal_places=2, blank=False,
-                                default=0.00)
+                                default=0.00, validators=[MinValueValidator(
+                                    Decimal('0.00'))])
     discounted_price = models.DecimalField(max_digits=6, decimal_places=2,
-                                           blank=False, default=0.00)
+                                           blank=False, default=0.00,
+                                           validators=[MinValueValidator(
+                                               Decimal('0.00'))])
     rating = models.DecimalField(max_digits=6, decimal_places=2, null=True,
-                                 blank=True)
+                                 blank=True, validators=[MinValueValidator(
+                                     Decimal('0.00')), MaxValueValidator(
+                                         Decimal('5.00'))])
     image_url = models.URLField(max_length=1024, null=True, blank=True)
     image = models.ImageField(null=True, blank=True)
     message = models.CharField(max_length=254, null=True, blank=True)
     message_editable = models.BooleanField(null=False, blank=False,
                                            default=False)
-    age = models.IntegerField(null=True, blank=True)
+    age = models.PositiveIntegerField(null=True, blank=True)
     color = models.ForeignKey('Color', null=True, blank=True,
                               on_delete=models.SET_NULL)
     size = models.ForeignKey('Size', null=True, blank=True,
                              on_delete=models.SET_NULL)
-    qty_held = models.IntegerField(null=False)
+    qty_held = models.PositiveIntegerField(null=False)
     shipped_inflated = models.BooleanField(null=False, blank=False,
                                            default=False)
     is_printable = models.BooleanField(null=False, blank=False, default=False)
-    qty_in_bag = models.IntegerField(null=True, blank=True, default=0)
+    qty_in_bag = models.PositiveIntegerField(null=True, blank=True, default=0)
+    bundle_items = models.ManyToManyField('BundleItem')
 
     def __str__(self):
         return self.name
@@ -96,3 +104,10 @@ class Product(models.Model):
             return 0
 
 
+class BundleItem(models.Model):
+    key = models.ForeignKey(Product, on_delete=models.CASCADE, null=False,
+                            blank=False)
+    value = models.PositiveIntegerField(null=False, blank=False)
+
+    def __str__(self):
+        return str(self.value) + ' x ' + self.key.name

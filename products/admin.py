@@ -1,8 +1,9 @@
 from django.contrib import admin
-from .models import Product, Category, Material, Sub_Category, Size, Color
-
+from .models import (Product, Category, Material,
+                     Sub_Category, Size, Color, BundleItem)
 
 class ProductAdmin(admin.ModelAdmin):
+
     list_display = (
         'name',
         'uuid',
@@ -19,3 +20,4 @@ admin.site.register(Sub_Category)
 admin.site.register(Size)
 admin.site.register(Color)
 admin.site.register(Product, ProductAdmin)
+admin.site.register(BundleItem)
