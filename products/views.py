@@ -91,17 +91,16 @@ def product_detail(request, product_id):
 
 @login_required
 def load_products(request):
-    form = ProductForm()
     selector_form = ProductSelectorForm()
 
     context = {
         'selector_form': selector_form
     }
-    return render(request, 'products/product_management.html', context)
+    return render(request, 'products/load_products.html', context)
 
 
 @login_required
-def add_product(request, product_id):
+def add_product(request):
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
@@ -134,7 +133,8 @@ def edit_product(request):
         return redirect(reverse('home'))
 
     if request.method == 'POST':
-        product = get_object_or_404(Product, pk=1)
+        p_id = request.POST['p_id']
+        product = get_object_or_404(Product, pk=p_id)
         form = ProductForm(request.POST, request.FILES, instance=product)
         if form.is_valid():
             form.save()
@@ -152,15 +152,12 @@ def edit_product(request):
         else:
             form = ProductForm()
 
-    selector_form = ProductSelectorForm()
-
     context = {
         'form': form,
         'product': product,
-        'selector_form': selector_form,
     }
 
-    return render(request, 'products/product_management.html', context)
+    return render(request, 'products/edit_product.html', context)
 
 
 @login_required

@@ -7,45 +7,24 @@
             <div class="col-12 col-md-10 text-center text-md-left my-1">
                 <div class="row">
                     <div class="col-10 offset-1">
-                        <h3>product management</h3>
+                        <h3>edit a product</h3>
+                        <a href="{% url 'load_products' %}" class="btn btn-warning text-uppercase text-center"><i class="fas fa-chevron-left"></i> product management</a>
                         <hr class="bg-light">
                     </div>
                 </div>
-                {% if selector_form %}
-                <div class="row">
-                    <div class="col-12 text-center my-auto">
-                        <a href="{% url 'add_product' %" class="btn btn-warning text-uppercase mb-3"><i class="fas fa-plus"></i> add a new product</a>
-                    </div>
-                    <div class="col-12 text-center mb-3">
-                        <span>or...</span>
-                    </div>
-                    <div class="col-10 offset-1 text-center my-auto">
-                        <form action="{% url 'edit_product' %}" method="GET" id="selector-form">   
-                            <div class="row">
-                                <div class="col-4 offset-4">
-                                    {{ selector_form|crispy }}
-                                </div>
-                                <div class="col-12">
-                                    <button type="submit" class="btn btn-warning text-uppercase d-none">select</button>
-                                </div>
-                            </div>
-                        </form>
-                        <hr class="bg-light"> 
-                    </div>  
-                </div>
-                {% endif %}
                 {% if form %}
                 <div class="row">
                     <div class="col-10 offset-1">
                         <div class="col-12 text-center my-auto">
                             <a href="{% url 'delete_product' product.id %}" class="btn btn-danger text-uppercase text-center" onClick="return confirm('Are you sure you want to delete {{ product.name }}?')" id="product-delete"><i class="fas fa-trash"></i> delete {{ product.name }}</a>
                         </div>
-                        <form action="{% url 'edit_product' %}" method="POST" class="mt-2 mb-5">   
+                        <form action="{% url 'edit_product' %}" method="POST" class="mt-2 mb-5" enctype="multipart/form-data">   
                             {% csrf_token %}
                             {{ form|crispy }}
                             <div class="row mt-5">
                                 <div class="col-12 text-center my-auto">
                                     <button type="submit" class="btn btn-warning text-uppercase">update {{ product.name }}</button>
+                                    <input type="hidden" name="p_id" value="{{ product.id }}">
                                 </div>
                             </div>
                         </form> 
@@ -67,11 +46,6 @@ $(document).ready(function(){
     $('#id_select_product').change(function(){
         $('#selector-form').find('button').first().trigger('click');
     });
-    if(window.location.pathname.includes("edit")) {
-        $('#product-delete').show()
-    } else {
-        $('#product-delete').hide()
-    };
 });
 </script>
 {% endblock %}
