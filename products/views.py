@@ -3,6 +3,7 @@ from django.shortcuts import (render, get_object_or_404,
 from django.db.models.functions import Lower
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 
 from .models import Product, Category, Sub_Category
 from .forms import ProductForm, ProductSelectorForm
@@ -39,7 +40,8 @@ def products(request):
         "products": products,
         'sub_category': sub_category,
         'current_sort': sort,
-        'current_dir': direction
+        'current_dir': direction, 
+        'product_alert_qty_threshold': settings.QTY_LOW_ALERT_THRESHOLD,
     }
 
     return render(request, 'products/products.html', context)
@@ -84,6 +86,7 @@ def product_detail(request, product_id):
 
     context = {
         'product': product,
+        'product_alert_qty_threshold': settings.QTY_LOW_ALERT_THRESHOLD,
     }
 
     return render(request, 'products/product_detail.html', context)

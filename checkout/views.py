@@ -34,6 +34,10 @@ def cache_checkout_data(request):
         return HttpResponse(content=e, status=400)
 
 
+def validate_order(request):
+    return HttpResponse(status=200)
+
+
 def checkout(request):
     stripe_public_key = settings.STRIPE_PUBLIC_KEY
     stripe_secret_key = settings.STRIPE_SECRET_KEY
@@ -82,6 +86,8 @@ def checkout(request):
                     order_item = OrderItem(order=order,
                                            product=product,
                                            quantity=item_data)
+                    product.qty_held -= item_data
+                    product.save()
                     order_item.save()
                 except Product.DoesNotExist:
                     messages.error(
