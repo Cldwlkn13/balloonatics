@@ -7,7 +7,7 @@ from .models import Product, Category, Sub_Category
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        exclude = ('qty_in_bag', 'bundle_items')
+        exclude = ('qty_in_bag',)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

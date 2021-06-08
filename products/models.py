@@ -95,6 +95,8 @@ class Product(models.Model):
                                            default=False)
     is_printable = models.BooleanField(null=False, blank=False, default=False)
     qty_in_bag = models.PositiveIntegerField(null=True, blank=True, default=0)
+    is_bundle = models.BooleanField(null=False, blank=False, default=False)
+    bundle_items = models.ManyToManyField("self", symmetrical=False)
 
     def __str__(self):
         return self.name
