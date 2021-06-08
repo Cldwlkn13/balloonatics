@@ -54,7 +54,7 @@ class BundleBuilderForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs) 
-        products = Product.objects.filter(is_bundle=False)
+        products = Product.objects.all()
         product_names = [(p.id, p.name) for p in products]
         self.fields['product'].choices = product_names
         self.fields['qty'].initial = 1

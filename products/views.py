@@ -1,5 +1,5 @@
 from django.shortcuts import (render, get_object_or_404,
-                              redirect, reverse)
+                              redirect, reverse, HttpResponse)
 from django.db.models.functions import Lower
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -182,9 +182,22 @@ def delete_product(request, product_id):
 def bundle_builder(request):
     formset = BundleFormset()
 
+    products = Product.objects.all()
+    product_names = [(p.id, p.name) for p in products]
+    for form in formset.forms:
+        form.fields['product'].choices = product_names
+
     context = {
         'formset': formset
     }
 
     return render(request, 'products/bundle_builder.html', context)
 
+
+def serve_image(request, product_id):
+    print(product_id)
+    product = Product.objects.get(pk=product_id)
+    if not product:
+        return HttpResponse(content='noimage.png', status=400)
+    print(product.image.name)
+    return HttpResponse(content=product.image.url, status=200)
