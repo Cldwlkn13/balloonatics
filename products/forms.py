@@ -16,9 +16,12 @@ class ProductForm(forms.ModelForm):
         sub_categories = Sub_Category.objects.all()
         sub_cat_display_names = [(
             c.id, c.get_display_name()) for c in sub_categories]
+        other_products = Product.objects.filter(is_bundle=False)
+        other_product_names = [(p.id, p.name) for p in other_products]
 
         self.fields['category'].choices = cat_display_names
         self.fields['sub_category'].choices = sub_cat_display_names
+        self.fields['bundle_items'].choices = other_product_names
 
 
 class ProductSelectorForm(forms.Form):
