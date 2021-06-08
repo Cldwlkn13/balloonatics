@@ -119,11 +119,9 @@ def add_product(request):
                            extra_tags='render_toast')
     else:
         form = ProductForm()
-        bundle_form = BundleItemForm()
 
     context = {
         'form': form,
-        'bundle_form': bundle_form
     }
 
     return render(request, 'products/add_product.html', context)
