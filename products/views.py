@@ -1,12 +1,12 @@
 from django.shortcuts import (render, get_object_or_404,
-                              redirect, reverse, HttpResponse)
+                              redirect, reverse)
 from django.db.models.functions import Lower
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 
 from .models import Product, Category, Sub_Category
-from .forms import ProductForm, ProductSelectorForm
+from .forms import ProductForm, ProductSelectorForm, BundleFormset
 
 
 def products(request):
@@ -178,4 +178,13 @@ def delete_product(request, product_id):
                      extra_tags='render_toast')
     return redirect(reverse('load_products'))
 
+
+def bundle_builder(request):
+    formset = BundleFormset()
+
+    context = {
+        'formset': formset
+    }
+
+    return render(request, 'products/bundle_builder.html', context)
 

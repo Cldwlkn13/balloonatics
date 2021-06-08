@@ -96,7 +96,6 @@ class Product(models.Model):
     is_printable = models.BooleanField(null=False, blank=False, default=False)
     qty_in_bag = models.PositiveIntegerField(null=True, blank=True, default=0)
     is_bundle = models.BooleanField(null=False, blank=False, default=False)
-    bundle_items = models.ManyToManyField("self", symmetrical=False)
 
     def __str__(self):
         return self.name
@@ -107,3 +106,27 @@ class Product(models.Model):
         else:
             return 0
 
+
+class BundleItem(models.Model):
+    product = models.ManyToManyField(Product, related_name='bundle_items',
+                                     symmetrical=False, null=True)
+    qty = models.PositiveIntegerField(blank=False, null=False, default=0)
+    cost = models.DecimalField(max_digits=6, decimal_places=2, blank=False,
+                               default=0.00, validators=[MinValueValidator(
+                                    Decimal('0.00'))])
+
+    def __str__(self):
+        if self.product:
+            return self.product.name
+        else:
+            return 'unknown'
+
+    def calc_cost(self):
+        if self.product:
+            return self.qty * self.product.discounted_price
+        else:
+            return 0
+
+    def save(self, *args, **kwargs):
+        self.cost = self.calc_cost()
+        super().save(*args, **kwargs)
