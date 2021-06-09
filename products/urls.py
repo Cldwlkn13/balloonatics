@@ -12,6 +12,4 @@ urlpatterns = [
     path('edit/', views.edit_product, name='edit_product'),
     path('delete/<int:product_id>/', views.delete_product,
          name='delete_product'),
-    path('bundlebuilder/', views.bundle_builder, name='bundle_builder'),
-    path('serveimage/<int:product_id>/', views.serve_image, name='serve_image'),
 ]

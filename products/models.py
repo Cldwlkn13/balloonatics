@@ -1,10 +1,7 @@
 from django.db import models
-from django.db.models import Sum
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 from decimal import Decimal
-
-import uuid
 
 
 class Category(models.Model):
@@ -107,45 +104,5 @@ class Product(models.Model):
             return 0
 
 
-class Bundle(models.Model):
-    bundle_id = models.CharField(max_length=254, editable=False)
-    name = models.CharField(max_length=254, null=False, blank=False)
-    total_cost = models.DecimalField(max_digits=6, decimal_places=2,
-                                     blank=False, default=0.00,
-                                     validators=[MinValueValidator(
-                                      Decimal('0.00'))])
 
-    def __str__(self):
-        return self.name
-
-    def _generate_order_number(self):
-        return uuid.uuid4().hex.upper()
-
-    def save(self, *args, **kwargs):
-        if not self.bundle_id:
-            self.bundle_id = self._generate_order_number()
-        self.total_cost = self.bundle_items.aggregate(
-            Sum('item_cost'))['item_cost__sum'] or 0
-        super().save(*args, **kwargs)
-
-
-class BundleItem(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE,
-                                null=False, blank=False)
-    bundle = models.ForeignKey(Bundle, on_delete=models.CASCADE,
-                               null=False, blank=False,
-                               related_name="bundle_items")
-    qty = models.PositiveIntegerField(blank=False, null=False, default=0)
-    item_cost = models.DecimalField(max_digits=6, decimal_places=2,
-                                    blank=False, default=0.00,
-                                    validators=[MinValueValidator(
-                                      Decimal('0.00'))])
-
-    def __str__(self):
-        return self.product.name
-
-    def save(self, *args, **kwargs):
-        self.item_cost = (self.product.discounted_price *
-                          self.qty)
-        super().save(*args, **kwargs)
 

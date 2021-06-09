@@ -56,7 +56,7 @@
 
     function getImage(handleData, p_id) {
         $.get({
-            url: '/products/serveimage/' + p_id,
+            url: '/bundle/serveimage/' + p_id,
             success: function (response) {              
                 handleData(response);
             },
