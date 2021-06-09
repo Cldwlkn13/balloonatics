@@ -1,19 +1,21 @@
 from django.shortcuts import render, HttpResponse
 
-#from .forms import BundleFormset
+from .forms import BundleFormset, BundleSelectorForm
 from products.models import Product
 
 
-def bundles(request):
-    #formset = BundleFormset()
+def bundles(request): 
+    selector_form = BundleSelectorForm()
+    formset = BundleFormset()
 
     products = Product.objects.all()
     product_names = [(p.id, p.name) for p in products]
-    #for form in formset.forms:
-     #   form.fields['product'].choices = product_names
+    for form in formset.forms:
+        form.fields['product'].choices = product_names
 
     context = {
-        #'formset': formset
+        'selector_form': selector_form,
+        'formset': formset
     }
 
     return render(request, 'bundles/bundles.html', context)

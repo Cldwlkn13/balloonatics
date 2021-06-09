@@ -1,22 +1,28 @@
 from django import forms
 from django.forms import formset_factory
 
-from .models import Bundle, BundleItem
+from .models import BundleItem, BundleCategory
 from products.models import Product
 
 
 class BundleSelectorForm(forms.Form):
-    bundles = forms.ChoiceField()
+    categories = forms.ChoiceField()
+    age = forms.ChoiceField()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        bundles = Bundle.objects.all()
-        self.fields['bundles'].choices = self._load_choices(
-            bundles)
+        categories = BundleCategory.objects.all()
+        self.fields['categories'].choices = self._load_choices(
+            categories, 'Select a category...')
+        ages = [(_, _) for _ in range(100)]
+        self.fields['age'].choices = ages
+        self.fields['age'].choices[0] = (0, 'Age')
+        for field in self.fields.values():
+            field.label = ''
 
-    def _load_choices(self, products):
-        choices = [(0, 'Select a bundle to edit...')]
-        for p in products:
+    def _load_choices(self, arr, placeholder):
+        choices = [(0, placeholder)]
+        for p in arr:
             choices.append((str(p.id), str(p.name)))
         return choices
 
