@@ -11,7 +11,7 @@
         <hr class="bg-light">
         <div class="row mt-5">
             <div class="col-10 offset-1">
-                <form action="" id="category-selector">
+                <form action="{% url 'bundles' %}" method="POST" id="selector-form">
                     {% csrf_token %}
                     <div class="row my-auto align-items-center">
                         <div class="col-4 offset-4 text-center">
@@ -23,36 +23,18 @@
                             {{ selector_form.age|as_crispy_field }}
                         </div>
                     </div>
+                    <button type="submit" class="d-none"></button>
                 </form>
             </div>
         </div>
         <hr class="bg-light">        
         <div class="row mt-5">
             <div class="col-10 offset-1">
-                <form action="" id="item-formset">
-                    {% csrf_token %}
-                    {% for form in formset %}
-                        <div class="row my-auto align-items-center">
-                            <div class="col-2 text-center">
-                                <img src="" id="img-{{ forloop.counter0 }}" alt="" class="cart-img border border-light rounded-3">
-                            </div>
-                            <div class="col-5">
-                                {{ form.product|as_crispy_field }}
-                            </div>
-                            <div class="col-2">
-                                {{ form.item_qty|as_crispy_field }}
-                            </div>
-                            <div class="col-1"><button class="btn btn-warning add-form mb-3"><i class="fas fa-plus"></i></button></div>
-                            <div class="col-1"><button class="btn btn-danger remove-form mb-3"><i class="fas fa-trash"></i></button></div>
-                        </div>
-                        <hr class="bg-light">
+                <div class="row">
+                    {% for bundle in bundles %}
+                        {% include './includes/card.html' with result=bundle %}
                     {% endfor %}
-                    <div class="row mt-5">
-                        <div class="col-10 offset-1 text-center">
-                            <button type="submit" class="btn btn-warning text-uppercase">add bundle to cart</button>
-                        </div>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
@@ -61,35 +43,21 @@
 {% block postloadjs %}
 {{ block.super }}
 <script>    
-    $('#div_id_age').toggle(
-        $('select[name="categories"] option:selected').text() == 'birthday')
-    
-    $('select[name="categories"]').on('change', function(e)  {
-        $('#div_id_age').toggle($(this).find(":selected").text() == 'birthday')
-    });
-
-    $('#item-formset').find('select').each(function(index) {
-        getImage(function(output){
-            $('#img-' + index).attr("src", output);
-        }, this.value);
-    });
-    
-    $('#item-formset').find('select').on('change', function(e)  {
-        getImage(function(output){
-            $('#img-0').attr("src", output);
-        }, this.value);
-    });
-
-    function getImage(handleData, p_id) {
-        $.get({
-            url: '/bundle/serveimage/' + p_id,
-            success: function (response) {              
-                handleData(response);
-            },
-            error: function () {
-                handleData(response);
+    $(document).ready(function(){
+        $('#div_id_age').toggle(
+            $('select[name="categories"] option:selected').text() == 'birthday')
+        
+        $('select[name="categories"]').on('change', function(e)  {         
+            if($(this).find(":selected").text() != 'birthday'){
+                $('#selector-form').find('button').first().trigger('click');
+            } else {
+                $('#div_id_age').toggle($(this).find(":selected").text() == 'birthday')
             }
         });
-    }
+
+        $('select[name="age"]').on('change', function(e)  {         
+            $('#selector-form').find('button').first().trigger('click');
+        });
+    });
 </script>
 {% endblock %}

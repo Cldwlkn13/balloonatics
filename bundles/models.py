@@ -14,6 +14,7 @@ class BundleCategory(models.Model):
         verbose_name_plural = 'Categories'
   
     name = models.CharField(max_length=254, blank=False, null=False)
+    age = models.PositiveIntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.name
