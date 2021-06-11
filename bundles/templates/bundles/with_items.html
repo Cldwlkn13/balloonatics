@@ -19,7 +19,7 @@
                 <form action="" id="item-formset">
                     {% csrf_token %}
                     {% for form in formset %}
-                        <div class="row my-auto align-items-center">
+                        <div class="row my-auto align-items-center formset-row">
                             <div class="col-2 text-center">
                                 <img src="" id="img-{{ forloop.counter0 }}" alt="" class="cart-img border border-light rounded-3">
                             </div>
@@ -29,11 +29,13 @@
                             <div class="col-2">
                                 {{ form.item_qty|as_crispy_field }}
                             </div>
-                            <div class="col-1"><button class="btn btn-warning add-form mb-3"><i class="fas fa-plus"></i></button></div>
-                            <div class="col-1"><button class="btn btn-danger remove-form mb-3"><i class="fas fa-trash"></i></button></div>
+                            <div class="col-1"><a href="#" class="btn btn-danger remove-form mb-3" id="remove-{{ forloop.counter0 }}"><i class="fas fa-trash"></i></a></div>
+                            <div class="col-10">
+                                <hr class="bg-light">
+                            </div>
                         </div>
-                        <hr class="bg-light">
                     {% endfor %}
+                    <div class="col-3 offset-9"><a href="#" class="btn btn-warning add-form mb-3"><i class="fas fa-plus"></i> add new product</a></div>
                     <div class="row mt-5">
                         <div class="col-10 offset-1 text-center">
                             <button type="submit" class="btn btn-warning text-uppercase">add bundle to cart</button>
@@ -44,7 +46,6 @@
         </div>
     </div>
 {% endblock %}
-
 {% block postloadjs %}
 {{ block.super }}
 <script>    
@@ -56,8 +57,9 @@
         });
         
         $('#item-formset').find('select').on('change', function(e)  {
+            var selected = $(this).attr('name').split('-')[1];
             getImage(function(output){
-                $('#img-0').attr("src", output);
+                $('#img-' + selected).attr("src", output);
             }, this.value);
         });
 
@@ -72,6 +74,35 @@
                 }
             });
         }
+
+        function cloneRow(selector, formsCount) {
+            var newElem = $(selector).clone(true);
+
+            var productDiv = newElem.find('#div_id_form-0-product').attr('id', '#div_id_form-' + formsCount + '-product');
+            var qtyDiv = newElem.find('#div_id_form-0-item_qty').attr('id', '#div_id_form-' + formsCount + '-item_qty');
+           
+            var productSelect = productDiv.find('select').first();
+            var qtySelect = qtyDiv.find('input').first();
+
+            $(newElem).find('img').attr('id', 'img-' + formsCount);
+            $(newElem).find('img').attr('src', '');
+            $(productSelect).attr('id','id_form-'+ formsCount +'-product');
+            $(productSelect).attr('name','form-'+ formsCount +'-product');
+            $(productSelect).find('option:eq(0)').prop('selected', true);
+            $(qtySelect).attr('id','id_form-'+ formsCount + '-item_qty');
+            $(qtySelect).attr('name','form-'+ formsCount + '-item_qty');
+            $(qtySelect).attr('value', "1");
+            $(newElem).find('#remove-0').attr('id', 'remove-' + formsCount);
+
+            $('.formset-row').last().after(newElem);
+        }
+
+        $('.add-form').on('click', function(e) {
+            var formsCount = $('.formset-row').length;
+            console.log(formsCount);
+            cloneRow($('.formset-row').first(), formsCount);
+        });
+
     });
 </script>
 {% endblock %}

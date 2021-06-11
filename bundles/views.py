@@ -44,11 +44,6 @@ def with_items(request, bundle_id):
     bundle = Bundle.objects.get(pk=bundle_id)
     formset = BundleFormset()
 
-    products = Product.objects.all()
-    product_names = [(p.id, p.name) for p in products]
-    for form in formset.forms:
-        form.fields['product'].choices = product_names
-
     context = {
         'bundle': bundle,
         'formset': formset
