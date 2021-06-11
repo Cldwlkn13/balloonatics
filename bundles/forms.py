@@ -40,12 +40,7 @@ class BundleBuilderForm(forms.ModelForm):
         products = Product.objects.all()
         product_names = [(p.id, p.name) for p in products]
         product_names.insert(0, (0, 'Select a product...'))
-        print(product_names)
         self.fields['product'].choices = product_names
-        self.fields['item_qty'].initial = 1
         for field in self.fields.values():
             field.label = ''
 
-BundleFormset = formset_factory(
-    form=BundleBuilderForm, extra=1
-)

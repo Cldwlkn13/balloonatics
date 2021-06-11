@@ -1,9 +1,10 @@
 from django.shortcuts import (render, HttpResponse,
                               reverse, redirect)
 
-from .models import Bundle
-from .forms import BundleFormset, BundleSelectorForm
+from .models import Bundle, BundleItem
+from .forms import BundleSelectorForm, BundleBuilderForm
 from products.models import Product
+from django.forms import formset_factory
 
 
 def bundle_categories(request):
@@ -42,7 +43,17 @@ def bundles(request):
 
 def with_items(request, bundle_id):
     bundle = Bundle.objects.get(pk=bundle_id)
-    formset = BundleFormset()
+    bundle_items = list(BundleItem.objects.filter(
+        bundle__pk=bundle_id))
+    
+    BundleBuilderFormset = formset_factory(
+        BundleBuilderForm, extra=0)
+    
+    formset = BundleBuilderFormset(
+        initial=[{
+            'product': item.product.pk, 
+            'item_qty': item.item_qty 
+            } for item in bundle_items])
 
     context = {
         'bundle': bundle,
