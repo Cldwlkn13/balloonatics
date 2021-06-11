@@ -3,27 +3,31 @@
 
 {% block content %}
     <div class="container bg-container-dark text-light">
-        <div class="row">
-            <div class="col-12 col-md-10 text-center text-md-left my-1">
-                <h2><strong>bundle</strong></h2>
-            </div>
-        </div>
-        <hr class="bg-light"> 
         <div class="row mt-5">
-            <div class="col-10 offset-1">
-                {{ bundle.name }}
+            <div class="col-12 text-center">
+                <h5>{{ bundle.name }}</h5>
             </div>
+            {% if bundle.image %}
+                <div class="col-8 offset-2 text-center">
+                    <img src="{{ bundle.image.url }}" class="card-img-top rounded-3">
+                </div>    
+            {% endif %}      
+        </div>
+        <div class="col-12">
+            <hr class="bg-light">
         </div>
         <div class="row mt-5">
             <div class="col-10 offset-1">
                 <form action="" id="item-formset">
                     {% csrf_token %}
                     {% for form in formset %}
-                        <div class="row my-auto align-items-center formset-row" id="formset-row-{{ forloop.counter0 }}">
+                        <div class="row my-3 align-items-center formset-row" id="formset-row-{{ forloop.counter0 }}">
                             <div class="col-2 text-center">
-                                <img src="" id="img-{{ forloop.counter0 }}" alt="" class="cart-img border border-light rounded-3">
+                                <div class="cart-img">
+                                    <img src="" id="img-{{ forloop.counter0 }}" alt="" class="cart-img border border-light rounded-3">
+                                </div>
                             </div>
-                            <div class="col-5">
+                            <div class="col-6">
                                 {{ form.product|as_crispy_field }}
                             </div>
                             <div class="col-2">
@@ -32,15 +36,22 @@
                             <div class="col-1">
                                 <a href="#" class="btn btn-danger remove-form mb-3" id="remove-{{ forloop.counter0 }}"><i class="fas fa-trash"></i></a>
                             </div>
-                            <div class="col-10">
-                                <hr class="bg-light">
-                            </div>
                         </div>
                     {% endfor %}
-                    <div class="col-3 offset-9"><a href="#" class="btn btn-warning add-form mb-3"><i class="fas fa-plus"></i> add new product</a></div>
+                    <div class="col-12 px-0">
+                        <hr class="bg-light">
+                    </div>
+                    <div class="col-6 offset-6 text-right pr-0">
+                        <a href="#" class="btn btn-warning add-form mb-3"><i class="fas fa-plus"></i> add new product</a>
+                    </div>
                     <div class="row mt-5">
+                        <div class="col-6 offset-3 text-center">
+                            <p>price</p>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
                         <div class="col-10 offset-1 text-center">
-                            <button type="submit" class="btn btn-warning text-uppercase">add bundle to cart</button>
+                            <button type="submit" class="btn btn-warning text-uppercase"><i class="fas fa-shopping-cart"></i> add bundle to cart</button>
                         </div>
                     </div>
                 </form>
@@ -56,16 +67,33 @@
             getImage(function(output){
                 $('#img-' + index).attr("src", output);
             }, this.value);
+            $(this).toggleClass('disabled', $(this).prop('selectedIndex') == 0);
+        });
+
+        $('#item-formset').find('input').each(function(index) {            
+            $(this).toggleClass('disabled', $('#formset-row-' + index).find('select').first().prop('selectedIndex') == 0);
+        });
+
+        $('#item-formset').find('img').each(function(index) {
+            $(this).toggle($('#formset-row-' + index).find('select').first().prop('selectedIndex') != 0);
         });
         
         $('#item-formset').find('select').on('change', function(e)  {
             var selected = $(this).attr('name').split('-')[1];
-            getImage(function(output){
-                $('#img-' + selected).attr("src", output);
-            }, this.value);
+            $(this).toggleClass('disabled', $(this).prop('selectedIndex') == 0);
+            $('#formset-row-' + selected).find('input').toggleClass('disabled', $(this).prop('selectedIndex') == 0);
+            $('#formset-row-' + selected).find('img').toggle($(this).prop('selectedIndex') != 0);
+            if(this.value != 0){ 
+                getImage(function(output){
+                    $('#img-' + selected).attr("src", output);
+                }, this.value);
+            }
         });
 
         function getImage(handleData, p_id) {
+            if(p_id == 0){
+                return;
+            }
             $.get({
                 url: '/bundle/serveimage/' + p_id,
                 success: function (response) {              
@@ -90,16 +118,17 @@
 
             $(newRow).find('img').attr('id', 'img-' + formsCount);
             $(newRow).find('img').attr('src', '');
+            $(newRow).find('img').hide();
 
             $(productSelect).attr('id','id_form-'+ formsCount +'-product');
             $(productSelect).attr('name','form-'+ formsCount +'-product');
             $(productSelect).find('option:eq(0)').prop('selected', true);
-            $(productSelect).removeClass('disabed');
+            $(productSelect).addClass('disabled');
 
             $(qtySelect).attr('id','id_form-'+ formsCount + '-item_qty');
             $(qtySelect).attr('name','form-'+ formsCount + '-item_qty');
-            $(qtySelect).attr('value', "1");
-            $(qtySelect).removeClass('disabed');
+            $(qtySelect).val(1);
+            $(qtySelect).addClass('disabled');
             
             $(newRow).find('#remove-0').attr('id', 'remove-' + formsCount);
 
