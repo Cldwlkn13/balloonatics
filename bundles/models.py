@@ -43,9 +43,12 @@ class Bundle(models.Model):
     def save(self, *args, **kwargs):
         if not self.bundle_id:
             self.bundle_id = self._generate_order_number()
+        super().save(*args, **kwargs)
+
+    def calc_bundle_total(self):
         self.total_cost = self.bundle_items.aggregate(
             Sum('item_cost'))['item_cost__sum'] or 0
-        super().save(*args, **kwargs)
+        self.save()
 
 
 class BundleItem(models.Model):

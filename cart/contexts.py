@@ -8,8 +8,8 @@ from decimal import Decimal
 def cart_contents(request):
 
     cart_items = []
-    bundle_cart_items = []
-    total = 0.00
+    bundle_cart_bundles = []
+    total = 0
     product_count = 0
     delivery = 0.00
     cart = request.session.get('cart', {})
@@ -34,26 +34,29 @@ def cart_contents(request):
 
         d = {}
         for item in bundle_items:
-            d[item.product.pk] = item.item_qty
+            d[item.product.name] = item.item_qty
 
         bundle_total_cost = q * bundle.total_cost
-        # total = bundle_total_cost + total
-        bundle_cart_items.append({
+        if(bundle_total_cost > 0):
+            total = Decimal(bundle_total_cost) + Decimal(total)
+
+        bundle_cart_bundles.append({
             'item_id': i,
             "qty": q,
             'bundle_items': d,
+            'bundle': bundle,
             'bundle_total_cost': bundle_total_cost,
         })
     
-
     if total > 0:
         delivery = round((total * Decimal(
             settings.DELIVERY_SURCHARGE)), 2)
 
-    grand_total = total + delivery
+    grand_total = Decimal(total) + Decimal(delivery)
 
     context = {
         'cart_items': cart_items,
+        'bundle_cart_bundles': bundle_cart_bundles,
         'total': total,
         'grand_total': grand_total,
         'product_count': product_count,

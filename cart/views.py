@@ -110,12 +110,12 @@ def add_bundle_to_cart(request):
     reqDict = request.body.decode("utf-8").split('&')
     bundle_item_dict = custom_formset_dictionary_parser(reqDict)
 
-    
     my_bundle = Bundle(
         bundle_id=my_bundle_id,
         name='My Custom ' + orig_bundle.name,
+        image=orig_bundle.image,
         category=BundleCategory.objects.get(name='custom'),
-        custom=True
+        custom=True,
     )
     my_bundle.save()
 
@@ -135,10 +135,31 @@ def add_bundle_to_cart(request):
         f'Added your bundle to your cart!',
         extra_tags='render_toast render_preview')
     
-    request.session['bundle_cart'] = bundle_cart 
-    
+    request.session['bundle_cart'] = bundle_cart
 
     return redirect('bundle_categories')
+
+
+def remove_bundle_from_cart(request, bundle_id):
+    bundle = get_object_or_404(Bundle, bundle_id=bundle_id)
+    bundle_cart = request.session.get('bundle_cart', {})
+    this_url = request.META['HTTP_REFERER']
+    
+    extra_tags = 'render_toast render_preview'
+
+    if 'cart' in this_url:
+        extra_tags = ''
+
+    if bundle_id in bundle_cart:
+        bundle_cart.pop(bundle_id)
+        messages.info(
+            request,
+            f'<strong>{bundle.name}</strong> removed from your cart!',
+            extra_tags=extra_tags)
+
+    request.session['bundle_cart'] = bundle_cart
+    
+    return redirect(this_url)
 
 
 

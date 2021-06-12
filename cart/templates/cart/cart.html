@@ -11,29 +11,32 @@
         </div>
     </div>
     <hr class="bg-light">
+    {% if not cart_items and not bundle_cart_bundles %}
+        <h6>Your cart is empty.</h6>
+    {% endif %}
     {% if cart_items %}
         {% for item in cart_items %}
         <div class="row align-items-center p-1 p-lg-2">
             <div class="col-12 col-md-6 col-lg-3 text-center px-5">
                 {% if item.product.image %}
                 <a href="{% url 'product_detail' item.product.id %}">
-                    <img class="img-fluid border border-info cart-img" src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                    <img class="img-fluid cart-img rounded-3" src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
                 </a>
                 {% else %}
                 <a href="{% url 'product_detail' item.product.id %}">
-                    <img class="img-fluid border border-info cart-img" src="{{ MEDIA_URL }}noimage.png" alt="{{ item.product.name }}">
+                    <img class="img-fluid cart-img rounded-3" src="{{ MEDIA_URL }}noimage.png" alt="{{ item.product.name }}">
                 </a>
                 {% endif %}
             </div>  
             <div class="col-12 col-md-6 col-lg-9">
                 <div class="row p-0 text-center">
                     <div class="col-12 col-lg-2 p-0 py-3 mr-2"><strong>{{ item.product.name }}</strong></div>
-                    <div class="col-12 col-lg-1 p-0 py-3 mr-2">€{{ item.product.discounted_price }} each</div>
-                    <div class="col-12 col-lg-2 p-0 py-3 mr-2">
+                    <div class="col-12 col-lg-2 p-0 pl-1 py-3 mr-2">€{{ item.product.discounted_price }} each</div>
+                    <div class="col-12 col-lg-2 p-0 py-3 mr-3">
                         {% include 'cart/includes/qty-update-form.html' with item=item request=request %}
                     </div>
-                    <div class="col-12 col-lg-2 p-0 py-3 mr-2"><strong>€{{ item.item_total }}</strong></div>
-                    <div class="col-12 col-lg-1 p-3 py-3 mr-2 text-decoration-none">
+                    <div class="col-12 col-lg-2 p-0 py-3 mr-3"><strong>€{{ item.item_total }}</strong></div>
+                    <div class="col-12 col-lg-1 p-3 py-3 mr- text-decoration-none">
                         <a href="{% url 'remove_product_from_cart' item.product.id %}">
                             <i class="fas fa-trash text-danger"></i>
                         </a>
@@ -42,35 +45,60 @@
             </div>
         </div>
         <hr class="bg-light">
-        {% endfor%}
-        <div class="row mt-5">
-            <div class="col-12 col-lg-2 offset-lg-10 text-center">
-                <p class="text-muted mb-0">Delivery Charges</p>
-                <p>€{{ delivery }}</p>
-                <h6 class="text-muted text-center mt-3">Grand Total </h6>
-                <h4 class="text-center"><strong> €{{ grand_total|floatformat:2 }}</strong></h4>
-            </div>
-        </div>
-        <div class="row mt-5">
-            <div class="col-12 col-lg-2 offset-lg-10 text-center">
-                <a href="{% url 'checkout' %}" class="btn btn-warning btn-lg">
-                <span class="text-uppercase">Secure Checkout</span>
-                <span class="icon">
-                    <i class="fas fa-lock"></i>
-                </span>
-            </a>
-            </div>
-        </div>
-
-    {% else %}
-        <h6>Your cart is empty.</h6>
-        <a href="{% url 'categories' %}" class="btn btn-warning btn-lg">
-            <span class="icon">
-                <i class="fas fa-chevron-left"></i>
-            </span>
-            <span>shop</span>
-        </a>
+        {% endfor %}
     {% endif %}
+    {% if bundle_cart_bundles %}
+        {% for bundle in bundle_cart_bundles %}
+            <div class="row align-items-center p-1 p-lg-2">
+                <div class="col-12 col-md-6 col-lg-3 text-center px-5">
+                    {% if bundle.image %}
+                    <a href="#">
+                        <img class="img-fluid cart-img rounded-3" src="{{ bundle.image.url }}" alt="{{ bundle.name }}">
+                    </a>
+                    {% else %}
+                    <a href="#">
+                        <img class="img-fluid cart-img rounded-3" src="{{ MEDIA_URL }}noimage.png" alt="{{ bundle.name }}">
+                    </a>
+                    {% endif %}
+                </div> 
+                <div class="col-12 col-md-6 col-lg-9">
+                    <div class="row p-0 text-center align-items-center">
+                        <div class="col-12 col-lg-2 p-0 py-3 mr-2"><strong>{{ bundle.bundle.name }}</strong></div>
+                        <div class="col-12 col-lg-4 p-0 pl-3 py-3 mr-4">
+                            {% for k, v in bundle.bundle_items.items %}
+                                <p class="mb-1">{{v}} x {{k}}</p>
+                            {% endfor %}     
+                        </div>
+                        <div class="col-12 col-lg-2 p-0 py-3 ml-1 mr-3">€{{ bundle.bundle.total_cost }}</div>
+                        <div class="col-12 col-lg-1 p-3 py-3 mr-2 text-decoration-none">
+                            <a href="{% url 'remove_bundle_from_cart' bundle.bundle.bundle_id %}">
+                                <i class="fas fa-trash text-danger"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+        <hr class="bg-light">
+        {% endfor %}
+    {% endif %}
+    <div class="row mt-5">
+        <div class="col-12 col-lg-2 offset-lg-10 text-center">
+            <p class="text-muted mb-0">Delivery Charges</p>
+            <p>€{{ delivery }}</p>
+            <h6 class="text-muted text-center mt-3">Grand Total </h6>
+            <h4 class="text-center"><strong> €{{ grand_total|floatformat:2 }}</strong></h4>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-12 col-lg-2 offset-lg-10 text-center">
+            <a href="{% url 'checkout' %}" class="btn btn-warning btn-lg">
+            <span class="text-uppercase">Secure Checkout</span>
+            <span class="icon">
+                <i class="fas fa-lock"></i>
+            </span>
+        </a>
+        </div>
+    </div>
 </div>
 {% endblock %}
 
