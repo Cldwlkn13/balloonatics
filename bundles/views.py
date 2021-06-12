@@ -38,10 +38,17 @@ def bundles(request):
 
         return render(request, 'bundles/bundles.html', context)
 
-    return redirect(reverse('bundlecategories'))
+    return redirect(reverse('bundle_categories'))
 
 
 def with_items(request, bundle_id):
+    if request.method == 'POST':
+
+        context = {
+        }
+        
+        return render(request, 'bundles/with_items.html', context)
+
     bundle = Bundle.objects.get(pk=bundle_id)
     bundle_items = list(BundleItem.objects.filter(
         bundle__pk=bundle_id))
@@ -65,6 +72,8 @@ def with_items(request, bundle_id):
 
 def serve_image(request, product_id):
     product = Product.objects.get(pk=product_id)
+    
     if not product:
-        return HttpResponse(content='noimage.png', status=400)
+        return HttpResponse(content='../media/noimage.png', status=400)
+
     return HttpResponse(content=product.image.url, status=200)

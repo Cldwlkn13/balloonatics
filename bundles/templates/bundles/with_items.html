@@ -18,7 +18,7 @@
         </div>
         <div class="row mt-5">
             <div class="col-10 offset-1">
-                <form action="" id="item-formset">
+                <form action="{% url 'add_bundle_to_cart' %}" method="POST" id="item-formset">
                     {% csrf_token %}
                     {% for form in formset %}
                         <div class="row my-3 align-items-center formset-row" id="formset-row-{{ forloop.counter0 }}">
@@ -54,6 +54,7 @@
                             <button type="submit" class="btn btn-warning text-uppercase"><i class="fas fa-shopping-cart"></i> add bundle to cart</button>
                         </div>
                     </div>
+                    <input type="hidden" name="orig_bundle_pk" value="{{ bundle.pk }}">
                 </form>
             </div>
         </div>

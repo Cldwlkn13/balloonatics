@@ -9,7 +9,7 @@
         </div>
     </div>
     <hr>
-    <form class="form" action="{% url 'add_to_cart' result.id %}" method="POST">
+    <form class="form" action="{% url 'add_product_to_cart' result.id %}" method="POST">
         {% csrf_token %}
         <div class="form-row">
             <div class="col-8 align-content-center">

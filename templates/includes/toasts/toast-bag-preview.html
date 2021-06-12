@@ -17,7 +17,7 @@
             <p class="my-0"><strong>{{ item.product.name }}</strong> x {{ item.qty }}</p>
         </div>
         <div class="col-1 offset-1 ml-0 text-right">
-            <a href="{% url 'remove_from_cart' item.product.id %}">
+            <a href="{% url 'remove_product_from_cart' item.product.id %}">
                 <i class="fas fa-trash text-danger"></i>
             </a>
         </div>

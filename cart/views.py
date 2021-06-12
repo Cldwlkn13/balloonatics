@@ -1,7 +1,13 @@
+from bundles.forms import BundleBuilderFormset
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 
 from products.models import Product
+from bundles.models import Bundle, BundleItem, BundleCategory
+
+from .helpers import custom_formset_dictionary_parser
+
+import uuid
 
 
 def view_cart(request):
@@ -9,7 +15,7 @@ def view_cart(request):
     return render(request, 'cart/cart.html')
 
 
-def add_to_cart(request, item_id):
+def add_product_to_cart(request, item_id):
     product = get_object_or_404(Product, pk=item_id)
     qty = int(request.POST.get('qty'))
     this_url = request.POST.get('this_url')
@@ -38,7 +44,7 @@ def add_to_cart(request, item_id):
     return redirect(this_url)
 
 
-def update_cart(request, item_id):
+def update_product_cart(request, item_id):
     product = get_object_or_404(Product, pk=item_id)
     path = request.POST.get('this_url')
     qty = int(request.POST.get('qty'))
@@ -49,7 +55,8 @@ def update_cart(request, item_id):
 
     if product.qty_held < qty:
         messages.warning(request,
-                         'Sorry! We could add this item to your cart. '
+                         'Sorry! We could not update this item '
+                         'qty in your cart. '
                          'We do not have the required amount '
                          'in stock.',
                          extra_tags='render_toast')
@@ -71,13 +78,13 @@ def update_cart(request, item_id):
     return redirect(path)
 
 
-def remove_from_cart(request, item_id):
+def remove_product_from_cart(request, item_id):
     product = get_object_or_404(Product, pk=item_id)
     cart = request.session.get('cart', {})
-    path = request.META['HTTP_REFERER']
+    this_url = request.META['HTTP_REFERER']
     extra_tags = 'render_toast render_preview'
 
-    if 'cart' in path:
+    if 'cart' in this_url:
         extra_tags = ''
 
     if item_id in cart:
@@ -88,4 +95,50 @@ def remove_from_cart(request, item_id):
             extra_tags=extra_tags)
 
     request.session['cart'] = cart
-    return redirect(path)
+    return redirect(this_url)
+
+
+def add_bundle_to_cart(request):
+    
+    bundle_cart = request.session.get('bundle_cart', {})
+
+    bundle_pk = int(request.POST.get('orig_bundle_pk'))
+    orig_bundle = get_object_or_404(Bundle, pk=bundle_pk)
+
+    my_bundle_id = uuid.uuid4().hex.upper()
+
+    reqDict = request.body.decode("utf-8").split('&')
+    bundle_item_dict = custom_formset_dictionary_parser(reqDict)
+
+    
+    my_bundle = Bundle(
+        bundle_id=my_bundle_id,
+        name='My Custom ' + orig_bundle.name,
+        category=BundleCategory.objects.get(name='custom'),
+        custom=True
+    )
+    my_bundle.save()
+
+    for k, item in bundle_item_dict.items():
+        product = Product.objects.get(pk=item['product'])
+        bundle_item = BundleItem(
+            product=product,
+            bundle=my_bundle,
+            item_qty=int(item['item_qty'])
+        )
+        bundle_item.save()
+
+    bundle_cart[my_bundle_id] = 1 # handle qtys here
+
+    messages.success(
+        request,
+        f'Added your bundle to your cart!',
+        extra_tags='render_toast render_preview')
+    
+    request.session['bundle_cart'] = bundle_cart 
+    
+
+    return redirect('bundle_categories')
+
+
+

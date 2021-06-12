@@ -31,6 +31,8 @@ class Bundle(models.Model):
                                  blank=False, null=False)
     age = models.PositiveIntegerField(blank=True, null=True)
     image = models.ImageField(null=True, blank=True)
+    custom = models.BooleanField(null=False, blank=False, 
+                                     default=False)
 
     def __str__(self):
         return self.name
