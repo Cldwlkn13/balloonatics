@@ -100,16 +100,13 @@ def remove_product_from_cart(request, item_id):
 
 def add_bundle_to_cart(request):
     
-    bundle_cart = request.session.get('bundle_cart', {})
+    cart = request.session.get('cart', {})
 
-    bundle_pk = int(request.POST.get('orig_bundle_pk'))
-    orig_bundle = get_object_or_404(Bundle, pk=bundle_pk)
+    orig_bundle_pk = int(request.POST.get('orig_bundle_pk'))
+    orig_bundle = get_object_or_404(Bundle, pk=orig_bundle_pk)
 
-    my_bundle_id = uuid.uuid4().hex.upper()
-
-    reqDict = request.body.decode("utf-8").split('&')
-    bundle_item_dict = custom_formset_dictionary_parser(reqDict)
-
+    # generate new bundle for this instance
+    my_bundle_id = uuid.uuid4().hex.upper() 
     my_bundle = Bundle(
         bundle_id=my_bundle_id,
         name='My Custom ' + orig_bundle.name,
@@ -119,30 +116,34 @@ def add_bundle_to_cart(request):
     )
     my_bundle.save()
 
+    # get the customised bundle items of the request
+    reqDict = request.body.decode("utf-8").split('&')
+    bundle_item_dict = custom_formset_dictionary_parser(reqDict)
     for k, item in bundle_item_dict.items():
-        product = Product.objects.get(pk=item['product'])
-        bundle_item = BundleItem(
-            product=product,
-            bundle=my_bundle,
-            item_qty=int(item['item_qty'])
-        )
-        bundle_item.save()
-
-    bundle_cart[my_bundle_id] = 1 # handle qtys here
+        if item['product'] != '0':
+            product = Product.objects.get(pk=item['product'])
+            bundle_item = BundleItem(
+                product=product,
+                bundle=my_bundle,
+                item_qty=int(item['item_qty'])
+            )
+            bundle_item.save()
+    
+    cart[my_bundle_id] = 1 # handle qtys here
 
     messages.success(
         request,
         f'Added your bundle to your cart!',
         extra_tags='render_toast render_preview')
     
-    request.session['bundle_cart'] = bundle_cart
+    request.session['cart'] = cart
 
     return redirect('bundle_categories')
 
 
 def remove_bundle_from_cart(request, bundle_id):
     bundle = get_object_or_404(Bundle, bundle_id=bundle_id)
-    bundle_cart = request.session.get('bundle_cart', {})
+    cart = request.session.get('cart', {})
     this_url = request.META['HTTP_REFERER']
     
     extra_tags = 'render_toast render_preview'
@@ -150,14 +151,14 @@ def remove_bundle_from_cart(request, bundle_id):
     if 'cart' in this_url:
         extra_tags = ''
 
-    if bundle_id in bundle_cart:
-        bundle_cart.pop(bundle_id)
+    if bundle_id in cart:
+        cart.pop(bundle_id)
         messages.info(
             request,
             f'<strong>{bundle.name}</strong> removed from your cart!',
             extra_tags=extra_tags)
 
-    request.session['bundle_cart'] = bundle_cart
+    request.session['cart'] = cart
     
     return redirect(this_url)
 

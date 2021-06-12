@@ -43,6 +43,7 @@ def checkout(request):
     stripe_secret_key = settings.STRIPE_SECRET_KEY
 
     cart = request.session.get('cart', {})
+    bundle_cart = request.session.get('bundle_cart', {})
 
     if request.method == 'POST':
         address_form_data = {

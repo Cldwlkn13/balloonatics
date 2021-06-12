@@ -44,14 +44,13 @@ def bundles(request):
 def with_items(request, bundle_id):
     if request.method == 'POST':
 
-        context = {
-        }
+        context = {}
         
         return render(request, 'bundles/with_items.html', context)
 
-    bundle = Bundle.objects.get(pk=bundle_id)
+    bundle = Bundle.objects.get(bundle_id=bundle_id)
     bundle_items = list(BundleItem.objects.filter(
-        bundle__pk=bundle_id))
+        bundle__bundle_id=bundle_id))
     
     BundleBuilderFormset = formset_factory(
         BundleBuilderForm, extra=0)

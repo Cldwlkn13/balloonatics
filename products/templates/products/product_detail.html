@@ -11,9 +11,9 @@
                 </div>
             </div>
             {% if product.image %}
-                <img src="../../media/{{ product.image.name }}" class="img-fluid border border-info product-detail-img" alt="{{ product.name }}">
+                <img src="{{ product.image.url }}" class="img-fluid border border-info product-detail-img" alt="{{ product.name }}">
             {% else %}
-                <img src="../../media/noimage.png" class="img-fluid product-detail-img" alt="{{ product.name }}">
+                <img src="{{ MEDIA_URL }}noimage.png" class="img-fluid product-detail-img" alt="{{ product.name }}">
             {% endif %}
         </div>
         <div class="col-6">

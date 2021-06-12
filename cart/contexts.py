@@ -8,46 +8,46 @@ from decimal import Decimal
 def cart_contents(request):
 
     cart_items = []
-    bundle_cart_bundles = []
     total = 0
     product_count = 0
     delivery = 0.00
     cart = request.session.get('cart', {})
-    bundle_cart = request.session.get('bundle_cart', {})
 
     for i, q in cart.items():
-        item_total = 0
-        product = get_object_or_404(Product, pk=i)
-        item_total = q * product.discounted_price
-        total += item_total
-        product_count += q
-        cart_items.append({
-            'item_id': i,
-            "qty": q,
-            'product': product,
-            'item_total': item_total,
-        })
-    
-    for i, q in bundle_cart.items():
-        bundle = Bundle.objects.get(bundle_id=i)
-        bundle_items = BundleItem.objects.filter(bundle__bundle_id=i)
+        if isinstance(i, int):
+            item_total = 0
+            product = get_object_or_404(Product, pk=i)
+            item_total = q * product.discounted_price
+            total += item_total
+            product_count += q
+            cart_items.append({
+                'is_bundle': False,
+                'item_id': i,
+                "qty": q,
+                'product': product,
+                'item_total': item_total,
+            })
+        else:
+            bundle = Bundle.objects.get(bundle_id=i)
+            bundle_items = BundleItem.objects.filter(bundle__bundle_id=i)
 
-        d = {}
-        for item in bundle_items:
-            d[item.product.name] = item.item_qty
+            d = {}
+            for item in bundle_items:
+                d[item.product.name] = item.item_qty
 
-        bundle_total_cost = q * bundle.total_cost
-        if(bundle_total_cost > 0):
-            total = Decimal(bundle_total_cost) + Decimal(total)
+            bundle_total_cost = q * bundle.total_cost
+            if(bundle_total_cost > 0):
+                total = Decimal(bundle_total_cost) + Decimal(total)
 
-        bundle_cart_bundles.append({
-            'item_id': i,
-            "qty": q,
-            'bundle_items': d,
-            'bundle': bundle,
-            'bundle_total_cost': bundle_total_cost,
-        })
-    
+            cart_items.append({
+                'is_bundle': True,
+                'item_id': i,
+                "qty": q,
+                'bundle_items': d,
+                'bundle': bundle,
+                'bundle_total_cost': bundle_total_cost,
+            })
+           
     if total > 0:
         delivery = round((total * Decimal(
             settings.DELIVERY_SURCHARGE)), 2)
@@ -56,7 +56,6 @@ def cart_contents(request):
 
     context = {
         'cart_items': cart_items,
-        'bundle_cart_bundles': bundle_cart_bundles,
         'total': total,
         'grand_total': grand_total,
         'product_count': product_count,

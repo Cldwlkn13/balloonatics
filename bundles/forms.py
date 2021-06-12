@@ -22,8 +22,8 @@ class BundleSelectorForm(forms.Form):
 
     def _load_choices(self, arr, placeholder):
         choices = [(0, placeholder)]
-        for p in arr:
-            choices.append((str(p.id), str(p.name)))
+        for bc in arr:
+            choices.append((str(bc.id), str(bc.name)))
         return choices
 
 

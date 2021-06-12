@@ -18,7 +18,6 @@ def custom_formset_dictionary_parser(requestDictionary):
 
     f = 0
     for k, v in d.items():
-        print(k)
         if 'item_qty' in k:
             s[f]['item_qty'] = v
             f += 1
