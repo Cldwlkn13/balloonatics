@@ -1,4 +1,3 @@
-from bundles.forms import BundleBuilderFormset
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 
@@ -16,9 +15,10 @@ def view_cart(request):
 
 
 def add_product_to_cart(request, item_id):
+    
     product = get_object_or_404(Product, pk=item_id)
     qty = int(request.POST.get('qty'))
-    this_url = request.POST.get('this_url')
+    this_url = request.META['HTTP_REFERER']
 
     if product.qty_held < qty:
         messages.warning(request,
@@ -45,8 +45,9 @@ def add_product_to_cart(request, item_id):
 
 
 def update_product_cart(request, item_id):
+    
     product = get_object_or_404(Product, pk=item_id)
-    path = request.POST.get('this_url')
+    path = request.META['HTTP_REFERER']
     qty = int(request.POST.get('qty'))
 
     if request.POST.get('qty') == '':
@@ -79,6 +80,7 @@ def update_product_cart(request, item_id):
 
 
 def remove_product_from_cart(request, item_id):
+    
     product = get_object_or_404(Product, pk=item_id)
     cart = request.session.get('cart', {})
     this_url = request.META['HTTP_REFERER']
@@ -140,9 +142,53 @@ def add_bundle_to_cart(request):
 
     return redirect('bundle_categories')
 
+def update_bundle_in_cart(request, bundle_id):
+    
+    this_url = request.META['HTTP_REFERER']
+        
+    # lets delete the current items in the bundle and replace them all 
+    BundleItem.objects.filter(
+        bundle__bundle_id=bundle_id).delete()
+
+    my_bundle = get_object_or_404(Bundle, bundle_id=bundle_id)
+
+    reqDict = request.body.decode("utf-8").split('&')
+    bundle_item_dict = custom_formset_dictionary_parser(reqDict)
+
+    for k, item in bundle_item_dict.items(): 
+        print(k)     
+        print(item)
+        if item['product'] != '0':
+            product = Product.objects.get(pk=item['product'])
+            bundle_item = BundleItem(
+                product=product,
+                bundle=my_bundle,
+                item_qty=int(item['item_qty'])
+            )
+            bundle_item.save()
+
+    cart = request.session.get('cart', {})
+    cart[bundle_id] = 1
+    extra_tags = 'render_toast render_preview'
+
+    if 'cart' in this_url:
+        extra_tags = ''
+
+    messages.info(
+        request,
+        f'Updated cart for <strong>{my_bundle.name}</strong>!',
+        extra_tags=extra_tags)
+
+    request.session['cart'] = cart
+    
+    return redirect(this_url)
+
 
 def remove_bundle_from_cart(request, bundle_id):
+    
     bundle = get_object_or_404(Bundle, bundle_id=bundle_id)
+    Bundle.objects.filter(bundle_id=bundle_id).delete()
+
     cart = request.session.get('cart', {})
     this_url = request.META['HTTP_REFERER']
     

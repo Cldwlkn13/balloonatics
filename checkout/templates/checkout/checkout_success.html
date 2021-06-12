@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content %}
-    <div class="container bg-container-dark text-center">
+    <div class="container bg-container-dark text-center pb-5">
         <div class="row">
             <div class="col-8 offset-2">
                 <h4 class="text-success">Order Complete!</h4>
@@ -50,6 +50,15 @@
                     </thead>
                     <tbody>
                         {% for item in order_items %}
+                            {% if item.bundle %}
+                            <tr>
+                                <td>{{ item.bundle.name }}</td>
+                                <td>{{ item.bundle.bundle_id }}</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>€{{ item.item_total }}</td>
+                                <td>€{{ item.item_total }}</td>
+                            </tr>
+                            {% else %}
                             <tr>
                                 <td>{{ item.product.name }}</td>
                                 <td>{{ item.product.id }}</td>
@@ -57,12 +66,13 @@
                                 <td>€{{ item.product.discounted_price }}</td>
                                 <td>€{{ item.item_total }}</td>
                             </tr>
+                            {% endif %}
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
-        <div class="row mb-5">
+        <div class="row">
             <div class="col-10 offset-1 text-left text-light">
                 <h5>Your Order Details</h5>
                 <table class="table border border-light text-light">
@@ -84,7 +94,6 @@
                     </tbody>
                 </table>
             </div>
-
         </div>
     </div>
 {% endblock %}

@@ -48,18 +48,18 @@
                 <div class="row align-items-center p-1 p-lg-2">
                     <div class="col-12 col-md-6 col-lg-3 text-center px-5">
                         {% if item.bundle.image %}
-                        <a href="#">
+                        <a href="{% url 'with_items' item.item_id %}">
                             <img class="img-fluid cart-img rounded-3" src="{{ bundle.image.url }}" alt="{{ bundle.name }}">
                         </a>
                         {% else %}
-                        <a href="#">
+                        <a href="{% url 'with_items' item.item_id %}">
                             <img class="img-fluid cart-img rounded-3" src="{{ MEDIA_URL }}noimage.png" alt="{{ bundle.name }}">
                         </a>
                         {% endif %}
                     </div> 
                     <div class="col-12 col-md-6 col-lg-9">
                         <div class="row p-0 text-center align-items-center">
-                            <div class="col-12 col-lg-2 p-0 py-3 mr-2"><strong>{{ item.bundle.name }}</strong></div>
+                            <div class="col-12 col-lg-2 p-0 py-3 mr-2"><strong><a href="{% url 'with_items' item.item_id %}" class="text-underline text-light">{{ item.bundle.name }}</a></strong></div>
                             <div class="col-12 col-lg-4 p-0 pl-3 py-3 mr-4">
                                 {% for k, v in item.bundle_items.items %}
                                     <p class="mb-1">{{v}} x {{k}}</p>

@@ -14,7 +14,7 @@ def cart_contents(request):
     cart = request.session.get('cart', {})
 
     for i, q in cart.items():
-        if isinstance(i, int):
+        if len(i) < 32:
             item_total = 0
             product = get_object_or_404(Product, pk=i)
             item_total = q * product.discounted_price

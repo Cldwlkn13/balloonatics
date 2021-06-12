@@ -34,7 +34,7 @@
                     {% endif %}
                 </div>
                 <div class="col-5 text-left ml-3 mr-1 p-1">
-                    <p class="my-0"><strong>{{ item.bundle.name }}</strong> x {{ item.qty }}</p>
+                    <p class="my-0"><strong><a href="{% url 'with_items' item.bundle.bundle_id %}" class="text_decoration-none text-dark">{{ item.bundle.name }}</a></strong> x {{ item.qty }}</p>
                 </div>
                 <div class="col-1 offset-1 ml-0 text-right">
                     <a href="{% url 'remove_bundle_from_cart' item.item_id %}">

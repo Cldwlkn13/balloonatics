@@ -7,6 +7,7 @@ from decimal import Decimal
 
 from products.models import Product
 from profiles.models import UserProfile
+from bundles.models import Bundle
 
 import uuid
 
@@ -111,9 +112,11 @@ class OrderItem(models.Model):
                                 on_delete=models.CASCADE)
     order_item_id = models.CharField(max_length=32, null=False, editable=False)
     quantity = models.IntegerField(null=False, blank=False, default=0)
-    item_total = models.DecimalField(
-        max_digits=6, decimal_places=2,
+    item_total = models.DecimalField(max_digits=6, decimal_places=2,
         null=False, default=0.00, editable=False)
+    bundle = models.ForeignKey(Bundle, null=True, blank=True,
+                              on_delete=models.SET_NULL,
+                              related_name='bundle')
 
     def __str__(self):
         return self.order_item_id

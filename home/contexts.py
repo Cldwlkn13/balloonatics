@@ -11,15 +11,16 @@ def menu_context(request):
     for c in categories:
         sub_category_pks = []
         matching_sub_categories = Product.objects.filter(
-            category__name=c.name).distinct().values('sub_category')
+            category__name=c.name).exclude(
+                category__name='custom').distinct().values('sub_category')
 
-        sub_category_pks = []
         for msc in matching_sub_categories:
             for v in msc.values():
                 sub_category_pks.append(v)
 
         sub_categories_q = list(Sub_Category.objects.filter(
-            id__in=sub_category_pks).values('name'))
+            id__in=sub_category_pks).exclude(
+                name='custom').values('name'))
 
         sub_categories = []
         for sc in sub_categories_q:

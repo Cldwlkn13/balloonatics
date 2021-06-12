@@ -49,11 +49,16 @@
                             <p>€{{ bundle.total_cost }}</p>
                         </div>
                     </div>
-                    <div class="row mt-2 mb-5">
-                        <div class="col-10 offset-1 text-center">
-                            <button type="submit" class="btn btn-warning text-uppercase"><i class="fas fa-shopping-cart"></i> add bundle to cart</button>
+                    
+                        <div class="row mt-2 mb-5">
+                            <div class="col-10 offset-1 text-center">
+                                {% if not bundle.custom %}
+                                    <button type="submit" class="btn btn-warning text-uppercase"><i class="fas fa-shopping-cart"></i> add bundle to cart</button>
+                                {% else %}
+                                    <button type="submit" formaction="{% url 'update_bundle_in_cart' bundle.bundle_id %}" class="btn btn-warning text-uppercase"><i class="fas fa-shopping-cart"></i> update bundle</button>
+                                {% endif %}
+                            </div>
                         </div>
-                    </div>
                     <input type="hidden" name="orig_bundle_pk" value="{{ bundle.pk }}">
                 </form>
             </div>

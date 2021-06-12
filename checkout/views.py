@@ -6,9 +6,10 @@ from django.views.decorators.http import require_POST
 
 from .forms import OrderForm, AddressForm
 from .models import Order, OrderItem, Address
-from products.models import Product
+from products.models import Category, Product, Sub_Category
 from profiles.models import UserProfile
 from profiles.forms import ProfileForm
+from bundles.models import Bundle, BundleItem
 from cart.contexts import cart_contents
 
 import stripe
@@ -43,7 +44,6 @@ def checkout(request):
     stripe_secret_key = settings.STRIPE_SECRET_KEY
 
     cart = request.session.get('cart', {})
-    bundle_cart = request.session.get('bundle_cart', {})
 
     if request.method == 'POST':
         address_form_data = {
@@ -83,13 +83,37 @@ def checkout(request):
             order.save()
             for item_id, item_data in cart.items():
                 try:
-                    product = Product.objects.get(id=item_id)
-                    order_item = OrderItem(order=order,
-                                           product=product,
-                                           quantity=item_data)
-                    product.qty_held -= item_data
-                    product.save()
-                    order_item.save()
+                    if len(item_id) < 32:
+                        product = Product.objects.get(id=item_id)
+                        order_item = OrderItem(order=order,
+                                            product=product,
+                                            quantity=item_data)
+                        product.qty_held -= item_data
+                        product.save()
+                        order_item.save()
+                    else:
+                        bundle = Bundle.objects.get(bundle_id=item_id)
+                        bundle_items = list(BundleItem.objects.filter(
+                            bundle__bundle_id=item_id))
+                        for item in bundle_items:
+                            item.product.qty_held -= item.item_qty
+
+                        bundle_product = Product(
+                            name='My Custom Bundle ' + item_id,
+                            category=Category.objects.get(name='custom'),
+                            sub_category=Sub_Category.objects.get(name='custom'),
+                            price=bundle.total_cost,
+                            discounted_price=bundle.total_cost,
+                            qty_held=0,
+                            is_bundle_product=True
+                        )
+                        bundle_product.save()
+                        order_item = OrderItem(order=order,
+                                            product=bundle_product,
+                                            quantity=item_data,
+                                            bundle=bundle)
+                        order_item.save()
+
                 except Product.DoesNotExist:
                     messages.error(
                         request,

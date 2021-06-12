@@ -4,7 +4,8 @@ from django.template.loader import render_to_string
 from django.conf import settings
 from datetime import datetime, timedelta, timezone
 
-from products.models import Product
+from products.models import Product, Category, Sub_Category
+from bundles.models import Bundle, BundleItem
 from .models import Order, OrderItem, Address
 from profiles.models import UserProfile
 
@@ -130,16 +131,39 @@ class StripeWH_Handler:
                     stripe_pid=pid
                 )
                 for item_id, item_data in json.loads(cart).items():
-                    product = Product.objects.get(id=item_id)
-                    order_item = OrderItem(
-                        order=order,
-                        product=product,
-                        quantity=item_data
-                    )
-                    product.qty_held -= item_data
-                    product.save()
-                    order_item.save()
-                    
+                    if len(item_id) < 32:
+                        product = Product.objects.get(id=item_id)
+                        order_item = OrderItem(
+                            order=order,
+                            product=product,
+                            quantity=item_data
+                        )
+                        product.qty_held -= item_data
+                        product.save()
+                        order_item.save()
+                    else:
+                        bundle = Bundle.objects.get(bundle_id=item_id)
+                        bundle_items = list(BundleItem.objects.filter(
+                            bundle__bundle_id=item_id))
+                        for item in bundle_items:
+                            item.product.qty_held -= item.item_qty
+
+                        bundle_product = Product(
+                            name='My Custom Bundle ' + item_id,
+                            category=Category.objects.get(name='custom'),
+                            sub_category=Sub_Category.objects.get(name='custom'),
+                            price=bundle.total_cost,
+                            discounted_price=bundle.total_cost,
+                            qty_held=0,
+                            is_bundle_product=True
+                        )
+                        bundle_product.save()
+                        order_item = OrderItem(order=order,
+                                            product=bundle_product,
+                                            quantity=item_data,
+                                            bundle=bundle)
+                        order_item.save()
+         
             except Exception as e:
                 if order:
                     order.delete()
