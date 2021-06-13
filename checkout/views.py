@@ -95,22 +95,11 @@ def checkout(request):
                         bundle = Bundle.objects.get(bundle_id=item_id)
                         bundle_items = list(BundleItem.objects.filter(
                             bundle__bundle_id=item_id))
+                        print(bundle_items)
                         for item in bundle_items:
                             item.product.qty_held -= item.item_qty
 
-                        '''
-                        bundle_product = Product(
-                            name='My Custom Bundle ' + item_id,
-                            category=Category.objects.get(name='custom'),
-                            sub_category=Sub_Category.objects.get(name='custom'),
-                            price=bundle.total_cost,
-                            discounted_price=bundle.total_cost,
-                            qty_held=0,
-                            is_bundle_product=True
-                        )
-                        bundle_product.save()'''
                         order_item = OrderItem(order=order,
-                                            #product=bundle_product,
                                             quantity=item_data,
                                             bundle=bundle)
                         order_item.save()

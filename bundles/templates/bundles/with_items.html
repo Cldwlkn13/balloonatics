@@ -50,7 +50,7 @@
                     <div class="row mt-4">
                         <div class="col-6 offset-3 text-center">
                             <span class="text-muted">total price:</span>
-                            <span id="bundle-total-price">€{{ bundle.total_cost }}</span>
+                            <span id="bundle-total-price">€{{ bundle.total_cost|floatformat:2 }}</span>
                         </div>
                     </div>
                         <div class="row mt-2 mb-5">
@@ -181,6 +181,10 @@
         $('.remove-form').on('click', function(e) {
             var i = $(this).attr('id').split('-')[1];
             removeRow(i);
+            updateBundlePrice(function(output){
+                var html = `€${output}`
+                $('#bundle-total-price').text(html);
+            });
         });
     });
 </script>

@@ -50,6 +50,8 @@ class Bundle(models.Model):
             Sum('item_cost'))['item_cost__sum'] or 0
         self.save()
 
+    
+
 
 class BundleItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE,

@@ -15,7 +15,7 @@ def view_cart(request):
 
 
 def add_product_to_cart(request, item_id):
-    
+      
     product = get_object_or_404(Product, pk=item_id)
     qty = int(request.POST.get('qty'))
     this_url = request.META['HTTP_REFERER']
@@ -47,12 +47,12 @@ def add_product_to_cart(request, item_id):
 def update_product_cart(request, item_id):
     
     product = get_object_or_404(Product, pk=item_id)
-    path = request.META['HTTP_REFERER']
+    this_url = request.META['HTTP_REFERER']
     qty = int(request.POST.get('qty'))
 
     if request.POST.get('qty') == '':
         messages.error(request, 'Invalid quantity', '')
-        return redirect(path)
+        return redirect(this_url)
 
     if product.qty_held < qty:
         messages.warning(request,
@@ -67,7 +67,7 @@ def update_product_cart(request, item_id):
     cart[item_id] = qty
     extra_tags = 'render_toast render_preview'
 
-    if 'cart' in path:
+    if 'cart' in this_url:
         extra_tags = ''
 
     messages.info(
@@ -76,7 +76,7 @@ def update_product_cart(request, item_id):
         extra_tags=extra_tags)
 
     request.session['cart'] = cart
-    return redirect(path)
+    return redirect(this_url)
 
 
 def remove_product_from_cart(request, item_id):
@@ -102,6 +102,7 @@ def remove_product_from_cart(request, item_id):
 
 def add_bundle_to_cart(request):
     
+    this_url = request.META['HTTP_REFERER']
     cart = request.session.get('cart', {})
 
     orig_bundle_pk = int(request.POST.get('orig_bundle_pk'))
@@ -121,15 +122,15 @@ def add_bundle_to_cart(request):
     # get the customised bundle items of the request
     reqDict = request.body.decode("utf-8").split('&')
     bundle_item_dict = custom_formset_dictionary_parser(reqDict)
-    for k, item in bundle_item_dict.items():
-        if item['product'] != '0':
-            product = Product.objects.get(pk=item['product'])
-            bundle_item = BundleItem(
-                product=product,
-                bundle=my_bundle,
-                item_qty=int(item['item_qty'])
-            )
-            bundle_item.save()
+
+    canProcess = validate_bundle_item_qty(bundle_item_dict)
+    if not canProcess[0]:
+        messages.error(request, 
+                    getCannotProcessMessage(canProcess[1]),
+                    extra_tags='render_toast')
+        return redirect(this_url)
+
+    save_bundle_items(bundle_item_dict, my_bundle)
     
     cart[my_bundle_id] = 1 # handle qtys here
 
@@ -145,27 +146,23 @@ def add_bundle_to_cart(request):
 def update_bundle_in_cart(request, bundle_id):
     
     this_url = request.META['HTTP_REFERER']
-        
-    # lets delete the current items in the bundle and replace them all 
-    BundleItem.objects.filter(
-        bundle__bundle_id=bundle_id).delete()
-
     my_bundle = get_object_or_404(Bundle, bundle_id=bundle_id)
 
     reqDict = request.body.decode("utf-8").split('&')
     bundle_item_dict = custom_formset_dictionary_parser(reqDict)
+  
+    canProcess = validate_bundle_item_qty(bundle_item_dict)
+    if not canProcess[0]:
+        messages.error(request, 
+                    getCannotProcessMessage(canProcess[1]),
+                    extra_tags='render_toast')
+        return redirect(this_url)
 
-    for k, item in bundle_item_dict.items(): 
-        print(k)     
-        print(item)
-        if item['product'] != '0':
-            product = Product.objects.get(pk=item['product'])
-            bundle_item = BundleItem(
-                product=product,
-                bundle=my_bundle,
-                item_qty=int(item['item_qty'])
-            )
-            bundle_item.save()
+    # if canProcess the update then lets delete the current items in the bundle and replace them all 
+    BundleItem.objects.filter(
+        bundle__bundle_id=bundle_id).delete()
+    
+    save_bundle_items(bundle_item_dict, my_bundle)
 
     cart = request.session.get('cart', {})
     cart[bundle_id] = 1
@@ -207,6 +204,46 @@ def remove_bundle_from_cart(request, bundle_id):
     request.session['cart'] = cart
     
     return redirect(this_url)
+
+
+def validate_bundle_item_qty(bundle_item_dict):
+    for k, item in bundle_item_dict.items(): 
+        if item['product'] != '0':
+            product = Product.objects.get(pk=item['product'])
+            if int(item['item_qty']) > product.qty_held:
+                return [False, product]
+    return [True, ]
+
+
+def save_bundle_items(bundle_item_dict, my_bundle):
+    for k, item in bundle_item_dict.items():
+        if item['product'] != '0':
+            product = Product.objects.get(pk=item['product'])
+            bundle_item = BundleItem(
+                product=product,
+                bundle=my_bundle,
+                item_qty=int(item['item_qty'])
+            )
+            bundle_item.save()
+
+
+def getCannotProcessMessage(product):
+    msg = ''
+    if product.qty_held == 0:
+        msg = f'''
+        Sorry! We could not update your bundle. 
+        We currently have no item <strong>{ product.name }</strong> 
+        in stock!
+        Please replace with another product.'''
+    else:
+        msg = f'''
+        Sorry! We could not update your bundle. 
+        The qty of item <strong>{ product.name }</strong> 
+        is too high! 
+        We only have { product.qty_held } in stock.'''
+        
+    return msg
+            
 
 
 

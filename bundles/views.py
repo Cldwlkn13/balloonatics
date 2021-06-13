@@ -1,13 +1,13 @@
-from django.shortcuts import (render, HttpResponse,
-                              reverse, redirect)
+from django.shortcuts import (render,reverse, redirect)
+from django.core.validators import MaxValueValidator
+from django.contrib import messages
+from django.forms import formset_factory
+from django.db.models import Sum
 
 from .models import Bundle, BundleItem
 from .forms import BundleSelectorForm, BundleBuilderForm
-from products.models import Product
-from cart.helpers import custom_formset_dictionary_parser
-from django.forms import formset_factory
 
-from decimal import Decimal
+from products.models import Product
 
 
 def bundle_categories(request):
@@ -45,15 +45,22 @@ def bundles(request):
 
 
 def with_items(request, bundle_id):
-    if request.method == 'POST':
 
-        context = {}
-        
-        return render(request, 'bundles/with_items.html', context)
+    bundle_items = BundleItem.objects.filter(
+        bundle__bundle_id=bundle_id)
 
-    bundle = Bundle.objects.get(bundle_id=bundle_id)
-    bundle_items = list(BundleItem.objects.filter(
-        bundle__bundle_id=bundle_id))
+    if not bundle_items:
+        messages.error(request, 
+                      'Could not retrieve bundle items',
+                      extra_tags='render_toast')
+        return redirect(reverse('bundle_categories'))
+
+    adjusted_bundle = validate_bundle_items(bundle_items)
+    bundle_items = adjusted_bundle[0]
+    adj_total_cost = adjusted_bundle[1]
+
+    bundle = bundle_items[0].bundle
+    bundle.total_cost = adj_total_cost
     
     BundleBuilderFormset = formset_factory(
         BundleBuilderForm, extra=0)
@@ -72,24 +79,17 @@ def with_items(request, bundle_id):
     return render(request, 'bundles/with_items.html', context)
 
 
-def serve_image(request, product_id):
-    product = Product.objects.get(pk=product_id)
-    
-    if not product:
-        return HttpResponse(content='../media/noimage.png', status=400)
-
-    return HttpResponse(content=product.image.url, status=200)
-
-
-def get_total_price(request):
-    reqDict = request.body.decode("utf-8").split('&')
-    bundle_item_dict = custom_formset_dictionary_parser(reqDict)
+def validate_bundle_items(bundle_items):
     total = 0
-    for item in bundle_item_dict.values():
-        if not item['product'] == '0':
-            product = Product.objects.get(
-                pk=item['product'])
-            item_total = Decimal(item['item_qty']) * product.discounted_price
-            total += item_total
+    for item in bundle_items:
+        product = Product.objects.get(pk=item.product.id)
+        qty_held = product.qty_held
+        if item.item_qty > qty_held:
+            item.item_qty = qty_held
+            item.item_cost = product.discounted_price * item.item_qty
+        total += item.item_cost
+    
+    return [bundle_items, total]
 
-    return HttpResponse(content=total, status=200)
+
+
