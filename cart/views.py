@@ -76,6 +76,7 @@ def update_product_cart(request, item_id):
         extra_tags=extra_tags)
 
     request.session['cart'] = cart
+
     return redirect(this_url)
 
 
@@ -97,42 +98,59 @@ def remove_product_from_cart(request, item_id):
             extra_tags=extra_tags)
 
     request.session['cart'] = cart
+
     return redirect(this_url)
 
 
 def add_bundle_to_cart(request):
     
-    this_url = request.META['HTTP_REFERER']
+    # get referring url for redirect
+    referred_from = request.META['HTTP_REFERER']
+    
+    # load the cart from the session
     cart = request.session.get('cart', {})
 
+    # load the template bundles
     orig_bundle_pk = int(request.POST.get('orig_bundle_pk'))
     orig_bundle = get_object_or_404(Bundle, pk=orig_bundle_pk)
 
-    # generate new bundle for this instance
-    my_bundle_id = uuid.uuid4().hex.upper() 
-    my_bundle = Bundle(
-        bundle_id=my_bundle_id,
+    # generate new 'customised' bundle for this instance
+    custom_bundle_id = uuid.uuid4().hex.upper() 
+    custom_bundle = Bundle(
+        bundle_id=custom_bundle_id,
         name='My Custom ' + orig_bundle.name,
         image=orig_bundle.image,
         category=BundleCategory.objects.get(name='custom'),
         custom=True,
     )
-    my_bundle.save()
+    custom_bundle.save()
 
     # get the customised bundle items of the request
-    reqDict = request.body.decode("utf-8").split('&')
-    bundle_item_dict = custom_formset_dictionary_parser(reqDict)
+    bundle_item_dict = get_bundle_item_dictionary(request.body)
 
-    canProcess = validate_bundle_item_qty(bundle_item_dict)
-    if not canProcess[0]:
+    # validate the products in the bundle
+    validated_products = validate_bundle_item_products(bundle_item_dict)
+    if not validated_products['is_valid']:
         messages.error(request, 
-                    getCannotProcessMessage(canProcess[1]),
+                    getCannotProcessMessageProducts(
+                        validated_products['product']),
                     extra_tags='render_toast')
-        return redirect(this_url)
+        return redirect(referred_from)
 
-    save_bundle_items(bundle_item_dict, my_bundle)
-    
-    cart[my_bundle_id] = 1 # handle qtys here
+    # validate the item qtys in the bundle
+    validated = validate_bundle_item_qtys(bundle_item_dict)  
+    if not validated['is_valid']:
+        messages.error(request, 
+                    getCannotProcessMessageQtys(
+                        validated['product']),
+                    extra_tags='render_toast')
+        return redirect(referred_from)
+
+    # if bundle is valid save the items
+    save_bundle_items(bundle_item_dict, custom_bundle)
+
+    # add to the cart
+    cart[custom_bundle_id] = 1 # handle qtys here
 
     messages.success(
         request,
@@ -143,57 +161,82 @@ def add_bundle_to_cart(request):
 
     return redirect('bundle_categories')
 
+
 def update_bundle_in_cart(request, bundle_id):
+
+    # get referring url for redirect
+    referred_from = request.META['HTTP_REFERER']
     
-    this_url = request.META['HTTP_REFERER']
-    my_bundle = get_object_or_404(Bundle, bundle_id=bundle_id)
+    # load the cart from the session
+    cart = request.session.get('cart', {})  
 
-    reqDict = request.body.decode("utf-8").split('&')
-    bundle_item_dict = custom_formset_dictionary_parser(reqDict)
+    # load the bundle to update
+    bundle = get_object_or_404(Bundle, bundle_id=bundle_id)
+    
+    # get the customised bundle items of the request
+    bundle_item_dict = get_bundle_item_dictionary(request.body)
   
-    canProcess = validate_bundle_item_qty(bundle_item_dict)
-    if not canProcess[0]:
+    # validate the products in the bundle
+    validated_products = validate_bundle_item_products(bundle_item_dict)
+    if not validated_products['is_valid']:
         messages.error(request, 
-                    getCannotProcessMessage(canProcess[1]),
+                    getCannotProcessMessageProducts(
+                        validated_products['product']),
                     extra_tags='render_toast')
-        return redirect(this_url)
+        return redirect(referred_from)
 
-    # if canProcess the update then lets delete the current items in the bundle and replace them all 
+    # validate the products in the bundle
+    validated_qtys = validate_bundle_item_qtys(bundle_item_dict)
+    if not validated_qtys['is_valid']:
+        messages.error(request, 
+                    getCannotProcessMessageQtys(validated_qtys['product']),
+                    extra_tags='render_toast')
+        return redirect(referred_from)
+
+    # if updated bundle is valid then lets delete the current items 
+    # in the bundle and replace them all 
     BundleItem.objects.filter(
         bundle__bundle_id=bundle_id).delete()
-    
-    save_bundle_items(bundle_item_dict, my_bundle)
+    save_bundle_items(bundle_item_dict, bundle)
 
-    cart = request.session.get('cart', {})
+    # update the cart
     cart[bundle_id] = 1
-    extra_tags = 'render_toast render_preview'
 
-    if 'cart' in this_url:
+    # if we are already in the cart view don't show toast
+    extra_tags = 'render_toast render_preview'
+    if 'cart' in referred_from:
         extra_tags = ''
 
     messages.info(
         request,
-        f'Updated cart for <strong>{my_bundle.name}</strong>!',
+        f'Updated cart for <strong>{bundle.name}</strong>!',
         extra_tags=extra_tags)
 
     request.session['cart'] = cart
     
-    return redirect(this_url)
+    return redirect(referred_from)
 
 
 def remove_bundle_from_cart(request, bundle_id):
     
-    bundle = get_object_or_404(Bundle, bundle_id=bundle_id)
-    Bundle.objects.filter(bundle_id=bundle_id).delete()
-
-    cart = request.session.get('cart', {})
-    this_url = request.META['HTTP_REFERER']
+    # get referring url for redirect
+    referred_from = request.META['HTTP_REFERER']
     
-    extra_tags = 'render_toast render_preview'
+    # load the cart from the session
+    cart = request.session.get('cart', {})
+    
+    # load the bundle to delete
+    bundle = get_object_or_404(Bundle, bundle_id=bundle_id)
 
-    if 'cart' in this_url:
+    # delete the 'customised' bundle as we no longer want it
+    Bundle.objects.filter(bundle_id=bundle_id).delete()
+    
+    # if we are already in the cart view don't show toast
+    extra_tags = 'render_toast render_preview'
+    if 'cart' in referred_from:
         extra_tags = ''
 
+    # remove the item from the cart
     if bundle_id in cart:
         cart.pop(bundle_id)
         messages.info(
@@ -203,38 +246,77 @@ def remove_bundle_from_cart(request, bundle_id):
 
     request.session['cart'] = cart
     
-    return redirect(this_url)
+    return redirect(referred_from)
 
 
-def validate_bundle_item_qty(bundle_item_dict):
+''' helper functions '''
+
+
+def validate_bundle_item_products(bundle_item_dict):
+    product_ids = []
+    valid = False
     for k, item in bundle_item_dict.items(): 
         if item['product'] != '0':
             product = Product.objects.get(pk=item['product'])
-            if int(item['item_qty']) > product.qty_held:
-                return [False, product]
-    return [True, ]
+            if product.id in product_ids:
+                return { 'is_valid': False, 'product': product }
+            product_ids.append(product.id)
+            valid = True # set when at least one item valid (i.e. cannot validate 0 bundle items) 
+    return {'is_valid': valid, 'product': None }
 
 
-def save_bundle_items(bundle_item_dict, my_bundle):
+def validate_bundle_item_qtys(bundle_item_dict):
+    for k, item in bundle_item_dict.items(): 
+        if item['product'] != '0':
+            product = Product.objects.get(pk=item['product'])
+            if (int(item['item_qty']) > product.qty_held or 
+                int(item['item_qty']) == 0):
+                return { 'is_valid': False, 'product': product }
+    return { 'is_valid': True }
+
+
+def save_bundle_items(bundle_item_dict, bundle): 
     for k, item in bundle_item_dict.items():
         if item['product'] != '0':
             product = Product.objects.get(pk=item['product'])
             bundle_item = BundleItem(
                 product=product,
-                bundle=my_bundle,
+                bundle=bundle,
                 item_qty=int(item['item_qty'])
             )
             bundle_item.save()
 
 
-def getCannotProcessMessage(product):
+def get_bundle_item_dictionary(request_body):
+    requestDictionary = request_body.decode("utf-8").split('&')
+    return custom_formset_dictionary_parser(requestDictionary)
+
+
+def getCannotProcessMessageProducts(product):
+    msg = ''
+    if product: 
+        msg = f'''
+            Invalid configuration of products, 
+            more than one {product.name} 
+            present in the bundle. 
+            Please adjust your selections.
+            '''
+    else:
+        msg = f'''
+            No valid products in your bundle. 
+            Please try again.
+            '''
+    return msg
+
+
+def getCannotProcessMessageQtys(product):
     msg = ''
     if product.qty_held == 0:
         msg = f'''
         Sorry! We could not update your bundle. 
         We currently have no item <strong>{ product.name }</strong> 
         in stock!
-        Please replace with another product.'''
+        Please replace it with an alternative product.'''
     else:
         msg = f'''
         Sorry! We could not update your bundle. 

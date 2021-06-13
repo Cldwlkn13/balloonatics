@@ -6,7 +6,8 @@ from django.views.decorators.http import require_POST
 
 from .forms import OrderForm, AddressForm
 from .models import Order, OrderItem, Address
-from products.models import Category, Product, Sub_Category
+
+from products.models import Product
 from profiles.models import UserProfile
 from profiles.forms import ProfileForm
 from bundles.models import Bundle, BundleItem
@@ -95,9 +96,9 @@ def checkout(request):
                         bundle = Bundle.objects.get(bundle_id=item_id)
                         bundle_items = list(BundleItem.objects.filter(
                             bundle__bundle_id=item_id))
-                        print(bundle_items)
                         for item in bundle_items:
                             item.product.qty_held -= item.item_qty
+                            item.product.save()
 
                         order_item = OrderItem(order=order,
                                             quantity=item_data,

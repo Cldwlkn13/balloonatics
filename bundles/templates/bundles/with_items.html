@@ -78,6 +78,13 @@
             }, this.value);
         });
 
+        // on load toggle the row on the validity of the loaded value in the select 
+        // e.g. when bundle loads and item has 0 qty_held we dont't want to see it 
+        $('#item-formset').find('.formset-row').each(function(index) {
+            $(this).toggle($('#formset-row-' + index).find('select').first().prop('selectedIndex') != 0);
+        });
+
+        // on load toggle the img displayed on the validity of the loaded value in the select
         $('#item-formset').find('img').each(function(index) {
             $(this).toggle($('#formset-row-' + index).find('select').first().prop('selectedIndex') != 0);
         });

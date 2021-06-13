@@ -10,6 +10,9 @@
         <div class="row">
             <div class="col-8 offset-2">
                 <h4>Checkout</h4>
+                <div class="div">
+                    <a href="{% url 'view_cart' %}" class="btn btn-warning text-uppercase my-1"><i class="fas fa-chevron-left"></i> back to cart</a>
+                </div>
             </div>
         </div>
         <hr class="bg-light">
@@ -67,7 +70,6 @@
 						</span>
 					<span>Your card will be charged <strong>${{ grand_total|floatformat:2 }}</strong></span>
                 </p>
-                <a href="{% url 'view_cart' %}" class="btn btn-warning text-uppercase my-5"><i class="fas fa-chevron-left"></i>&nbsp back to cart</a>
             </div>
             <div class="col-12 col-lg-6 p-5">
                 <h6>Your Order Summary</h6>
@@ -113,6 +115,8 @@
                 {% endfor%}
                 <div class="row mt-5">
                     <div class="col-12 col-lg-2 offset-lg-10 text-center">
+                        <p class="text-muted mb-0">Items Total</p>
+                        <p>€{{ total }}</p>
                         <p class="text-muted mb-0">Delivery Charges</p>
                         <p>€{{ delivery }}</p>
                         <h6 class="text-muted text-center mt-3">Grand Total </h6>

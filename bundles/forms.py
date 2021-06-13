@@ -38,7 +38,8 @@ class BundleBuilderForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs) 
         products = Product.objects.filter(
-            qty_held__gte=0).exclude(
+            qty_held__gt=0)
+        products = products.exclude(
                 is_bundle_product=True)
         product_names = [(p.id, p.name) for p in products]
         product_names.insert(0, (0, 'Select a product...'))
