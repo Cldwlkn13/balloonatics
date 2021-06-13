@@ -150,7 +150,7 @@ a.nav-link:hover {
 }
 
 .cart-notification-wrapper {
-    max-height: 50vh;
+    max-height: 75vh;
     overflow-y: auto;
     overflow-x: hidden;
 }

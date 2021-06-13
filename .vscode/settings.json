@@ -19,7 +19,7 @@
       "**/core.python*": true,
       "**/CVS": true
    },
-   "files.autoSave": "afterDelay",
+   "files.autoSave": "off",
    "workbench.colorTheme": "Solarized Dark",
 "editor.defaultFormatter": "HookyQR.beautify",
 "editor.autoSave": "off",

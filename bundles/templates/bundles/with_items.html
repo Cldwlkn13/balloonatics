@@ -42,14 +42,15 @@
                         </div>
                     {% endfor %}
                     <div class="col-6 offset-5 text-right mt-2 pr-0">
-                        <a href="#" class="btn btn-warning add-form mb-3"><i class="fas fa-plus"></i> add product</a>
+                        <a href="#" class="btn btn-info add-form mb-3"><i class="fas fa-plus"></i> add product</a>
                     </div>
                     <div class="col-12">
                         <hr class="bg-light">
                     </div>
                     <div class="row mt-4">
                         <div class="col-6 offset-3 text-center">
-                            <p><span class="text-muted">total price:</span> €{{ bundle.total_cost }}</p>
+                            <span class="text-muted">total price:</span>
+                            <span id="bundle-total-price">€{{ bundle.total_cost }}</span>
                         </div>
                     </div>
                         <div class="row mt-2 mb-5">
@@ -90,6 +91,20 @@
                     $('#img-' + selected).attr("src", output);
                 }, this.value);
             }
+            updateBundlePrice(function(output){
+                var html = `€${output}`
+                $('#bundle-total-price').text(html);
+            });
+        });
+
+        $('#item-formset').find('input').on('change', function(e)  {
+            if($(this).val() < 1) {
+                $(this).val(1);
+            }
+            updateBundlePrice(function(output){
+                var html = `€${output}`
+                $('#bundle-total-price').text(html);
+            });
         });
 
         function getImage(handleData, p_id) {
@@ -98,6 +113,23 @@
             }
             $.get({
                 url: '/bundle/serveimage/' + p_id,
+                success: function (response) {              
+                    handleData(response);
+                },
+                error: function () {
+                    handleData(response);
+                }
+            });
+        }
+
+        function updateBundlePrice(handleData) {
+            var form = $('#item-formset')
+            var data = $(form).serialize();
+            var url = '/bundle/gettotalprice/'
+
+            $.post({
+                url: url,
+                data: data,
                 success: function (response) {              
                     handleData(response);
                 },
@@ -150,7 +182,6 @@
             var i = $(this).attr('id').split('-')[1];
             removeRow(i);
         });
-
     });
 </script>
 {% endblock %}
