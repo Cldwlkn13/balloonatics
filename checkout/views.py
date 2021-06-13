@@ -98,6 +98,7 @@ def checkout(request):
                         for item in bundle_items:
                             item.product.qty_held -= item.item_qty
 
+                        '''
                         bundle_product = Product(
                             name='My Custom Bundle ' + item_id,
                             category=Category.objects.get(name='custom'),
@@ -107,9 +108,9 @@ def checkout(request):
                             qty_held=0,
                             is_bundle_product=True
                         )
-                        bundle_product.save()
+                        bundle_product.save()'''
                         order_item = OrderItem(order=order,
-                                            product=bundle_product,
+                                            #product=bundle_product,
                                             quantity=item_data,
                                             bundle=bundle)
                         order_item.save()
@@ -186,11 +187,23 @@ def checkout(request):
 
 def checkout_success(request, order_id):
     order = None
-    order_items = None
+    order_items_of_product = None
+    order_items_of_bundle = None
 
     try:
         order = list(Order.objects.filter(order_id=order_id))[0]
-        order_items = list(OrderItem.objects.filter(order__order_id=order_id))
+        order_items_of_product = list(OrderItem.objects.filter(
+            order__order_id=order_id, product__isnull=False))
+        order_items_of_bundle = list(OrderItem.objects.filter(
+            order__order_id=order_id, bundle__isnull=False))
+
+        order_bundles = {}
+        for order_item in order_items_of_bundle:
+            bundle = Bundle.objects.get(bundle_id=order_item.bundle.bundle_id)
+            bundle_items = list(BundleItem.objects.filter(
+                bundle__bundle_id=bundle.bundle_id))
+            order_bundles[bundle] = bundle_items
+              
     except Exception:
         messages.error(request,
                        'Could not confirm success of your Order '
@@ -226,7 +239,8 @@ def checkout_success(request, order_id):
 
         context = {
             'order': order,
-            'order_items': order_items
+            'order_items': order_items_of_product,
+            'order_bundles': order_bundles,
         }
 
         return render(request, 'checkout/checkout_success.html', context)

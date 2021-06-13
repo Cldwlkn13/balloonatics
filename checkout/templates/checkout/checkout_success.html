@@ -37,6 +37,7 @@
                 </table>
             </div>
         </div>
+        {% if order_items %}
         <div class="row mb-5">
             <div class="col-10 offset-1 text-left text-light">
                 <h5>Your Items</h5>
@@ -50,15 +51,6 @@
                     </thead>
                     <tbody>
                         {% for item in order_items %}
-                            {% if item.bundle %}
-                            <tr>
-                                <td>{{ item.bundle.name }}</td>
-                                <td>{{ item.bundle.bundle_id }}</td>
-                                <td>{{ item.quantity }}</td>
-                                <td>€{{ item.item_total }}</td>
-                                <td>€{{ item.item_total }}</td>
-                            </tr>
-                            {% else %}
                             <tr>
                                 <td>{{ item.product.name }}</td>
                                 <td>{{ item.product.id }}</td>
@@ -66,12 +58,43 @@
                                 <td>€{{ item.product.discounted_price }}</td>
                                 <td>€{{ item.item_total }}</td>
                             </tr>
-                            {% endif %}
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
+        {% endif %}
+        {% if order_bundles %}
+        <div class="row mb-5">
+            <div class="col-10 offset-1 text-left text-light">
+                <h5>Your Bundles</h5>
+                {% for bundle, items in order_bundles.items %}
+                <table class="table border border-light text-light">
+                    <thead class="bg-info">
+                        <th>name</th>
+                        <th>id</th>
+                        <th>qty</th>
+                        <th>items</th>
+                        <th>total price</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ bundle.name }}</td>
+                            <td>{{ bundle.bundle_id }}</td>
+                            <td>1</td>
+                            <td>
+                                {% for item in items %}
+                                    <p class="m-0">{{ item.item_qty }} x {{ item.product.name}}</p>
+                                {% endfor %}
+                            </td>
+                            <td>€{{ bundle.total_cost }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
         <div class="row">
             <div class="col-10 offset-1 text-left text-light">
                 <h5>Your Order Details</h5>

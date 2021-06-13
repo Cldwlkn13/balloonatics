@@ -108,7 +108,7 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order, null=False, blank=True,
                               on_delete=models.CASCADE,
                               related_name='order_items')
-    product = models.ForeignKey(Product, null=False, blank=True,
+    product = models.ForeignKey(Product, null=True, blank=True,
                                 on_delete=models.CASCADE)
     order_item_id = models.CharField(max_length=32, null=False, editable=False)
     quantity = models.IntegerField(null=False, blank=False, default=0)
@@ -127,7 +127,13 @@ class OrderItem(models.Model):
     def save(self, *args, **kwargs):
         if not self.order_item_id:
             self.order_item_id = self._generate_order_number()
-        self.item_total = (
-            self.product.discounted_price * self.quantity)
+        if self.product:
+            self.item_total = (
+                self.product.discounted_price * self.quantity)
+        elif self.bundle:
+            self.item_total = (
+                self.bundle.total_cost * self.quantity)
+        else:
+            item_total = 0.00
         super().save(*args, **kwargs)
 

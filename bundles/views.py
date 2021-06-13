@@ -57,8 +57,8 @@ def with_items(request, bundle_id):
     
     formset = BundleBuilderFormset(
         initial=[{
-            'product': item.product.pk, 
-            'item_qty': item.item_qty 
+                'product': item.product.pk, 
+                'item_qty': item.item_qty 
             } for item in bundle_items])
 
     context = {
