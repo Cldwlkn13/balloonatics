@@ -12,6 +12,7 @@ class ProductAdmin(admin.ModelAdmin):
         'sub_category',
         'material',
         'price',
+        'qty_held',
     )
 
 
