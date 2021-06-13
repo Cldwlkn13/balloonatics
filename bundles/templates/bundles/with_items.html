@@ -16,40 +16,42 @@
         <div class="col-12">
             <hr class="bg-light">
         </div>
-        <div class="row mt-5">
+        <div class="row mt-md-5">
             <div class="col-10 offset-1">
                 <form action="{% url 'add_bundle_to_cart' %}" method="POST" id="item-formset">
                     {% csrf_token %}
                     {% for form in formset %}
-                        <div class="row my-3 align-items-center formset-row" id="formset-row-{{ forloop.counter0 }}">
-                            <div class="col-2 text-center">
+                        <div class="row my-1 align-items-center formset-row" id="formset-row-{{ forloop.counter0 }}">
+                            <div class="col-md-2 m-3 d-flex justify-content-center justify-content-md-end img-col">
                                 <div class="cart-img">
-                                    <img src="" id="img-{{ forloop.counter0 }}" alt="" class="cart-img border border-light rounded-3">
+                                    <img src="" id="img-{{ forloop.counter0 }}" alt="" class="cart-img rounded-3">
                                 </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-md-4 p-1">
                                 {{ form.product|as_crispy_field }}
                             </div>
-                            <div class="col-2">
+                            <div class="col-md-2 d-flex justify-content-center">
                                 {{ form.item_qty|as_crispy_field }}
                             </div>
-                            <div class="col-1">
-                                <a href="#" class="btn btn-danger remove-form mb-3" id="remove-{{ forloop.counter0 }}"><i class="fas fa-trash"></i></a>
+                            <div class="col-md-1 d-flex justify-content-center">
+                                <a href="#" class="text-danger remove-form mb-3" id="remove-{{ forloop.counter0 }}"><i class="fas fa-trash"></i></a>
+                            </div>
+                            <div class="col-10 offset-1 row-divider">
+                                <hr class="bg-light d-block d-md-none">
                             </div>
                         </div>
                     {% endfor %}
-                    <div class="col-12 px-0">
+                    <div class="col-6 offset-5 text-right mt-2 pr-0">
+                        <a href="#" class="btn btn-warning add-form mb-3"><i class="fas fa-plus"></i> add product</a>
+                    </div>
+                    <div class="col-12">
                         <hr class="bg-light">
                     </div>
-                    <div class="col-6 offset-6 text-right pr-0">
-                        <a href="#" class="btn btn-warning add-form mb-3"><i class="fas fa-plus"></i> add new product</a>
-                    </div>
-                    <div class="row mt-5">
+                    <div class="row mt-4">
                         <div class="col-6 offset-3 text-center">
-                            <p>€{{ bundle.total_cost }}</p>
+                            <p><span class="text-muted">total price:</span> €{{ bundle.total_cost }}</p>
                         </div>
                     </div>
-                    
                         <div class="row mt-2 mb-5">
                             <div class="col-10 offset-1 text-center">
                                 {% if not bundle.custom %}
@@ -73,11 +75,6 @@
             getImage(function(output){
                 $('#img-' + index).attr("src", output);
             }, this.value);
-            $(this).toggleClass('disabled', $(this).prop('selectedIndex') == 0);
-        });
-
-        $('#item-formset').find('input').each(function(index) {            
-            $(this).toggleClass('disabled', $('#formset-row-' + index).find('select').first().prop('selectedIndex') == 0);
         });
 
         $('#item-formset').find('img').each(function(index) {
@@ -86,9 +83,8 @@
         
         $('#item-formset').find('select').on('change', function(e)  {
             var selected = $(this).attr('name').split('-')[1];
-            $(this).toggleClass('disabled', $(this).prop('selectedIndex') == 0);
-            $('#formset-row-' + selected).find('input').toggleClass('disabled', $(this).prop('selectedIndex') == 0);
-            $('#formset-row-' + selected).find('img').toggle($(this).prop('selectedIndex') != 0);
+            var row = $('#formset-row-' + selected);
+            $(row).find('.cart-img').toggle($(this).prop('selectedIndex') != 0);
             if(this.value != 0){ 
                 getImage(function(output){
                     $('#img-' + selected).attr("src", output);
@@ -122,19 +118,17 @@
             var productSelect = productDiv.find('select').first();
             var qtySelect = qtyDiv.find('input').first();
 
+            $(newRow).find('.cart-img').hide();
             $(newRow).find('img').attr('id', 'img-' + formsCount);
             $(newRow).find('img').attr('src', '');
-            $(newRow).find('img').hide();
 
             $(productSelect).attr('id','id_form-'+ formsCount +'-product');
             $(productSelect).attr('name','form-'+ formsCount +'-product');
             $(productSelect).find('option:eq(0)').prop('selected', true);
-            $(productSelect).addClass('disabled');
 
             $(qtySelect).attr('id','id_form-'+ formsCount + '-item_qty');
             $(qtySelect).attr('name','form-'+ formsCount + '-item_qty');
             $(qtySelect).val(1);
-            $(qtySelect).addClass('disabled');
             
             $(newRow).find('#remove-0').attr('id', 'remove-' + formsCount);
 
@@ -143,10 +137,8 @@
 
         function removeRow(i) {
             var row = $('#item-formset').find('#formset-row-' + i);
-
+            $(row).find('select option:eq(0)').prop('selected', true);
             $(row).hide();
-            $(row).find('select').addClass('disabled');
-            $(row).find('input').addClass('disabled');
         }
 
         $('.add-form').on('click', function(e) {
@@ -156,7 +148,6 @@
 
         $('.remove-form').on('click', function(e) {
             var i = $(this).attr('id').split('-')[1];
-            console.log(i);
             removeRow(i);
         });
 
