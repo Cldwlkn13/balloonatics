@@ -1,4 +1,4 @@
-<form class="form" action="{% url 'update_product_cart' 1 %}" method="POST" style="width: 150px; margin: 0 auto; margin-top:-5px !important;">
+<form class="form" action="{% url 'update_product_cart' item.product.id %}" method="POST" style="width: 150px; margin: 0 auto; margin-top:-5px !important;">
     {% csrf_token %}
         <div class="col-12 align-content-center">
             <div class="input-group">

@@ -1,6 +1,5 @@
 {% if 'render_toast' in extra_tags %}
 <div class="toast rounded-3 fade-toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="{{ toast_delay }}" data-autohide="{{ toast_autohide }}">
-    <div class="arrow-up"></div>
     <div class="toast-header bg-{{toast_class}} text-dark border border-dark h-40 p-2 pl-5">
         <h6 class="mb-0 d-inline mr-5"><strong class="mr-auto mb-0 d-inline mr-5"><i class="fas fa-check"></i>&nbsp {{ header_message }}</strong></h6>
         <small class="mr-5 text-light"> {% now "SHORT_DATETIME_FORMAT" %} </small>

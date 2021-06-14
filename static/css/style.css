@@ -41,7 +41,7 @@ body {
 
 .bg-container-dark {
     /*background: url('/media/leather-nunchuck.png') repeat center center;*/
-    background-color: #343a40;
+    background-color: rgba(52,28,64,0.85);
     background-attachment: fixed;
     background-size: cover;
     height: 100%;   
@@ -157,18 +157,6 @@ a.nav-link:hover {
 
 .fade-toast {
       transition: opacity 0.5s linear !important;
-}
-
-/* from CSS-tricks.com: https://css-tricks.com/snippets/css/css-triangle/ */
-.arrow-up {
-    width: 0; 
-    height: 0; 
-    border-left: 4px solid transparent;
-    border-right: 4px solid transparent; 
-    border-bottom: 10px solid black;
-    position: absolute;
-    top: -10px;
-    right: 36px;
 }
 
 /* ---------------MEDIA QUERIES */
