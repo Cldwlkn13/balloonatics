@@ -34,22 +34,18 @@ def order(request):
         product = Product.objects.get(pk=p_id)
         
         message = request.POST.get('custom_message')
+        qty = request.POST.get('qty')
 
         custom_product = CustomPrintedProduct(
             base_product=product,
             user=request.user,
-            custom_message=message
+            custom_message=message, 
+            qty=qty
         )
-        
-        #custom_product.name = (f'''Custom {product.name} Print_
-                  #{datetime.now().strftime("%d/%m/%Y %H:%M:%S")}''')
-
         custom_product.save()
-
-        print(custom_product.base_product.id)
         
         selector_form = ProductSelectorForm(p_id)
-        order_form = CustomPrintForm(message)
+        order_form = CustomPrintForm(message, qty)
         
         context = {
             'selector_form': selector_form,
@@ -71,7 +67,7 @@ def order(request):
         return redirect(reverse(this_url))
     
     selector_form = ProductSelectorForm(p_id)
-    order_form = CustomPrintForm('')
+    order_form = CustomPrintForm('', 1)
     
     context = {
         'selector_form': selector_form, 

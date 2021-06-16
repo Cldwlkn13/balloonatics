@@ -30,9 +30,10 @@ class CustomPrintForm(forms.ModelForm):
 
     custom_message = forms.Textarea()
 
-    def __init__(self, message, *args, **kwargs):
+    def __init__(self, message, qty, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['custom_message'].initial = message
+        self.fields['qty'].initial = qty
 
 
     
