@@ -30,7 +30,7 @@ def menu_context(request):
         menu_context[c.name] = sub_categories
 
     return {
-        'menu_context': menu_context
+            'menu_context': menu_context
         }
 
 

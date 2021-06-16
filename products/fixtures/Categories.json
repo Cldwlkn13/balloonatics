@@ -22,5 +22,13 @@
       "name": "accessories",
       "display_name": "Accessories"
     }
+  },
+  {
+    "pk": 4,
+    "model": "products.category",
+    "fields": {
+      "name": "custom",
+      "display_name": "Custom"
+    }
   }
 ]

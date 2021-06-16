@@ -1,5 +1,7 @@
+
 from django.contrib import admin
 
-from .models import CustomPrintedProduct
+from .models import CustomPrintOrder
 
-admin.site.register(CustomPrintedProduct)
+admin.site.register(CustomPrintOrder)
+

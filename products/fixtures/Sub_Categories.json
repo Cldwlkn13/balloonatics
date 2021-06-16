@@ -70,5 +70,13 @@
             "name": "occasion",
             "display_name": "Occasion"
         }
-    }
+    },
+    {
+        "pk": 10,
+        "model": "products.sub_category",
+        "fields": {
+          "name": "custom",
+          "display_name": "Custom"
+        }
+      }
 ]

@@ -1,10 +1,12 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import (render, redirect, 
+                              get_object_or_404)
 from django.contrib import messages
+
+from .helpers import custom_formset_dictionary_parser
 
 from products.models import Product
 from bundles.models import Bundle, BundleItem, BundleCategory
-
-from .helpers import custom_formset_dictionary_parser
+from printing.models import CustomPrintOrder
 
 import uuid
 
@@ -16,9 +18,12 @@ def view_cart(request):
 
 def add_product_to_cart(request, item_id):
       
+    referred_from = request.META['HTTP_REFERER']
+
+    cart = request.session.get('cart', {'products':{},'bundles':{},'custom_prints':{}})
+    
     product = get_object_or_404(Product, pk=item_id)
     qty = int(request.POST.get('qty'))
-    this_url = request.META['HTTP_REFERER']
 
     if product.qty_held < qty:
         messages.warning(request,
@@ -26,14 +31,12 @@ def add_product_to_cart(request, item_id):
                          'We do not have the required amount '
                          'in stock.',
                          extra_tags='render_toast')
-        return redirect(this_url)
+        return redirect(referred_from)
 
-    cart = request.session.get('cart', {})
-
-    if item_id in list(cart.keys()):
-        cart[item_id] += qty
+    if item_id in list(cart.products.keys()):
+        cart['products'][item_id] += qty
     else:
-        cart[item_id] = qty
+        cart['products'][item_id] = qty
 
     messages.success(
         request,
@@ -41,18 +44,18 @@ def add_product_to_cart(request, item_id):
         extra_tags='render_toast render_preview')
 
     request.session['cart'] = cart
-    return redirect(this_url)
+    return redirect(referred_from)
 
 
 def update_product_cart(request, item_id):
     
     product = get_object_or_404(Product, pk=item_id)
-    this_url = request.META['HTTP_REFERER']
+    referred_from = request.META['HTTP_REFERER']
     qty = int(request.POST.get('qty'))
 
     if request.POST.get('qty') == '':
         messages.error(request, 'Invalid quantity', '')
-        return redirect(this_url)
+        return redirect(referred_from)
 
     if product.qty_held < qty:
         messages.warning(request,
@@ -61,13 +64,13 @@ def update_product_cart(request, item_id):
                          'We do not have the required amount '
                          'in stock.',
                          extra_tags='render_toast')
-        return redirect(path)
+        return redirect(referred_from)
 
-    cart = request.session.get('cart', {})
-    cart[item_id] = qty
+    cart = request.session.get('cart', {'products':{},'bundles':{},'custom_prints':{}})
+    cart['products'][item_id] = qty
     extra_tags = 'render_toast render_preview'
 
-    if 'cart' in this_url:
+    if 'cart' in referred_from:
         extra_tags = ''
 
     messages.info(
@@ -77,21 +80,21 @@ def update_product_cart(request, item_id):
 
     request.session['cart'] = cart
 
-    return redirect(this_url)
+    return redirect(referred_from)
 
 
 def remove_product_from_cart(request, item_id):
     
     product = get_object_or_404(Product, pk=item_id)
-    cart = request.session.get('cart', {})
-    this_url = request.META['HTTP_REFERER']
+    cart = request.session.get('cart', {'products':{},'bundles':{},'custom_prints':{}})
+    referred_from = request.META['HTTP_REFERER']
     extra_tags = 'render_toast render_preview'
 
-    if 'cart' in this_url:
+    if 'cart' in referred_from:
         extra_tags = ''
 
-    if item_id in cart:
-        cart.pop(item_id)
+    if item_id in cart['products']:
+        cart['products'].pop(item_id)
         messages.info(
             request,
             f'<strong>{product.name}</strong> removed from your cart!',
@@ -99,7 +102,7 @@ def remove_product_from_cart(request, item_id):
 
     request.session['cart'] = cart
 
-    return redirect(this_url)
+    return redirect(referred_from)
 
 
 def add_bundle_to_cart(request):
@@ -108,7 +111,7 @@ def add_bundle_to_cart(request):
     referred_from = request.META['HTTP_REFERER']
     
     # load the cart from the session
-    cart = request.session.get('cart', {})
+    cart = request.session.get('cart', {'products':{},'bundles':{},'custom_prints':{}})
 
     # load the template bundles
     orig_bundle_pk = int(request.POST.get('orig_bundle_pk'))
@@ -150,7 +153,7 @@ def add_bundle_to_cart(request):
     save_bundle_items(bundle_item_dict, custom_bundle)
 
     # add to the cart
-    cart[custom_bundle_id] = 1 # handle qtys here
+    cart['bundles'][custom_bundle_id] = 1 # handle qtys here
 
     messages.success(
         request,
@@ -168,7 +171,7 @@ def update_bundle_in_cart(request, bundle_id):
     referred_from = request.META['HTTP_REFERER']
     
     # load the cart from the session
-    cart = request.session.get('cart', {})  
+    cart = request.session.get('cart', {'products':{},'bundles':{},'custom_prints':{}})  
 
     # load the bundle to update
     bundle = get_object_or_404(Bundle, bundle_id=bundle_id)
@@ -200,7 +203,7 @@ def update_bundle_in_cart(request, bundle_id):
     save_bundle_items(bundle_item_dict, bundle)
 
     # update the cart
-    cart[bundle_id] = 1
+    cart['bundles'][bundle_id] = 1
 
     # if we are already in the cart view don't show toast
     extra_tags = 'render_toast render_preview'
@@ -223,7 +226,7 @@ def remove_bundle_from_cart(request, bundle_id):
     referred_from = request.META['HTTP_REFERER']
     
     # load the cart from the session
-    cart = request.session.get('cart', {})
+    cart = request.session.get('cart', {'products':{},'bundles':{},'custom_prints':{}})
     
     # load the bundle to delete
     bundle = get_object_or_404(Bundle, bundle_id=bundle_id)
@@ -237,8 +240,8 @@ def remove_bundle_from_cart(request, bundle_id):
         extra_tags = ''
 
     # remove the item from the cart
-    if bundle_id in cart:
-        cart.pop(bundle_id)
+    if bundle_id in cart['bundles']:
+        cart['bundles'].pop(bundle_id)
         messages.info(
             request,
             f'<strong>{bundle.name}</strong> removed from your cart!',
@@ -248,6 +251,62 @@ def remove_bundle_from_cart(request, bundle_id):
     
     return redirect(referred_from)
 
+
+def add_or_update_custom_print_for_cart(request, custom_print_id):
+
+    # load the cart from the session
+    cart = request.session.get('cart', {'products':{},'bundles':{},'custom_prints':{}})
+
+    custom_print_order = CustomPrintOrder.objects.get(pk=custom_print_id)
+
+    if int(custom_print_order.base_product.qty_held) < int(custom_print_order.qty):
+        messages.warning(request,
+                         'Sorry! We could add this item to your cart. '
+                         'We do not have the required amount '
+                         'in stock.',
+                         extra_tags='render_toast')
+        return False
+
+    if custom_print_order.id in list(cart['custom_prints'].keys()):
+        cart['custom_prints'][custom_print_order.id] += custom_print_order.qty
+    else:
+        cart['custom_prints'][custom_print_order.id] = custom_print_order.qty
+
+    request.session['cart'] = cart
+    return True
+
+
+def remove_custom_print_order_from_cart(request, custom_print_id):
+
+    # get referring url for redirect
+    referred_from = request.META['HTTP_REFERER']
+    
+    # load the cart from the session
+    cart = request.session.get('cart', {'products':{},'bundles':{},'custom_prints':{}})
+    
+    # load the print_order to delete
+    custom_print_order = get_object_or_404(CustomPrintOrder, pk=custom_print_id)
+
+    # delete the 'custom print order as we no longer want it
+    CustomPrintOrder.objects.filter(pk=custom_print_id).delete()
+    
+    # if we are already in the cart view don't show toast
+    extra_tags = 'render_toast render_preview'
+    if 'cart' in referred_from:
+        extra_tags = ''
+
+    # remove the item from the cart
+    if custom_print_id in cart['custom_prints']:
+        cart['custom_prints'].pop(custom_print_id)
+        messages.info(
+            request,
+            f'Custom print order: <strong>{custom_print_order.base_product.name}</strong> removed from your cart!',
+            extra_tags=extra_tags)
+
+    request.session['cart'] = cart
+    
+    
+    return redirect(referred_from)
 
 ''' helper functions '''
 

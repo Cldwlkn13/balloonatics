@@ -11,7 +11,7 @@ import uuid
 
 class BundleCategory(models.Model):
     class Meta:
-        verbose_name_plural = 'Categories'
+        verbose_name_plural = 'BundleCategories'
   
     name = models.CharField(max_length=254, blank=False, null=False)
     age = models.PositiveIntegerField(null=True, blank=True)
@@ -31,8 +31,7 @@ class Bundle(models.Model):
                                  blank=False, null=False)
     age = models.PositiveIntegerField(blank=True, null=True)
     image = models.ImageField(null=True, blank=True)
-    custom = models.BooleanField(null=False, blank=False, 
-                                     default=False)
+    custom = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -50,16 +49,14 @@ class Bundle(models.Model):
             Sum('item_cost'))['item_cost__sum'] or 0
         self.save()
 
-    
-
 
 class BundleItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE,
-                                null=False, blank=False)
+                                null=True, blank=True)
     bundle = models.ForeignKey(Bundle, on_delete=models.CASCADE,
-                               null=False, blank=False,
+                               null=True, blank=True,
                                related_name="bundle_items")
-    item_qty = models.PositiveIntegerField(blank=False, null=False, default=0)
+    item_qty = models.PositiveIntegerField(default=0)
     item_cost = models.DecimalField(max_digits=6, decimal_places=2,
                                     blank=False, default=0.00,
                                     validators=[MinValueValidator(

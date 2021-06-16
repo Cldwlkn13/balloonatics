@@ -15,7 +15,7 @@
         <h6>Your cart is empty.</h6>
     {% else %}
         {% for item in cart_items %}
-            {% if not item.is_bundle %}
+            {% if item.type == 'product' %}
                 <div class="row align-items-center p-1 p-lg-2">
                     <div class="col-12 col-md-6 col-lg-3 text-center px-5">
                         {% if item.product.image %}
@@ -44,7 +44,7 @@
                         </div>
                     </div>
                 </div>
-            {% else %}
+            {% elif item.type == 'bundle' %}
                 <div class="row align-items-center p-1 p-lg-2">
                     <div class="col-12 col-md-6 col-lg-3 text-center px-5">
                         {% if item.bundle.image %}
@@ -68,6 +68,33 @@
                             <div class="col-12 col-lg-2 p-0 py-3 ml-1 mr-3">€{{ item.bundle.total_cost }}</div>
                             <div class="col-12 col-lg-1 p-3 py-3 mr-2 text-decoration-none">
                                 <a href="{% url 'remove_bundle_from_cart' item.item_id %}">
+                                    <i class="fas fa-trash text-danger"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="row align-items-center p-1 p-lg-2">
+                    <div class="col-12 col-md-6 col-lg-3 text-center px-5">
+                        {% if item.bundle.image %}
+                        <a href="{% url 'update_order_handler' item.item_id %}">
+                            <img class="img-fluid cart-img rounded-3" src="{{ item.custom_print_order.base_product.image.url }}" alt="{{ custom_print_order.base_product.name }}">
+                        </a>
+                        {% else %}
+                        <a href="{% url 'update_order_handler' item.item_id %}">
+                            <img class="img-fluid cart-img rounded-3" src="{{ MEDIA_URL }}noimage.png" alt="{{ custom_print_order.base_product.name }}">
+                        </a>
+                        {% endif %}
+                    </div> 
+                    <div class="col-12 col-md-6 col-lg-9">
+                        <div class="row p-0 text-center align-items-center">
+                            <div class="col-12 col-lg-2 p-0 py-3 mr-2"><strong><a href="{% url 'update_order_handler' item.item_id %}" class="text-underline text-light">{{ item.custom_print_order.base_product.name }}</a></strong></div>
+                            <div class="col-12 col-lg-2 p-0 py-3 ml-1 mr-3"><small>{{ item.custom_print_order.custom_message }}</small></div>
+                            <div class="col-12 col-lg-2 p-0 py-3 ml-1 mr-3">{{ item.qty }}</div>
+                            <div class="col-12 col-lg-2 p-0 py-3 ml-1 mr-3">€{{ item.item_total }}</div>
+                            <div class="col-12 col-lg-1 p-3 py-3 mr-2 text-decoration-none">
+                                <a href="{% url 'remove_custom_pringtorder_from_cart' item.item_id %}">
                                     <i class="fas fa-trash text-danger"></i>
                                 </a>
                             </div>

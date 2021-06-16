@@ -1,26 +1,67 @@
 [
     {
+        "pk": 1,
+        "model": "products.product",
+        "fields": {
+            "category": 1,
+            "sub_category": 6,
+            "name": "latex age 2 pink",
+            "description": "A Balloon for age 2 DSFDDH",
+            "full_price": 1.50,
+            "discounted_price": 1.50,
+            "qty_held": 100
+        }
+    },
+    {
+        "pk": 2,
+        "model": "products.product",
+        "fields": {
+            "category": 1,
+            "sub_category": 6,
+            "name": "latex age 2 pink",
+            "description": "A Balloon for age 2",
+            "full_price": 1.50,
+            "discounted_price": 1.50,
+            "qty_held": 100
+        }
+    },
+    {
+        "pk": 3,
+        "model": "products.product",
+        "fields": {
+            "category": 1,
+            "sub_category": 6,
+            "name": "latex age 2 pink",
+            "description": "A Balloon for age 2 DFDGDFG",
+            "full_price": 1.50,
+            "discounted_price": 1.50,
+            "qty_held": 100
+        }
+    },
+    {
+        "pk": 4,
+        "model": "products.product",
+        "fields": {
+            "category": 1,
+            "sub_category": 6,
+            "name": "latex age 2 pink",
+            "description": "A Balloon for age 2 VDFG",
+            "full_price": 1.50,
+            "discounted_price": 1.50,
+            "qty_held": 100
+        }
+    },
+    {
         "pk": 5,
         "model": "products.product",
         "fields": {
             "category": 1,
             "sub_category": 6,
-            "material": 1,
-            "uuid": "bb014454347",
             "name": "latex age 2 pink",
             "description": "A Balloon for age 2",
-            "price": 1.50,
+            "full_price": 1.50,
             "discounted_price": 1.50,
-            "rating": 4.5,
-            "image_url": null,
-            "image": "age_2_pink.JPG",
-            "message": "2",
-            "is_printable": false,
-            "age": 2,
-            "size": 2,
-            "color": 1,
-            "qty_held": 100,
-            "shipped_inflated": false
+            "qty_held": 100
         }
     },
     {
@@ -29,22 +70,37 @@
         "fields": {
             "category": 1,
             "sub_category": 5,
-            "material": 1,
-            "uuid": "bb014454348",
             "name": "foil letter A",
             "description": "A large foil balloon - A",
-            "price": 10.50,
+            "full_price": 10.50,
             "discounted_price": 10.50,
-            "rating": 4.6,
-            "image_url": null,
-            "image": "foil_A_lg.JPG",
-            "message": null,
-            "is_printable": false,
-            "age": null,
-            "size": 4,
-            "color": 2,
-            "qty_held": 5,
-            "shipped_inflated": true
+            "qty_held": 5
+        }
+    },
+    {
+        "pk": 7,
+        "model": "products.product",
+        "fields": {
+            "category": 1,
+            "sub_category": 6,
+            "name": "latex age 2 pink",
+            "description": "A Balloon for age 2 xxv",
+            "full_price": 1.50,
+            "discounted_price": 1.50,
+            "qty_held": 100
+        }
+    },
+    {
+        "pk": 8,
+        "model": "products.product",
+        "fields": {
+            "category": 1,
+            "sub_category": 5,
+            "name": "foil letter A",
+            "description": "A large foil balloon - A xx",
+            "full_price": 10.50,
+            "discounted_price": 10.50,
+            "qty_held": 100
         }
     }
 ]

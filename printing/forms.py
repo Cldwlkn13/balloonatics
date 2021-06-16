@@ -1,9 +1,9 @@
+
 from django import forms
 
-from .models import CustomPrintedProduct
+from .models import CustomPrintOrder
 
 from products.models import Product
-
 
 
 class ProductSelectorForm(forms.Form):
@@ -25,7 +25,7 @@ class ProductSelectorForm(forms.Form):
 
 class CustomPrintForm(forms.ModelForm):
     class Meta:
-        model = CustomPrintedProduct
+        model = CustomPrintOrder
         fields = ('custom_message', 'qty')
 
     custom_message = forms.Textarea()

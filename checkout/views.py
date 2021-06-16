@@ -9,8 +9,11 @@ from .models import Order, OrderItem, Address
 
 from products.models import Product
 from profiles.models import UserProfile
-from profiles.forms import ProfileForm
 from bundles.models import Bundle, BundleItem
+from printing.models import CustomPrintOrder
+
+from profiles.forms import ProfileForm
+
 from cart.contexts import cart_contents
 
 import stripe
@@ -24,7 +27,7 @@ def cache_checkout_data(request):
         pid = request.POST.get('client_secret').split('_secret')[0]
         stripe.api_key = settings.STRIPE_SECRET_KEY
         stripe.PaymentIntent.modify(pid, metadata={
-            'cart': json.dumps(request.session.get('cart', {})),
+            'cart': json.dumps(request.session.get('cart', {'products':{},'bundles':{},'custom_prints':{}})),
             'save_info': request.POST.get('save_info'),
             'username': request.user,
         })
@@ -44,7 +47,7 @@ def checkout(request):
     stripe_public_key = settings.STRIPE_PUBLIC_KEY
     stripe_secret_key = settings.STRIPE_SECRET_KEY
 
-    cart = request.session.get('cart', {})
+    cart = request.session.get('cart', {'products':{},'bundles':{},'custom_prints':{}})
 
     if request.method == 'POST':
         address_form_data = {
@@ -82,29 +85,17 @@ def checkout(request):
             order.stripe_pid = pid
             order.original_cart = json.dumps(cart)
             order.save()
-            for item_id, item_data in cart.items():
+            
+            # handle products in cart
+            for item_id, item_data in cart['products'].items():
                 try:
-                    if len(item_id) < 32:
-                        product = Product.objects.get(id=item_id)
-                        order_item = OrderItem(order=order,
-                                            product=product,
-                                            quantity=item_data)
-                        product.qty_held -= item_data
-                        product.save()
-                        order_item.save()
-                    else:
-                        bundle = Bundle.objects.get(bundle_id=item_id)
-                        bundle_items = list(BundleItem.objects.filter(
-                            bundle__bundle_id=item_id))
-                        for item in bundle_items:
-                            item.product.qty_held -= item.item_qty
-                            item.product.save()
-
-                        order_item = OrderItem(order=order,
-                                            quantity=item_data,
-                                            bundle=bundle)
-                        order_item.save()
-
+                    product = Product.objects.get(id=item_id)
+                    order_item = OrderItem(order=order,
+                                        product=product,
+                                        quantity=item_data)
+                    product.qty_held -= item_data
+                    product.save()
+                    order_item.save()
                 except Product.DoesNotExist:
                     messages.error(
                         request,
@@ -112,7 +103,51 @@ def checkout(request):
                         "Please contact us for assistance",
                         extra_tags='render_toast')
                     order.delete()
+                    return redirect(reverse('view_cart'))    
+            
+            # handle bundles in cart
+            for item_id, item_data in cart['bundles'].items():                  
+                try:
+                    bundle = Bundle.objects.get(bundle_id=item_id)
+                    bundle_items = list(BundleItem.objects.filter(
+                        bundle__bundle_id=item_id))
+                    for item in bundle_items:
+                        item.product.qty_held -= item.item_qty
+                        item.product.save()
+
+                    order_item = OrderItem(order=order,
+                                        quantity=item_data,
+                                        bundle=bundle)
+                    order_item.save()
+                except Bundle.DoesNotExist:
+                    messages.error(
+                        request,
+                        f"Bundle with id {item_id} could not be processed "
+                        "Please contact us for assistance",
+                        extra_tags='render_toast')
+                    order.delete()
                     return redirect(reverse('view_cart'))
+            
+            # handle custom_print_orders in cart
+            for item_id, item_data in cart['custom_prints'].items():                  
+                try:
+                    custom_print_order = CustomPrintOrder.objects.get(pk=item_id)
+                    custom_print_order.product.qty_held -= item.item_qty
+                    custom_print_order.product.save()
+
+                    order_item = OrderItem(order=order,
+                                        quantity=item_data,
+                                        custom_print_order=custom_print_order)
+                    order_item.save()
+                except CustomPrintOrder.DoesNotExist:
+                    messages.error(
+                        request,
+                        f"Custom rint Order with id {item_id} could not be processed "
+                        "Please contact us for assistance",
+                        extra_tags='render_toast')
+                    order.delete()
+                    return redirect(reverse('view_cart'))
+                
 
             request.session['save_info'] = 'save-info' in request.POST
 
@@ -125,7 +160,7 @@ def checkout(request):
                            "again",
                            extra_tags='render_toast')
     else:
-        cart = request.session.get('cart', {})
+        cart = request.session.get('cart', {'products':{},'bundles':{},'custom_prints':{}})
         if not cart:
             messages.error(request, "Your cart is empty",
                            extra_tags='render_toast')

@@ -12,9 +12,13 @@
     {% if selector_form %}
         <div class="row">
             <div class="col-10 offset-1">
-                <form action="{% url 'order' %}" method="GET" id="selector-form">
+                <form action="{% url 'new_order_handler' %}" method="GET" id="selector-form">
                     {{ selector_form|crispy }}
-                    <button type="submit" class="btn btn-warning">select</button>
+                    {% if cntxt == 'add' %}
+                        <button type="submit" class="d-none" id="selector-btn"></button>
+                    {% else %}
+                        <button type="submit" class="d-none disabled" id="selector-btn"></button>
+                    {% endif %}
                 </form>
             </div>
         </div>
@@ -23,10 +27,14 @@
         <hr class="bg-light">
         <div class="row">
             <div class="col-10 offset-1">
-                <form action="{% url 'order' %}" method="POST" id="order-form">
+                <form action="{% url 'new_order_handler' %}" method="POST" id="order-form">
                     {% csrf_token %}
                     {{ order_form|crispy }}
-                    <button type="submit" class="btn btn-warning">submit</button>
+                    {% if cntxt == 'add' %}
+                        <button type="submit" class="btn btn-warning">submit</button>
+                    {% else %}
+                        <button type="submit" formaction="{% url 'update_order_handler' custom_print_order.id %}" class="btn btn-warning">update order</button>
+                    {% endif %}
                     <input type="hidden" name="p_id" value="{{ product.id }}">
                 </form>
             </div>
@@ -37,4 +45,17 @@
 
 {% block postloadjs %}
 {{ block.super }}
+
+<script> 
+
+    $('#selector-form').find('select').first().change(function() {
+        var index = $(this).val();
+        $('input[name="p_id"]').prop('value', index);
+
+        if(!($('#selector-btn').hasClass('disabled'))) {
+            $('#selector-btn').trigger('click');
+        }
+    });
+
+</script>
 {% endblock %}

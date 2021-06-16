@@ -5,7 +5,7 @@
         </div>
     </div>
     {% for item in cart_items %}
-        {% if not item.is_bundle %}
+        {% if item.type == 'product' %}
             <div class="row align-items-center">
                 <div class="col-3 my-1">
                     {% if item.product.image %}
@@ -24,7 +24,7 @@
                 </div>
             </div>
             <hr class="my-1">
-        {% else %}
+        {% elif item.type == 'bundle' %}
             <div class="row align-items-center">
                 <div class="col-3 my-1">
                     {% if item.product.image %}
@@ -38,6 +38,28 @@
                 </div>
                 <div class="col-1 offset-1 ml-0 text-right">
                     <a href="{% url 'remove_bundle_from_cart' item.item_id %}">
+                        <i class="fas fa-trash text-danger"></i>
+                    </a>
+                </div>
+            </div>
+            <hr class="my-1">
+        {% else %}
+            <div class="row align-items-center">
+                <div class="col-3 my-1">
+                    {% if item.custom_print_order.base_product.image %}
+                    <img src="{{ item.custom_print_order.base_product.image.url }}" class="cart-preview-img rounded-3" alt="{{ item.custom_print_order.base_product.name }}">
+                    {% else %}
+                    <img src="{{ MEDIA_URL }}noimage.png" class="cart-preview-img rounded-3" alt="{{ item.custom_print_order.base_product.name }}">
+                    {% endif %}
+                </div>
+                <div class="col-5 text-left ml-3 mr-1 p-1">
+                    <p class="my-0"><strong>
+                        <a href="{% url 'update_order_handler' item.item_id %}" class="text_decoration-none text-dark">
+                            Custom Print: {{ item.custom_print_order.base_product.name }}
+                        </a></strong> x {{ item.qty }}</p>
+                </div>
+                <div class="col-1 offset-1 ml-0 text-right">
+                    <a href="{% url 'remove_custom_print_order_from_cart' item.item_id %}">
                         <i class="fas fa-trash text-danger"></i>
                     </a>
                 </div>

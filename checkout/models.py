@@ -8,6 +8,7 @@ from decimal import Decimal
 from products.models import Product
 from profiles.models import UserProfile
 from bundles.models import Bundle
+from printing.models import CustomPrintOrder
 
 import uuid
 
@@ -61,6 +62,7 @@ class Address(models.Model):
 
 
 class Order(models.Model):
+    
     order_id = models.CharField(max_length=56, null=False, editable=False)
     user_profile = models.ForeignKey(UserProfile, on_delete=models.SET_NULL,
                                      null=True, blank=True,
@@ -105,18 +107,25 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
+    
     order = models.ForeignKey(Order, null=False, blank=True,
                               on_delete=models.CASCADE,
                               related_name='order_items')
+
     product = models.ForeignKey(Product, null=True, blank=True,
-                                on_delete=models.CASCADE)
+                                on_delete=models.SET_NULL)
+    bundle = models.ForeignKey(Bundle, null=True, blank=True,
+                                on_delete=models.SET_NULL)
+    
+    custom_print_order = models.ForeignKey(CustomPrintOrder, 
+                                null=True, blank=True,
+                                on_delete=models.SET_NULL)
+
     order_item_id = models.CharField(max_length=32, null=False, editable=False)
     quantity = models.IntegerField(null=False, blank=False, default=0)
     item_total = models.DecimalField(max_digits=6, decimal_places=2,
         null=False, default=0.00, editable=False)
-    bundle = models.ForeignKey(Bundle, null=True, blank=True,
-                              on_delete=models.SET_NULL,
-                              related_name='bundle')
+
 
     def __str__(self):
         return self.order_item_id
@@ -133,7 +142,12 @@ class OrderItem(models.Model):
         elif self.bundle:
             self.item_total = (
                 self.bundle.total_cost * self.quantity)
+        elif self.custom_print_order:
+            item_total = (Decimal(
+                self.custom_print_order.base_product.discounted_price)
+                 * int(self.quantity))
+            self.item_total = (item_total * Decimal(settings.PRINTING_SURCHARGE))
         else:
-            item_total = 0.00
+            self.item_total = 0
         super().save(*args, **kwargs)
 
