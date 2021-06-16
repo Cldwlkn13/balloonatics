@@ -1,2 +1,1 @@
-DELETE FROM bundles_bundle;
-DELETE FROM bundles_bundleitem;
+DELETE FROM printing_customprintingproduct;

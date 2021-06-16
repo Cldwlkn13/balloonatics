@@ -6,6 +6,8 @@ from .forms import ProductSelectorForm, CustomPrintForm
 
 from products.models import Product, Category, Sub_Category
 
+from datetime import datetime
+
 
 def printing(request):
 
@@ -32,14 +34,19 @@ def order(request):
         product = Product.objects.get(pk=p_id)
         
         message = request.POST.get('custom_message')
-        
+
         custom_product = CustomPrintedProduct(
-            name='Custom ' + product.name + ' Print ', 
-            custom_message = message
+            base_product=product,
+            user=request.user,
+            custom_message=message
         )
+        
+        #custom_product.name = (f'''Custom {product.name} Print_
+                  #{datetime.now().strftime("%d/%m/%Y %H:%M:%S")}''')
+
         custom_product.save()
 
-        print(custom_product.id)
+        print(custom_product.base_product.id)
         
         selector_form = ProductSelectorForm(p_id)
         order_form = CustomPrintForm(message)

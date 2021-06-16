@@ -26,12 +26,13 @@ class ProductSelectorForm(forms.Form):
 class CustomPrintForm(forms.ModelForm):
     class Meta:
         model = CustomPrintedProduct
-        fields = ('custom_message', )
+        fields = ('custom_message', 'qty')
 
     custom_message = forms.Textarea()
 
     def __init__(self, message, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['custom_message'].initial = message
+
 
     
