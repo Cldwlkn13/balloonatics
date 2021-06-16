@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container bg-container-dark text-light">
+    <div class="row">
+        <div class="col-12 col-md-10 text-center text-md-left my-1">
+            <h2><strong>Balloon Printing</strong></h2>
+        </div>
+    </div>
+    <hr class="bg-light">
+    {% if selector_form %}
+        <div class="row">
+            <div class="col-10 offset-1">
+                <form action="{% url 'order' %}" method="GET" id="selector-form">
+                    {{ selector_form|crispy }}
+                    <button type="submit" class="btn btn-warning">select</button>
+                </form>
+            </div>
+        </div>
+    {% endif %}
+    {% if order_form %}
+        <hr class="bg-light">
+        <div class="row">
+            <div class="col-10 offset-1">
+                <form action="{% url 'order' %}" method="POST" id="order-form">
+                    {% csrf_token %}
+                    {{ order_form|crispy }}
+                    <button type="submit" class="btn btn-warning">submit</button>
+                    <input type="hidden" name="p_id" value="{{ product.id }}">
+                </form>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block postloadjs %}
+{{ block.super }}
+{% endblock %}

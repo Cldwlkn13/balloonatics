@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'home',
     'products',
     'bundles',
+    'printing',
     'cart',
     'checkout',
     'profiles',

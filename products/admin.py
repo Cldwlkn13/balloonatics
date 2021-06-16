@@ -10,8 +10,8 @@ class ProductAdmin(admin.ModelAdmin):
         'uuid',
         'category',
         'sub_category',
-        'material',
-        'price',
+        'full_price',
+        'discounted_price',
         'qty_held',
     )
 
