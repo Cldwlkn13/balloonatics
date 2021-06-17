@@ -1,3 +1,4 @@
+from printing.models import CustomPrintOrder
 from django.http import HttpResponse
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
@@ -130,39 +131,41 @@ class StripeWH_Handler:
                     original_cart=cart,
                     stripe_pid=pid
                 )
-                for item_id, item_data in json.loads(cart).items():
-                    if len(item_id) < 32:
-                        product = Product.objects.get(id=item_id)
-                        order_item = OrderItem(
-                            order=order,
-                            product=product,
-                            quantity=item_data
-                        )
-                        product.qty_held -= item_data
-                        product.save()
-                        order_item.save()
-                    else:
-                        bundle = Bundle.objects.get(bundle_id=item_id)
-                        bundle_items = list(BundleItem.objects.filter(
-                            bundle__bundle_id=item_id))
-                        for item in bundle_items:
-                            item.product.qty_held -= item.item_qty
 
-                        bundle_product = Product(
-                            name='My Custom Bundle ' + item_id,
-                            category=Category.objects.get(name='custom'),
-                            sub_category=Sub_Category.objects.get(name='custom'),
-                            price=bundle.total_cost,
-                            discounted_price=bundle.total_cost,
-                            qty_held=0,
-                            is_bundle_product=True
-                        )
-                        bundle_product.save()
-                        order_item = OrderItem(order=order,
-                                            product=bundle_product,
-                                            quantity=item_data,
-                                            bundle=bundle)
-                        order_item.save()
+                # handle products in cart
+                for item_id, item_data in json.loads(cart)['products'].items():
+                    product = Product.objects.get(id=item_id)
+                    order_item = OrderItem(
+                        order=order,
+                        product=product,
+                        quantity=item_data
+                    )
+                    product.qty_held -= item_data
+                    product.save()
+                    order_item.save()
+            
+                # handle bundles in cart
+                for item_id, item_data in json.loads(cart)['bundles'].items():
+                    bundle = Bundle.objects.get(bundle_id=item_id)
+                    bundle_items = list(BundleItem.objects.filter(
+                        bundle__bundle_id=item_id))
+                    for item in bundle_items:
+                        item.product.qty_held -= item.item_qty
+
+                    order_item = OrderItem(
+                        order=order,
+                        quantity=item_data,
+                        bundle=bundle)
+                    order_item.save()
+
+                # handle custom prints in cart
+                for item_id, item_data in json.loads(cart)['custom_prints'].items():
+                    custom_print_order = CustomPrintOrder.objects.get(pk=item_id)
+                    order_item = OrderItem(
+                        order=order,
+                        quantity=item_data,
+                        custom_print_order=custom_print_order)
+                    order_item.save()
          
             except Exception as e:
                 if order:

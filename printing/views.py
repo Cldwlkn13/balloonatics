@@ -17,10 +17,10 @@ def printing(request):
 
 def load_print_selector(request):
     
-    selector_form = ProductSelectorForm(0)
+    products = Product.objects.filter(is_printable=True)
 
     context = {
-        'selector_form': selector_form,
+        'products': products,
         'cntxt': 'add'
     }
     return render(request, 'printing/printing.html', context)
@@ -29,6 +29,8 @@ def load_print_selector(request):
 def new_order_handler(request):
 
     http_referrer = request.META['HTTP_REFERER']
+
+    products = Product.objects.filter(is_printable=True)
 
     if request.method == 'POST':
 
@@ -46,10 +48,10 @@ def new_order_handler(request):
         custom_print_order.save()
 
         added_to_cart = add_or_update_custom_print_for_cart(
-            request, custom_print_order.id)
+            request, custom_print_order.id).status_code == 200
 
         if not added_to_cart:
-            redirect(reverse('new_order_handler'))
+            return redirect(reverse('load_print_selector'))
 
         messages.success(
             request,
@@ -59,11 +61,10 @@ def new_order_handler(request):
             to your cart!''',
             extra_tags='render_toast render_preview')
         
-        selector_form = ProductSelectorForm(str(product.id))
         order_form = CustomPrintForm(message, qty)
         
         context = {
-            'selector_form': selector_form,
+            'products': products,
             'order_form': order_form,
             'product': product,
             'custom_print_order': custom_print_order,
@@ -71,8 +72,12 @@ def new_order_handler(request):
         }
         return render(request, 'printing/printing.html', context)
     
-    p_id = int(request.GET['select_product'])
     product = None
+
+    if not 'select_product' in request.GET:
+        return redirect(reverse('load_print_selector'))
+    
+    p_id = request.GET['select_product']
     
     try:
         product = Product.objects.get(pk=p_id)
@@ -81,13 +86,12 @@ def new_order_handler(request):
             'Please select a valid product',
             extra_tags='render_toast')
 
-        return redirect(reverse('new_order_handler'))
+        return redirect(reverse('load_print_selector'))
     
-    selector_form = ProductSelectorForm(p_id)
     order_form = CustomPrintForm('', 1)
 
     context = {
-        'selector_form': selector_form, 
+        'products': products,
         'order_form': order_form,
         'product': product,
         'cntxt': 'add',
@@ -98,6 +102,8 @@ def new_order_handler(request):
 def update_order_handler(request, custom_print_id):
 
     http_referrer = request.META['HTTP_REFERER']
+
+    products = Product.objects.filter(is_printable=True)
     
     if request.method == 'POST':
         custom_print_order = CustomPrintOrder.objects.get(
@@ -115,10 +121,10 @@ def update_order_handler(request, custom_print_id):
         custom_print_order.save()
 
         added_to_cart = add_or_update_custom_print_for_cart(
-            request, custom_print_order.id)
+            request, custom_print_order.id).status_code == 200
         
         if not added_to_cart:
-            redirect(reverse('new_order_handler'))
+            return redirect(reverse('load_print_selector'))
 
         messages.success(
             request,
@@ -128,11 +134,10 @@ def update_order_handler(request, custom_print_id):
             to your cart!''',
             extra_tags='render_toast render_preview')
         
-        selector_form = ProductSelectorForm(p_id)
         order_form = CustomPrintForm(message, qty)
         
         context = {
-            'selector_form': selector_form,
+            'products': products,
             'order_form': order_form,
             'product': product,
             'custom_print_order': custom_print_order,
@@ -143,14 +148,13 @@ def update_order_handler(request, custom_print_id):
     custom_print_order = CustomPrintOrder.objects.get(
         pk=custom_print_id)
 
-    selector_form = ProductSelectorForm(custom_print_order.id)
     order_form = CustomPrintForm(custom_print_order.custom_message, 
         custom_print_order.qty)
     
     context = {
-        'selector_form': selector_form, 
+        'products': products,
         'order_form': order_form,
-        'product': custom_print_order.product,
+        'product': custom_print_order.base_product,
         'custom_print_order': custom_print_order,
         'cntxt': 'update',
     }

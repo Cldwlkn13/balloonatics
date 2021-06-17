@@ -9,31 +9,33 @@
         </div>
     </div>
     <hr class="bg-light">
-    {% if selector_form %}
+    {% if products %}
+        <div class="row mt-5 mb-1">
+            <div class="col-10 offset-1">
+                <h6>Select a product</h6>
+            </div>
+        </div>
         <div class="row">
             <div class="col-10 offset-1">
-                <form action="{% url 'new_order_handler' %}" method="GET" id="selector-form">
-                    {{ selector_form|crispy }}
-                    {% if cntxt == 'add' %}
-                        <button type="submit" class="d-none" id="selector-btn"></button>
-                    {% else %}
-                        <button type="submit" class="d-none disabled" id="selector-btn"></button>
-                    {% endif %}
-                </form>
+                <div class="row">
+                    {% for product in products %}
+                        {% include './includes/card.html' with result=product cntxt=cntxt %}
+                    {% endfor %}
+                </div>
             </div>
         </div>
     {% endif %}
     {% if order_form %}
         <hr class="bg-light">
         <div class="row">
-            <div class="col-10 offset-1">
+            <div class="col-6 offset-3">
                 <form action="{% url 'new_order_handler' %}" method="POST" id="order-form">
                     {% csrf_token %}
                     {{ order_form|crispy }}
                     {% if cntxt == 'add' %}
-                        <button type="submit" class="btn btn-warning">submit</button>
+                        <button type="submit" class="btn btn-warning mt-3" id="submit-btn">submit</button>
                     {% else %}
-                        <button type="submit" formaction="{% url 'update_order_handler' custom_print_order.id %}" class="btn btn-warning">update order</button>
+                        <button type="submit" formaction="{% url 'update_order_handler' custom_print_order.id %}" class="btn btn-warning mt-3" id="submit-btn">update your print item</button>
                     {% endif %}
                     <input type="hidden" name="p_id" value="{{ product.id }}">
                 </form>
@@ -48,14 +50,50 @@
 
 <script> 
 
-    $('#selector-form').find('select').first().change(function() {
-        var index = $(this).val();
-        $('input[name="p_id"]').prop('value', index);
+    $(document).ready(function(){
+        $('#submit-btn').click(function(ev) {
+            ev.preventDefault();
+            var message = $('input[name="custom_message"]').val();
+            var qty = $('input[name="qty"]').val();
+            var form = $('#order-form');
+            if(validator(message, qty)){
+                form.submit()
+            }
+        });
 
-        if(!($('#selector-btn').hasClass('disabled'))) {
-            $('#selector-btn').trigger('click');
-        }
-    });
+        $('.print-card-select').click(function(){
+            var thisid = $(this).children('p').first().text(); 
+            $('.border-success').removeClass('border-success border-3');  
+            $(this).parent().addClass('border-success border-3');
+            $('input[name="p_id"]').val() = thisid;    
+        })
+
+        $('.print-card-select').each(function(index){
+            var id = $(this).children('p').first().text();
+            var selectedid = $('input[name="p_id"]').val();
+            $(this).parent().toggleClass('border-success border-3', id == selectedid);
+        })
+
+        function validator(message, qty) {
+            if(message.startsWith(' ')){
+                alert('Invalid Message for Custom Message');
+                return false;
+            }
+            if(message.length < 1){
+                alert('Please add a message');
+                return false;
+            }
+            if(message.length > 40){
+                alert('Custom Message too long');
+                return false;
+            }
+            if(qty < 1){
+                alert('Invalid Quantity Selected');
+                return false;
+            }
+            return true;
+        };
+    })
 
 </script>
 {% endblock %}

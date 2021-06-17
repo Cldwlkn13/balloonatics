@@ -65,9 +65,23 @@ input[name="quantity"] {
     margin: 5px auto;
 }
 
+.print-card {
+    width: 135px;
+    margin: 5px auto;
+}
+
 img.card-img-top {
     height: 275px;
     width: 275px;
+}
+
+img.card-img-tn {
+    width: 135px;
+    height: 135px;
+}
+
+.border-3 {
+    border-width:3px !important;
 }
 
 .div-bg-opacity{

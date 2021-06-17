@@ -29,14 +29,24 @@
                         {% endif %}
                     </div>  
                     <div class="col-12 col-md-6 col-lg-9">
-                        <div class="row p-0 text-center">
-                            <div class="col-12 col-lg-2 p-0 py-3 mr-2"><strong>{{ item.product.name }}</strong></div>
-                            <div class="col-12 col-lg-2 p-0 pl-1 py-3 mr-2">€{{ item.product.discounted_price }} each</div>
+                        <div class="row p-0 text-center align-items-center">
+                            <div class="col-12 col-lg-2 p-0 py-3 mr-2">
+                                <p class="text-muted mb-0"><small>name</small></p>
+                                <strong>{{ item.product.name }}</strong>
+                            </div>
+                            <div class="col-12 col-lg-2 p-0 pl-1 py-3 mr-2">
+                                <p class="text-muted mb-0"><small>price each</small></p>
+                                €{{ item.product.discounted_price }}
+                            </div>
                             <div class="col-12 col-lg-2 p-0 py-3 mr-3">
+                                <p class="text-muted mb-2"><small>qty</small></p>
                                 {% include 'cart/includes/qty-update-form.html' with item=item request=request %}
                             </div>
-                            <div class="col-12 col-lg-2 p-0 py-3 mr-3"><strong>€{{ item.item_total }}</strong></div>
-                            <div class="col-12 col-lg-1 p-3 py-3 mr- text-decoration-none">
+                            <div class="col-12 col-lg-2 p-0 py-3 ml-1 mr-1">
+                                <p class="text-muted mb-0"><small>item total</small></p>
+                                <strong>€{{ item.item_total }}</strong>
+                            </div>
+                            <div class="col-12 col-lg-1 py-3 mr-2 text-decoration-none">
                                 <a href="{% url 'remove_product_from_cart' item.product.id %}">
                                     <i class="fas fa-trash text-danger"></i>
                                 </a>
@@ -44,7 +54,10 @@
                         </div>
                     </div>
                 </div>
-            {% elif item.type == 'bundle' %}
+            {% endif %}
+        {% endfor %}
+        {% for item in cart_items %}
+            {% if item.type == 'bundle' %}
                 <div class="row align-items-center p-1 p-lg-2">
                     <div class="col-12 col-md-6 col-lg-3 text-center px-5">
                         {% if item.bundle.image %}
@@ -59,13 +72,20 @@
                     </div> 
                     <div class="col-12 col-md-6 col-lg-9">
                         <div class="row p-0 text-center align-items-center">
-                            <div class="col-12 col-lg-2 p-0 py-3 mr-2"><strong><a href="{% url 'with_items' item.item_id %}" class="text-underline text-light">{{ item.bundle.name }}</a></strong></div>
+                            <div class="col-12 col-lg-2 p-0 py-3 mr-2">
+                                <p class="text-muted mb-0"><small>name</small></p>
+                                <strong><a href="{% url 'with_items' item.item_id %}" class="text-underline text-light">{{ item.bundle.name }}</a></strong>
+                            </div>
                             <div class="col-12 col-lg-4 p-0 pl-3 py-3 mr-4">
+                                <p class="text-muted mb-0"><small>bundle items</small></p>
                                 {% for k, v in item.bundle_items.items %}
                                     <p class="mb-1">{{v}} x {{k}}</p>
                                 {% endfor %}     
                             </div>
-                            <div class="col-12 col-lg-2 p-0 py-3 ml-1 mr-3">€{{ item.bundle.total_cost }}</div>
+                            <div class="col-12 col-lg-2 p-0 py-3 ml-1 mr-3">
+                                <p class="text-muted mb-0"><small>bundle price</small></p>
+                                €{{ item.bundle.total_cost }}
+                            </div>
                             <div class="col-12 col-lg-1 p-3 py-3 mr-2 text-decoration-none">
                                 <a href="{% url 'remove_bundle_from_cart' item.item_id %}">
                                     <i class="fas fa-trash text-danger"></i>
@@ -74,7 +94,10 @@
                         </div>
                     </div>
                 </div>
-            {% else %}
+            {% endif %}
+        {% endfor %}
+        {% for item in cart_items %}
+            {% if item.type == 'custom_print' %}
                 <div class="row align-items-center p-1 p-lg-2">
                     <div class="col-12 col-md-6 col-lg-3 text-center px-5">
                         {% if item.bundle.image %}
@@ -89,12 +112,24 @@
                     </div> 
                     <div class="col-12 col-md-6 col-lg-9">
                         <div class="row p-0 text-center align-items-center">
-                            <div class="col-12 col-lg-2 p-0 py-3 mr-2"><strong><a href="{% url 'update_order_handler' item.item_id %}" class="text-underline text-light">{{ item.custom_print_order.base_product.name }}</a></strong></div>
-                            <div class="col-12 col-lg-2 p-0 py-3 ml-1 mr-3"><small>{{ item.custom_print_order.custom_message }}</small></div>
-                            <div class="col-12 col-lg-2 p-0 py-3 ml-1 mr-3">{{ item.qty }}</div>
-                            <div class="col-12 col-lg-2 p-0 py-3 ml-1 mr-3">€{{ item.item_total }}</div>
+                            <div class="col-12 col-lg-2 p-0 py-3 mr-2">
+                                <p class="text-muted mb-0"><small>print product name</small></p>
+                                <strong><a href="{% url 'update_order_handler' item.item_id %}" class="text-underline text-light">{{ item.custom_print_order.base_product.name }}</a></strong>
+                            </div>
+                            <div class="col-12 col-lg-2 p-0 py-3 ml-1 mr-1">
+                                <p class="text-muted mb-0"><small>message</small></p>
+                                <small>{{ item.custom_print_order.custom_message }}</small>
+                            </div>
+                            <div class="col-12 col-lg-2 p-0 py-3 ml-1 mr-2">
+                                <p class="text-muted mb-0"><small>qty</small></p>
+                                {{ item.qty }}
+                            </div>
+                            <div class="col-12 col-lg-2 p-0 py-3 ml-1 mr-2">
+                                <p class="text-muted mb-0"><small>item total</small></p>
+                                €{{ item.item_total }}
+                            </div>
                             <div class="col-12 col-lg-1 p-3 py-3 mr-2 text-decoration-none">
-                                <a href="{% url 'remove_custom_pringtorder_from_cart' item.item_id %}">
+                                <a href="{% url 'remove_custom_print_order_from_cart' item.item_id %}">
                                     <i class="fas fa-trash text-danger"></i>
                                 </a>
                             </div>

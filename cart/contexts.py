@@ -54,12 +54,12 @@ def cart_contents(request):
     for i, q in cart['custom_prints'].items():
         item_total = 0
         custom_print_order = get_object_or_404(CustomPrintOrder, pk=i)
-        item_total = ((int(q) * Decimal(custom_print_order.base_product.discounted_price))
-                        * Decimal(settings.PRINTING_SURCHARGE))
+        item_total = round(((int(q) * Decimal(custom_print_order.base_product.discounted_price))
+                        * Decimal(settings.PRINTING_SURCHARGE)),2)
         total += item_total
         product_count += q
         cart_items.append({
-            'type': 'custom_print_order',
+            'type': 'custom_print',
             'item_id': i,
             "qty": q,
             'custom_print_order': custom_print_order,

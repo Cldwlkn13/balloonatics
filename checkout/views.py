@@ -132,8 +132,8 @@ def checkout(request):
             for item_id, item_data in cart['custom_prints'].items():                  
                 try:
                     custom_print_order = CustomPrintOrder.objects.get(pk=item_id)
-                    custom_print_order.product.qty_held -= item.item_qty
-                    custom_print_order.product.save()
+                    custom_print_order.base_product.qty_held -= item_data
+                    custom_print_order.base_product.save()
 
                     order_item = OrderItem(order=order,
                                         quantity=item_data,
@@ -142,7 +142,7 @@ def checkout(request):
                 except CustomPrintOrder.DoesNotExist:
                     messages.error(
                         request,
-                        f"Custom rint Order with id {item_id} could not be processed "
+                        f"Custom Print Order with id {item_id} could not be processed "
                         "Please contact us for assistance",
                         extra_tags='render_toast')
                     order.delete()

@@ -28,10 +28,11 @@ class CustomPrintForm(forms.ModelForm):
         model = CustomPrintOrder
         fields = ('custom_message', 'qty')
 
-    custom_message = forms.Textarea()
+    custom_message = forms.CharField(label='Your message')
 
     def __init__(self, message, qty, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['custom_message'].widget.attrs['placeholder'] = 'Enter your message here'
         self.fields['custom_message'].initial = message
         self.fields['qty'].initial = qty
 

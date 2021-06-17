@@ -4,7 +4,7 @@
             {% if result.image %}
                 <img src="{{ result.image.url }}" class="card-img-top img-fluid" alt="{{ result.name }}">
             {% else %}
-                <img src="../../media/noimage.png" class="card-img-top img-fluid" alt="{{ result.name }}">
+                <img src="{{MEDIA_URL}}noimage.png" class="card-img-top img-fluid" alt="{{ result.name }}">
             {% endif %}
             <div class="card-img-overlay">
                 <div style="background-color: rgba(0, 0, 0, 0.9)" class="pl-2 py-1 rounded-3">

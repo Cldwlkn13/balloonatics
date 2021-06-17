@@ -1,5 +1,6 @@
 from django.shortcuts import (render, redirect, 
-                              get_object_or_404)
+                              get_object_or_404,
+                              HttpResponse)
 from django.contrib import messages
 
 from .helpers import custom_formset_dictionary_parser
@@ -33,7 +34,7 @@ def add_product_to_cart(request, item_id):
                          extra_tags='render_toast')
         return redirect(referred_from)
 
-    if item_id in list(cart.products.keys()):
+    if item_id in list(cart['products'].keys()):
         cart['products'][item_id] += qty
     else:
         cart['products'][item_id] = qty
@@ -265,7 +266,7 @@ def add_or_update_custom_print_for_cart(request, custom_print_id):
                          'We do not have the required amount '
                          'in stock.',
                          extra_tags='render_toast')
-        return False
+        HttpResponse(status=400, content=request)
 
     if custom_print_order.id in list(cart['custom_prints'].keys()):
         cart['custom_prints'][custom_print_order.id] += custom_print_order.qty
@@ -273,7 +274,7 @@ def add_or_update_custom_print_for_cart(request, custom_print_id):
         cart['custom_prints'][custom_print_order.id] = custom_print_order.qty
 
     request.session['cart'] = cart
-    return True
+    return HttpResponse(status=200, content=request)
 
 
 def remove_custom_print_order_from_cart(request, custom_print_id):
@@ -304,9 +305,9 @@ def remove_custom_print_order_from_cart(request, custom_print_id):
             extra_tags=extra_tags)
 
     request.session['cart'] = cart
-    
-    
+     
     return redirect(referred_from)
+
 
 ''' helper functions '''
 

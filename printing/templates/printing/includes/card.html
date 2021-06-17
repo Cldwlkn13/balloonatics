@@ -1,0 +1,17 @@
+<div class="col-12 col-md-4 col-lg-3 col-xl-2">
+    <div class="card bg-dark text-light print-card rounded-3 my-2">
+        <a href="{% if cntxt == 'add' %}{% url 'new_order_handler' %}?select_product={{result.id}}{%else%}#{% endif %}" class="print-card-select">
+            <p class="id-pl d-none">{{ result.id }}</p>
+            {% if result.image %}
+                <img src="{{ result.image.url }}" class="card-img-tn img-fluid" alt="{{ result.name }}">
+            {% else %}
+                <img src="{{MEDIA_URL}}noimage.png" class="card-img-tn img-fluid" alt="{{ result.name }}">
+            {% endif %}
+            <div class="card-img-overlay">
+                <div style="background-color: rgba(0, 0, 0, 0.9)" class="pl-2 py-1 rounded-3">
+                    <h5 class="card-title mb-0 text-light"><strong>{{ result.name }}</strong></h5>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>

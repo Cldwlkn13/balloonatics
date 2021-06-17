@@ -2,9 +2,9 @@
     <div class="card bg-dark text-light product-card border border-light my-2 my-lg-5">
         <a href="{% if cntxt == 'categories' %}{% url 'sub_categories' %}?category={{ result.name }}{% elif cntxt == 'sub_categories' %}{% url 'products' %}?sub_category={{ result.name }}{% else %}{% url 'product_detail' result.id %}{% endif %}" class="text-dark">
             {% if result.image %}
-                <img src="../../media/{{ result.image.name }}" class="card-img-top img-fluid" alt="{{ result.name }}">
+                <img src="{{ result.image.url }}" class="card-img-top img-fluid" alt="{{ result.name }}">
             {% else %}
-                <img src="../../media/noimage.png" class="card-img-top img-fluid" alt="{{ result.name }}">
+                <img src="{{MEDIA_URL}}noimage.png" class="card-img-top img-fluid" alt="{{ result.name }}">
             {% endif %}
             <div class="card-img-overlay">
                 <div style="background-color: rgba(0, 0, 0, 0.9)" class="pl-2 py-1 rounded-3">
