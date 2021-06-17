@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container bg-container-dark text-light">
+    <div class="row">
+        <div class="col-12 col-md-10 text-center text-md-left my-1">
+            <h2><strong>Your Event</strong></h2>
+        </div>
+    </div>
+    <hr class="bg-light">
+    {% if thank_you %}
+        <p>Thank you for your enquiry!</p>
+    {% endif %}
+    {% if event_form %}
+        <div class="row">
+            <div class="col-10 offset-1">
+                <form action="{% url 'events' %}" method="POST" id="event-form">
+                    {% csrf_token %}
+                    {{ event_form|crispy }}
+                    <button type="submit" class="btn btn-warning my-5">Submit</button>
+                </form>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block postloadjs %}
+{{ block.super }}
+
+<script> 
+
+    $(document).ready(function(){
+        
+    })
+
+</script>
+{% endblock %}
