@@ -25,8 +25,6 @@ def get_total_price(request):
                 pk=item['product'])
             item_total = Decimal(item['item_qty']) * product.discounted_price
             total += item_total
-    print(bundle_item_dict)
-    print(total)
 
     return HttpResponse(content=total, status=200)
 

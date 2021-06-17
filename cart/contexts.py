@@ -13,8 +13,6 @@ def cart_contents(request):
     product_count = 0
     delivery = 0.00
     cart = request.session.get('cart', {'products':{},'bundles':{},'custom_prints':{}})
-
-    print(cart)
     
     for i, q in cart['products'].items():
         item_total = 0

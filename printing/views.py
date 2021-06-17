@@ -106,29 +106,35 @@ def update_order_handler(request, custom_print_id):
     products = Product.objects.filter(is_printable=True)
     
     if request.method == 'POST':
-        custom_print_order = CustomPrintOrder.objects.get(
-            pk=custom_print_id)
-
+        if not 'p_id' in request.POST:
+            return redirect(reverse('load_print_selector'))
+        
         p_id = request.POST.get('p_id')
         product = Product.objects.get(pk=p_id)
 
         message = request.POST.get('custom_message')
         qty = request.POST.get('qty')
 
-        custom_print_order.base_product = product
-        custom_print_order.custom_message = message
-        custom_print_order.qty = qty
+        try:
+            custom_print_order = CustomPrintOrder.objects.get(
+                pk=custom_print_id)
+        except CustomPrintOrder.DoesNotExist:
+            return redirect(reverse('load_print_selector'))
+            
+        custom_print_order.base_product=product
+        custom_print_order.custom_message=message
+        custom_print_order.qty=qty
         custom_print_order.save()
 
-        added_to_cart = add_or_update_custom_print_for_cart(
-            request, custom_print_order.id).status_code == 200
+        updated_in_cart = add_or_update_custom_print_for_cart(
+            request, custom_print_id).status_code == 200
         
-        if not added_to_cart:
-            return redirect(reverse('load_print_selector'))
+        if not updated_in_cart:
+            return redirect(reverse(http_referrer))
 
         messages.success(
             request,
-            f'''Updated print order {custom_print_id} for {custom_print_order.qty} x 
+            f'''Updated print order: {custom_print_order.qty} x 
             <strong>{custom_print_order.base_product.name}</strong> 
             with message: "<i>{custom_print_order.custom_message}</i>"
             to your cart!''',
@@ -145,8 +151,11 @@ def update_order_handler(request, custom_print_id):
         }
         return render(request, 'printing/printing.html', context)
 
-    custom_print_order = CustomPrintOrder.objects.get(
-        pk=custom_print_id)
+    try:
+        custom_print_order = CustomPrintOrder.objects.get(
+            pk=custom_print_id)
+    except CustomPrintOrder.DoesNotExist:
+        return redirect(reverse('load_print_selector'))
 
     order_form = CustomPrintForm(custom_print_order.custom_message, 
         custom_print_order.qty)

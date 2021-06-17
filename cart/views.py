@@ -268,10 +268,7 @@ def add_or_update_custom_print_for_cart(request, custom_print_id):
                          extra_tags='render_toast')
         HttpResponse(status=400, content=request)
 
-    if custom_print_order.id in list(cart['custom_prints'].keys()):
-        cart['custom_prints'][custom_print_order.id] += custom_print_order.qty
-    else:
-        cart['custom_prints'][custom_print_order.id] = custom_print_order.qty
+    cart['custom_prints'][custom_print_id] = custom_print_order.qty
 
     request.session['cart'] = cart
     return HttpResponse(status=200, content=request)

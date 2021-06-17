@@ -68,6 +68,7 @@ input[name="quantity"] {
 .print-card {
     width: 135px;
     margin: 5px auto;
+    font-size: 0.75rem;
 }
 
 img.card-img-top {

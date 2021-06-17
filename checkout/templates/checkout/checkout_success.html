@@ -95,6 +95,33 @@
             </div>
         </div>
         {% endif %}
+        {% if order_prints %}
+        <div class="row mb-5">
+            <div class="col-10 offset-1 text-left text-light">
+                <h5>Your Custom Prints</h5>
+                <table class="table border border-light text-light">
+                    <thead class="bg-info">
+                        <th>item</th>
+                        <th>item id</th>
+                        <th>message</th>
+                        <th>qty</th>
+                        <th>total</th>
+                    </thead>
+                    <tbody>
+                        {% for item in order_prints %}
+                            <tr>
+                                <td>{{ item.custom_print_order.base_product.name }}</td>
+                                <td>{{ item.custom_print_order.id }}</td>
+                                <td><small>{{ item.custom_print_order.custom_message }}</small></td>
+                                <td>{{ item.custom_print_order.qty }}</td>
+                                <td>€{{ item.custom_print_order.total_cost }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
         <div class="row">
             <div class="col-10 offset-1 text-left text-light">
                 <h5>Your Order Details</h5>

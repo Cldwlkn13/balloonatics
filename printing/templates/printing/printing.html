@@ -35,7 +35,7 @@
                     {% if cntxt == 'add' %}
                         <button type="submit" class="btn btn-warning mt-3" id="submit-btn">submit</button>
                     {% else %}
-                        <button type="submit" formaction="{% url 'update_order_handler' custom_print_order.id %}" class="btn btn-warning mt-3" id="submit-btn">update your print item</button>
+                        <button type="submit" method="POST" formaction="{% url 'update_order_handler' custom_print_order.id %}" class="btn btn-warning mt-3" id="submit-btn">update your print item</button>
                     {% endif %}
                     <input type="hidden" name="p_id" value="{{ product.id }}">
                 </form>
@@ -52,12 +52,14 @@
 
     $(document).ready(function(){
         $('#submit-btn').click(function(ev) {
-            ev.preventDefault();
             var message = $('input[name="custom_message"]').val();
             var qty = $('input[name="qty"]').val();
             var form = $('#order-form');
             if(validator(message, qty)){
-                form.submit()
+                form.submit();
+            } else {
+                ev.preventDefault();
+                return;
             }
         });
 

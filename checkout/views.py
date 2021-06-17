@@ -214,6 +214,7 @@ def checkout_success(request, order_id):
     order = None
     order_items_of_product = None
     order_items_of_bundle = None
+    order_items_of_print = None
 
     try:
         order = list(Order.objects.filter(order_id=order_id))[0]
@@ -221,6 +222,8 @@ def checkout_success(request, order_id):
             order__order_id=order_id, product__isnull=False))
         order_items_of_bundle = list(OrderItem.objects.filter(
             order__order_id=order_id, bundle__isnull=False))
+        order_items_of_print = list(OrderItem.objects.filter(
+            order__order_id=order_id, custom_print_order__isnull=False))
 
         order_bundles = {}
         for order_item in order_items_of_bundle:
@@ -266,6 +269,7 @@ def checkout_success(request, order_id):
             'order': order,
             'order_items': order_items_of_product,
             'order_bundles': order_bundles,
+            'order_prints': order_items_of_print
         }
 
         return render(request, 'checkout/checkout_success.html', context)

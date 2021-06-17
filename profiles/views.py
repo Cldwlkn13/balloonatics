@@ -37,7 +37,6 @@ def profile(request):
 
     else:
         profile = UserProfile.objects.get(user=request.user)
-        print(profile)
         profile_form = ProfileForm(instance=profile)
         orders = profile.orders.all().order_by('-date')
 
