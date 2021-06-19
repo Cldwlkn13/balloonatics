@@ -4,7 +4,8 @@ from django.conf import settings
 
 def menu_context(request):
 
-    categories = Category.objects.all()
+    categories = Category.objects.exclude(
+        name='custom')
 
     menu_context = {}
 

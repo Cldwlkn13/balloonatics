@@ -119,7 +119,7 @@
                 return;
             }
             $.get({
-                url: '/bundle/serveimage/' + p_id,
+                url: '/products/serveimage/' + p_id,
                 success: function (response) {              
                     handleData(response);
                 },
@@ -150,6 +150,7 @@
             var newRow = $(selector).clone(true);
             $(newRow).attr('id','formset-row-' + formsCount);
             $(newRow).show();
+            $(newRow).focus();
 
             var productDiv = newRow.find('#div_id_form-0-product').attr('id', '#div_id_form-' + formsCount + '-product');
             var qtyDiv = newRow.find('#div_id_form-0-item_qty').attr('id', '#div_id_form-' + formsCount + '-item_qty');
@@ -172,6 +173,7 @@
             $(newRow).find('#remove-0').attr('id', 'remove-' + formsCount);
 
             $('.formset-row').last().after(newRow);
+            scrollTo(newRow);
         }
 
         function removeRow(i) {
@@ -179,6 +181,13 @@
             $(row).find('select option:eq(0)').prop('selected', true);
             $(row).hide();
         }
+
+        // https://stackoverflow.com/questions/6677035/jquery-scroll-to-element
+        function scrollTo(elem) {
+            $([document.documentElement, document.body]).animate({
+                scrollTop: $(elem).offset().top
+            }, 1000);
+        };
 
         $('.add-form').on('click', function(e) {
             var formsCount = $('.formset-row').length;

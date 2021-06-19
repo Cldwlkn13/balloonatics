@@ -122,12 +122,12 @@ def add_bundle_to_cart(request):
     custom_bundle_id = uuid.uuid4().hex.upper() 
     custom_bundle = Bundle(
         bundle_id=custom_bundle_id,
-        name='My Custom ' + orig_bundle.name,
+        name=f'{request.user.username} {orig_bundle.name}',
         image=orig_bundle.image,
         category=BundleCategory.objects.get(name='custom'),
         custom=True,
     )
-    custom_bundle.save()
+    custom_bundle.save(request.user.id)
 
     # get the customised bundle items of the request
     bundle_item_dict = get_bundle_item_dictionary(request.body)
@@ -154,7 +154,7 @@ def add_bundle_to_cart(request):
     save_bundle_items(bundle_item_dict, custom_bundle)
 
     # add to the cart
-    cart['bundles'][custom_bundle_id] = 1 # handle qtys here
+    cart['bundles'][custom_bundle_id] = 1 # handle qtys here in the future
 
     messages.success(
         request,
@@ -162,6 +162,8 @@ def add_bundle_to_cart(request):
         extra_tags='render_toast render_preview')
     
     request.session['cart'] = cart
+
+    print(cart)
 
     return redirect('bundle_categories')
 
@@ -172,7 +174,8 @@ def update_bundle_in_cart(request, bundle_id):
     referred_from = request.META['HTTP_REFERER']
     
     # load the cart from the session
-    cart = request.session.get('cart', {'products':{},'bundles':{},'custom_prints':{}})  
+    cart = request.session.get('cart', 
+        {'products':{},'bundles':{},'custom_prints':{}})  
 
     # load the bundle to update
     bundle = get_object_or_404(Bundle, bundle_id=bundle_id)
@@ -225,9 +228,13 @@ def remove_bundle_from_cart(request, bundle_id):
     
     # get referring url for redirect
     referred_from = request.META['HTTP_REFERER']
-    
+
     # load the cart from the session
-    cart = request.session.get('cart', {'products':{},'bundles':{},'custom_prints':{}})
+    cart = request.session.get('cart', 
+        {'products':{},'bundles':{},'custom_prints':{}})
+
+    print(cart)
+    print(bundle_id)
     
     # load the bundle to delete
     bundle = get_object_or_404(Bundle, bundle_id=bundle_id)

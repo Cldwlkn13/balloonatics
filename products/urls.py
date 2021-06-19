@@ -1,6 +1,7 @@
 from django.urls import path
 
 from . import views
+from .helpers import serve_image
 
 urlpatterns = [
     path('', views.products, name='products'),
@@ -12,4 +13,6 @@ urlpatterns = [
     path('edit/', views.edit_product, name='edit_product'),
     path('delete/<int:product_id>/', views.delete_product,
          name='delete_product'),
+    path('serveimage/<int:product_id>/', serve_image,
+         name='serve_image'),
 ]

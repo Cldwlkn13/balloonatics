@@ -37,15 +37,14 @@
   </head>
   <body>
       <header class="container-fluid fixed-top">
-        <div id="topnav" class="row bg-site pt-lg-2 d-none d-lg-flex">
-            <div class="col-12 col-lg-4 my-auto py-1 py-lg-0 text-center">
-                <a href="{% url 'home' %}" class="nav-link main-logo-link">
-                    <div class="d-inline">
+        <div id="topnav" class="row bg-site d-none d-lg-flex">
+            <div class="col-12 col-lg-4 w-auto my-auto">
+                <a href="{% url 'home' %}" class="nav-link main-logo-link ml-2 mr-0">
+                    <div class="d-flex">
                         <h1 class="my-0">
                             <strong>Balloonatics</strong>
-                            <span><img src="{{ MEDIA_URL }}orange-balloon.png" id="logo-balloon" alt="orange-balloon"></span>
-                        </h1>
-                        
+                            <span><img src="{{ MEDIA_URL }}orange-balloon.png" class="logo-balloon" alt="orange-balloon"></span>
+                        </h1> 
                     </div>
                 </a>
             </div>
@@ -107,8 +106,8 @@
             </div>
         </div>
         <div class="row bg-site">
-            <div class="col-12 text-left">
-                <nav class="navbar navbar-expand-lg navbar-dark w-100">
+            <div class="col-12 px-0">
+                <nav class="navbar navbar-expand-lg navbar-dark">
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-nav" aria-controls="main-nav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -117,9 +116,9 @@
                 </nav>
             </div>
         </div>
-        <div id="delivery-banner" class="row text-center border-top border-bottom bg-info border-light align-items-center">
+        <div id="delivery-banner" class="row text-center border-top border-bottom border-light bg-info align-items-center d-none d-lg-flex">
             <div class="col">
-                <h2 class="my-1 text-light">Some text to go here for promotions!</h2>            
+                <h5 class="my-1 text-light">Some text to go here for promotions!</h5>            
             </div>            
         </div>
       </header>
@@ -249,14 +248,12 @@
             });
 
             //dynamically set header container height based on height of fixed header
-            let header = document.getElementsByTagName('header')[0];
-            let height = header.offsetHeight;
-            let headerContainer = document.getElementsByClassName('header-container')[0];
-            headerContainer.style.height = height + 'px';
+            //let header = document.getElementsByTagName('header')[0];
+            //let height = header.offsetHeight;
+            //let headerContainer = document.getElementsByClassName('header-container')[0];
+            //headerContainer.style.height = height + 'px';
 
-            </script>
-
-            
+        </script>
 
     {% endblock %}
 

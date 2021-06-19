@@ -14,7 +14,7 @@ body {
 }
 
 .header-container {
-    min-height: 177px;
+    min-height: 164px;
 }
 
 .content-container {
@@ -26,7 +26,7 @@ body {
     background-color: #0a0e16;
 }
 
-#logo-balloon {
+.logo-balloon {
     height: 50px;
 }
 
@@ -35,12 +35,7 @@ body {
     border-radius: 15px;
 }
 
-.home-cat-text {
-    font-weight: 700;
-}
-
 .bg-container-dark {
-    /*background: url('/media/leather-nunchuck.png') repeat center center;*/
     background-color: rgba(52,28,64,0.85);
     background-attachment: fixed;
     background-size: cover;
@@ -71,6 +66,14 @@ input[name="quantity"] {
     font-size: 0.75rem;
 }
 
+a { 
+    color: inherit; 
+} 
+
+a:hover {
+    color: pink;
+}
+
 img.card-img-top {
     height: 275px;
     width: 275px;
@@ -90,7 +93,7 @@ img.card-img-tn {
 }
 
 #delivery-banner {
-    min-height: 75px;
+    min-height: 45px;
 }
 
 .nav-link {
@@ -109,7 +112,13 @@ a.nav-link:hover {
 
 .home-product-row {
     min-height: 100px;
-    border-radius: 10px
+    border-radius: 24px;
+}
+
+.home-cat-text {
+    font-weight: 700;
+    font-size: 2vw;
+    font-size: 24px;
 }
 
 .card-img-overlay {
@@ -174,11 +183,19 @@ a.nav-link:hover {
       transition: opacity 0.5s linear !important;
 }
 
+.text-light-muted {
+    color: rgb(155, 155, 155)
+}
+
 /* ---------------MEDIA QUERIES */
 @media (min-width: 1200px) {
-  .container {
-    max-width: 80%;
-  }
+
+}
+
+@media (max-width: 1200px) { 
+    .nav-link{       
+        margin: 0px 10px;
+    }
 }
 
 @media (min-width: 992px) {
@@ -191,13 +208,13 @@ a.nav-link:hover {
     }
 
     .header-container {
-        padding-top: 164px;
+        min-height: 164px;
     }
 }
 
 @media (max-width: 991px) {
     .header-container {
-        padding-top: 116px;
+        min-height: 70px;
     }
 
     body {
@@ -210,5 +227,13 @@ a.nav-link:hover {
 
     .bg-container-dark {
         padding-top: 25px;
+    }
+
+    .navbar{
+        font-size: 10px;
+    }
+
+    .nav-link{ 
+        padding: 8px 4px;
     }
 }

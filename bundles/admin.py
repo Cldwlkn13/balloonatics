@@ -9,6 +9,7 @@ class BundleItemInline(admin.TabularInline):
 
 class BundleAdmin(admin.ModelAdmin):
     inlines = (BundleItemInline,)
+    readonly_fields=('bundle_id',)
 
 
 admin.site.register(BundleCategory)

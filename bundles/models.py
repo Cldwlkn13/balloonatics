@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models import Sum
 from django.core.validators import MinValueValidator
+from django.contrib.auth.models import User
 
 from products.models import Product
 
@@ -32,6 +33,8 @@ class Bundle(models.Model):
     age = models.PositiveIntegerField(blank=True, null=True)
     image = models.ImageField(null=True, blank=True)
     custom = models.BooleanField(default=False)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL,
+            null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -39,9 +42,11 @@ class Bundle(models.Model):
     def _generate_order_number(self):
         return uuid.uuid4().hex.upper()
 
-    def save(self, *args, **kwargs):
+    def save(self, user_id=None, *args, **kwargs):
         if not self.bundle_id:
             self.bundle_id = self._generate_order_number()
+        if not user_id == None:
+            self.user = User.objects.get(pk=user_id)
         super().save(*args, **kwargs)
 
     def calc_bundle_total(self):

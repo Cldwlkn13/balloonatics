@@ -1,8 +1,6 @@
 from django.shortcuts import (render,reverse, redirect)
-from django.core.validators import MaxValueValidator
 from django.contrib import messages
 from django.forms import formset_factory
-from django.db.models import Sum
 
 from .models import Bundle, BundleItem
 from .forms import BundleSelectorForm, BundleBuilderForm
