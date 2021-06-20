@@ -11,9 +11,9 @@
     </div>
     <hr class="bg-light">
     {% if products %}
-        <div class="row mt-5 mb-1">
+        <div class="row mb-1">
             <div class="col-10 offset-1">
-                <h6>Step 1. Select a product</h6>
+                <p class="text-center" id="step-1">1. Select a Balloon {% if order_form %}<i class="fas fa-check text-success"></i>{% endif %}</p>
             </div>
         </div>
         <div class="row">
@@ -29,17 +29,19 @@
     {% if order_form %}
         <hr class="bg-light">
         <div class="row">
-            <div class="col-6 offset-3">
-                <p>Step 2. Add your message</p>
-                <form action="{% url 'new_order_handler' %}" method="POST" id="order-form">
+            <div class="col-lg-6 offset-lg-3">
+                <p id="step-2" class="text-center"> 2. Add your message {% if cntxt == 'update' %}<i class="fas fa-check text-success"></i>{% endif %}</p>
+                <form action="{% url 'new_order_handler' %}" method="POST" id="order-form" class="mb-5"> 
                     {% csrf_token %}
                     {{ order_form|crispy }}
-                    {% if cntxt == 'add' %}
-                        <button type="submit" class="btn btn-warning mt-3" id="submit-btn">submit</button>
-                    {% else %}
-                        <button type="submit" method="POST" formaction="{% url 'update_order_handler' custom_print_order.id %}" class="btn btn-warning mt-3" id="submit-btn">update your print item</button>
-                    {% endif %}
-                    <input type="hidden" name="p_id" value="{{ product.id }}">
+                    <div class="text-center">
+                        {% if cntxt == 'add' %}
+                            <button type="submit" class="btn btn-warning mt-3" id="submit-btn">submit</button>
+                        {% else %}
+                            <button type="submit" method="POST" formaction="{% url 'update_order_handler' custom_print_order.id %}" class="btn btn-warning mt-3" id="submit-btn">update your print item</button>
+                        {% endif %}
+                        <input type="hidden" name="p_id" value="{{ product.id }}">
+                    </div>
                 </form>
             </div>
         </div>
@@ -57,7 +59,7 @@
             var message = $('input[name="custom_message"]').val();
             var qty = $('input[name="qty"]').val();
             var form = $('#order-form');
-            if(validator(message, qty)){
+            if(validator(message, qty) == 'ok'){
                 form.submit();
             } else {
                 ev.preventDefault();
@@ -69,7 +71,7 @@
             var thisid = $(this).children('p').first().text(); 
             $('.border-success').removeClass('border-success border-3');  
             $(this).parent().addClass('border-success border-3');
-            $('input[name="p_id"]').val() = thisid;    
+            $('input[name="p_id"]').val() = thisid; 
         })
 
         $('.print-card-select').each(function(index){
@@ -78,25 +80,59 @@
             $(this).parent().toggleClass('border-success border-3', id == selectedid);
         })
 
-        function validator(message, qty) {
+        $('input[name="custom_message"]').on('input',function(e){
+            var message = $('input[name="custom_message"]').val();
+            var qty = $('input[name="qty"]').val();
+            var valid = validator(message);
+            if(valid == 'ok'){
+                $('#step-2').html(`<p> 2. Add your message <i class="fas fa-check text-success"></i></p>`)
+            } else {
+                $('#step-2').html(`<p> 2. Add your message <span class="text-danger"><small>${valid}<small></span></p>`);
+            }
+        });
+
+        function validator(message, qty = 1) {
             if(message.startsWith(' ')){
-                alert('Invalid Message for Custom Message');
-                return false;
+                return 'Message cannot start with a blank space';
             }
             if(message.length < 1){
-                alert('Please add a message');
-                return false;
+                return 'Please add a message';
             }
             if(message.length > 40){
-                alert('Custom Message too long');
-                return false;
+                return 'Message is too long. 40 characters max.';
             }
             if(qty < 1){
-                alert('Invalid Quantity Selected');
-                return false;
+                return 'Invalid Quantity Selected';
             }
-            return true;
+            return 'ok';
         };
+
+        $('#order-form').find('input').on('change', function(e)  {
+            if($(this).val() < 1) {
+                $(this).val(1);
+            }
+            updateBundlePrice(function(output){
+                var html = `€${output}`
+                $('#bundle-total-price').text(html);
+            });
+        });
+
+        function updateBundlePrice(handleData) {
+            var form = $('#item-formset')
+            var data = $(form).serialize();
+            var url = '/printing/gettotalprice/'
+
+            $.post({
+                url: url,
+                data: data,
+                success: function (response) {              
+                    handleData(response);
+                },
+                error: function () {
+                    handleData(response);
+                }
+            });
+        }
     })
 
 </script>
