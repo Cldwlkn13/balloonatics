@@ -35,6 +35,10 @@
                     {% csrf_token %}
                     {{ order_form|crispy }}
                     <div class="text-center">
+                        <span class="text-muted">total price:</span>
+                        <span id="print-total-price"></span>
+                    </div>
+                    <div class="text-center">
                         {% if cntxt == 'add' %}
                             <button type="submit" class="btn btn-warning mt-3" id="submit-btn">submit</button>
                         {% else %}
@@ -108,17 +112,27 @@
         };
 
         $('#order-form').find('input').on('change', function(e)  {
-            if($(this).val() < 1) {
-                $(this).val(1);
-            }
-            updateBundlePrice(function(output){
-                var html = `€${output}`
-                $('#bundle-total-price').text(html);
-            });
+            updateTotalPrice();
         });
 
-        function updateBundlePrice(handleData) {
-            var form = $('#item-formset')
+        function updateTotalPrice(){
+            var message = $('input[name="custom_message"]').val();
+            var qty = $('input[name="qty"]').val();
+            var valid = validator(message);
+            if(valid == 'ok'){
+                getTotalPrintPrice(function(output){
+                    var html = `€${output}`
+                    $('#print-total-price').text(html);
+                });
+            } else {
+                var html = 'n/a';
+                $('#print-total-price').text(html);
+            };
+        }
+        updateTotalPrice();
+
+        function getTotalPrintPrice(handleData) {
+            var form = $('#order-form')
             var data = $(form).serialize();
             var url = '/printing/gettotalprice/'
 

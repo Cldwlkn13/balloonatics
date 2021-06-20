@@ -163,8 +163,6 @@ def add_bundle_to_cart(request):
     
     request.session['cart'] = cart
 
-    print(cart)
-
     return redirect('bundle_categories')
 
 
