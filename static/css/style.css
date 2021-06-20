@@ -232,4 +232,16 @@ a.nav-link:hover {
     .nav-link{ 
         padding: 8px 4px;
     }
+
+    .product-card {
+        width: 175px;
+        height: 175px;
+        margin: 5px auto;
+        font-size: 10px;
+    }
+    
+    img.card-img-top {
+        height: 175px;
+        width: 175px;
+    }
 }
