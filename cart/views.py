@@ -232,15 +232,6 @@ def remove_bundle_from_cart(request, bundle_id):
     # load the cart from the session
     cart = request.session.get('cart', 
         {'products':{},'bundles':{},'custom_prints':{}})
-
-    print(cart)
-    print(bundle_id)
-    
-    # load the bundle to delete
-    bundle = get_object_or_404(Bundle, bundle_id=bundle_id)
-
-    # delete the 'customised' bundle as we no longer want it
-    Bundle.objects.filter(bundle_id=bundle_id).delete()
     
     # if we are already in the cart view don't show toast
     extra_tags = 'render_toast render_preview'
@@ -252,12 +243,21 @@ def remove_bundle_from_cart(request, bundle_id):
         cart['bundles'].pop(bundle_id)
         messages.info(
             request,
-            f'<strong>{bundle.name}</strong> removed from your cart!',
+            f'Bundle removed from your cart!',
             extra_tags=extra_tags)
 
     request.session['cart'] = cart
-    
+
+    try:
+        # try to delete items then the bundle
+        BundleItem.objects.filter(
+            bundle__bundle_id=bundle_id).delete()
+        Bundle.objects.get(bundle_id=bundle_id).delete()
+    except Bundle.DoesNotExist:
+        return redirect(referred_from)
+
     return redirect(referred_from)
+    
 
 
 def add_or_update_custom_print_for_cart(request, custom_print_id):

@@ -6,9 +6,11 @@ from .models import BundleItem
 
 @receiver(post_save, sender=BundleItem)
 def update_on_save(sender, instance, created, **kwargs):
-    instance.bundle.calc_bundle_total()
+    if instance.bundle:
+        instance.bundle.calc_bundle_total()
 
 
 @receiver(post_delete, sender=BundleItem)
 def update_on_delete(sender, instance, **kwargs):
-    instance.bundle.calc_bundle_total()
+    if instance.bundle:
+        instance.bundle.calc_bundle_total()
