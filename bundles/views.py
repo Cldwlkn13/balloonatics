@@ -27,7 +27,8 @@ def bundles(request):
 
         if request.POST['age']:
             age = request.POST['age']
-            bundles = Bundle.objects.filter(category=category, age=age)
+            bundles = Bundle.objects.filter(
+                category=category, age=age)
 
         bundles = Bundle.objects.filter(category=category)
         selector_form = BundleSelectorForm(request.POST)

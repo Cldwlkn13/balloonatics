@@ -5,30 +5,35 @@
     <div class="container bg-container-dark text-light">
         <div class="row">
             <div class="col-12 col-md-10 text-center text-md-left my-1">
-                <h2><strong>bundle builder</strong></h2>
+                <h2><strong>Build-a-Bundle</strong>&trade;</h2>
+                <p>Follow the steps below to build your bundle!</p>
             </div>
         </div>
         <hr class="bg-light">
-        <div class="row mt-5">
+        <div class="row my-2">
             <div class="col-10 offset-1">
                 <form action="{% url 'bundles' %}" method="POST" id="selector-form">
                     {% csrf_token %}
                     <div class="row my-auto align-items-center">
-                        <div class="col-4 offset-4 text-center">
+                        <div class="col-md-4 offset-md-4 text-center">
                             {{ selector_form.categories|as_crispy_field }}
                         </div>
                     </div>
                     <div class="row my-auto align-items-center">
-                        <div class="col-2 offset-5 text-center">
+                        <div class="col-md-4 offset-md-4 text-center">
                             {{ selector_form.age|as_crispy_field }}
                         </div>
                     </div>
                     <button type="submit" class="d-none"></button>
                 </form>
             </div>
-        </div>   
-        <div class="row mt-5">
+        </div> 
+        <hr class="bg-light">  
+        <div class="row my-2">
             <div class="col-10 offset-1">
+                {% if bundles %}
+                    <p class="text-center">Step 2. Select your bundle below</p>
+                {% endif %}
                 <div class="row">
                     {% for bundle in bundles %}
                         {% include './includes/card.html' with result=bundle %}
@@ -44,13 +49,13 @@
 <script>    
     $(document).ready(function(){
         $('#div_id_age').toggle(
-            $('select[name="categories"] option:selected').text() == 'birthday')
+            $('select[name="categories"] option:selected').text().toLowerCase() == 'birthday')
         
         $('select[name="categories"]').on('change', function(e)  {         
-            if($(this).find(":selected").text() != 'birthday'){
+            if($(this).find(":selected").text().toLowerCase() != 'birthday'){
                 $('#selector-form').find('button').first().trigger('click');
             } else {
-                $('#div_id_age').toggle($(this).find(":selected").text() == 'birthday')
+                $('#div_id_age').toggle($(this).find(":selected").text().toLowerCase() == 'birthday')
             }
         });
 

@@ -6,19 +6,18 @@ from products.models import Product
 
 
 class BundleSelectorForm(forms.Form):
-    categories = forms.ChoiceField()
-    age = forms.ChoiceField()
+    categories = forms.ChoiceField(label='Step 1. Choose a Bundle Category')
+    age = forms.ChoiceField(label='For birthday bundles, select a target age')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         categories = BundleCategory.objects.exclude(name='custom')
         self.fields['categories'].choices = self._load_choices(
-            categories, 'Select a category...')
+            categories, 'Step 1. Select a category...')
         ages = [(_, _) for _ in range(100)]
+        self.fields['categories'].label = ''
         self.fields['age'].choices = ages
         self.fields['age'].choices[0] = (0, 'Age')
-        for field in self.fields.values():
-            field.label = ''
 
     def _load_choices(self, arr, placeholder):
         choices = [(0, placeholder)]
@@ -32,8 +31,8 @@ class BundleBuilderForm(forms.ModelForm):
         model = BundleItem
         fields = ('product', 'item_qty')
 
-    product = forms.ChoiceField()
-    item_qty = forms.IntegerField()
+    product = forms.ChoiceField(label='Balloon')
+    item_qty = forms.IntegerField(label='Qty')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs) 
@@ -43,9 +42,6 @@ class BundleBuilderForm(forms.ModelForm):
         product_names.insert(0, (0, 'Select a product...'))
         self.fields['product'].choices = product_names
         self.fields['item_qty'].initial = 1
-        
-        for field in self.fields.values():
-            field.label = ''
 
 BundleBuilderFormset = formset_factory(
     form=BundleBuilderForm, extra=0

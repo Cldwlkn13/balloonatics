@@ -14,7 +14,7 @@ body {
 }
 
 .header-container {
-    min-height: 164px;
+    min-height: 184px;
 }
 
 .content-container {
@@ -27,7 +27,7 @@ body {
 }
 
 .logo-balloon {
-    height: 50px;
+    height: 35px;
 }
 
 .bg-form-row {
@@ -205,10 +205,6 @@ a.nav-link:hover {
         right: 0;
         left: 0;
         z-index: 1030;
-    }
-
-    .header-container {
-        min-height: 164px;
     }
 }
 
