@@ -30,3 +30,8 @@ urlpatterns = [
     path('printing/', include('printing.urls')),
     path('events/', include('events.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler400 = 'home.views.bad_request_view'
+handler403 = 'home.views.permission_denied_view'
+handler404 = 'home.views.page_not_found_view'
+handler500 = 'home.views.error_view'
