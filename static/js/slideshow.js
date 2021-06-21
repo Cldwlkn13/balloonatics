@@ -1,7 +1,6 @@
 $(document).ready(function() {
     var currIndex = -1;
     var initial = true;
-    $(".slides").hide();
     showSlides();
 
     function showSlides() {

@@ -1,8 +1,8 @@
-<div class="slideshow-container {% if float_right %}float-right{% endif %}">
+<div class="slideshow-container{% if float_right %} float-right{% elif float_left %} float-left{% else %} m-auto{% endif %}">
     {% for image_name, image_desc in slideshow_images.items %}
         <div class="slides" id="slide-{{container}}-{{forloop.counter0}}">
             <div class="numbertext">{{ forloop.counter }} / {{ slideshow_images|length}}</div>
-            <img src="{{MEDIA_URL}}{{image_name}}" style="width:100%">
+            <img src="{{MEDIA_URL}}{{image_name}}" style="width:100%" alt="{{image_desc}}">
             <div class="text">{{image_desc}}</div>
         </div>
     {% endfor %}

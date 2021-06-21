@@ -16,10 +16,10 @@
     <hr class="bg-light">
     {% if slideshow_images %}
     <div class="row d-md-block">
-        <div class="col-10 offset-1 text-center">
+        <div class="col-10 offset-1 text-center mb-3">
             <a href="#" class="btn btn-info m-3" id="slideshow-toggle">&#x25BC; Show me some cool custom print ideas</a>
             <div id="slideshow">
-                {% include 'includes/slideshow.html' with slideshow_images=slideshow_images %}
+                {% include 'includes/slideshow.html' with slideshow_images=slideshow_images container=0 %}
             </div>
         </div>
     </div>
