@@ -11,6 +11,7 @@ body {
     font-weight: 500;
     z-index: -10;
     min-height: 90vh;
+    margin: 0;
 }
 
 .header-container {
@@ -55,7 +56,8 @@ input[name="quantity"] {
     max-width: 40px;
 }
 
-.product-card {
+.product-card,
+.bundle-card {
     width: 275px;
     margin: 5px auto;
 }
@@ -209,6 +211,7 @@ a.nav-link:hover {
 }
 
 @media (max-width: 991px) {
+    
     .header-container {
         min-height: 70px;
     }
@@ -227,19 +230,21 @@ a.nav-link:hover {
 
     .navbar{
         font-size: 10px;
+        padding-right: 0px;
+        padding-left: 0px;
     }
 
     .nav-link{ 
         padding: 8px 4px;
     }
 
-    .product-card {
+    .product-card,
+    .bundle-card {
         width: 175px;
-        height: 175px;
         margin: 5px auto;
-        font-size: 10px;
+        font-size: 14px;
     }
-    
+
     img.card-img-top {
         height: 175px;
         width: 175px;

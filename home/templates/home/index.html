@@ -6,9 +6,10 @@
 {% endblock %}
 
 {% block content %}
-        <div class="row" id="test">
+        
+        <div class="row">
             <div class="col p-0">
-                <div class="row mx-2 mb-3 pr-lg-5">
+                <div class="row mx-5 mb-3 pr-lg-5">
                     <div class="col-lg-7 offset-lg-5">
                         <div class="row div-bg-opacity home-product-row border border-light align-items-center p-2">
                             <div class="col-1 d-none d-lg-flex">
@@ -37,7 +38,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row align-items-center mx-2 mb-3 pl-lg-5">
+                <div class="row align-items-center mx-5 mb-3 pl-lg-5">
                     <div class="col-lg-7 pl-3">
                         <div class="row align-items-center div-bg-opacity home-product-row border border-light p-2">
                             <div class="col-8 d-none d-lg-block text-right">
@@ -59,14 +60,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-5">
+                    <div class="col-lg-5 d-none d-lg-block">
                         <div class="slideshow px-3">
                             {% include 'includes/slideshow.html' with container=0 slideshow_images=slideshow_images_bundle float_left=True %}
                         </div>
                     </div>
                 </div>
-                <div class="row align-items-center mx-2 mb-3 pr-lg-5">
-                    <div class="col-lg-5">
+                <div class="row align-items-center mx-5 mb-3 pr-lg-5">
+                    <div class="col-lg-5 d-none d-lg-block">
                         <div class="slideshow px-3">
                             {% include 'includes/slideshow.html' with container=1 slideshow_images=slideshow_images_printing float_right=True %}
                         </div>
@@ -93,7 +94,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row align-items-center mx-2 mb-3 pl-lg-5">
+                <div class="row align-items-center mx-5 mb-3 pl-lg-5">
                     <div class="col-lg-7">
                         <div class="row align-items-center div-bg-opacity home-product-row border border-light p-2">
                             <div class="col-8 d-none d-lg-block text-right">
@@ -113,7 +114,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-5">
+                    <div class="col-lg-5 d-none d-lg-block">
                         <div class="slideshow px-3">
                             {% include 'includes/slideshow.html' with container=2 slideshow_images=slideshow_images_event float_left=True %}
                         </div>

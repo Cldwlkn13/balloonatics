@@ -8,7 +8,7 @@
             {% endif %}
             <div class="card-img-overlay">
                 <div style="background-color: rgba(0, 0, 0, 0.9)" class="pl-2 py-1 rounded-3">
-                    <h5 class="card-title mb-0 text-light"><strong>{{ result.name }}</strong></h5>
+                    <p class="card-title mb-0 text-light"><strong>{{ result.name }}</strong></p>
                     <small class=text-info>{% if product.qty_in_cart > 0 %}You have {{product.qty_in_cart}} of this item in your cart!{% endif %}</small>
                     {% if product_alert_qty_threshold > result.qty_held %}
                         <p class="mb-0"><small class="text-warning">Only <strong>{{result.qty_held}}</strong> left in stock!</small></p>

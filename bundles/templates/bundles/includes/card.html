@@ -1,5 +1,5 @@
 <div class="col-12 col-md-6 col-xl-4">
-    <div class="card bg-dark text-light product-card border border-light my-2 my-lg-2">
+    <div class="card bg-dark text-light bundle-card border border-light my-2 my-lg-2">
         <a href="{% url 'with_items' result.bundle_id %}" class="text-dark">
             {% if result.image %}
                 <img src="{{ result.image.url }}" class="card-img-top img-fluid" alt="{{ result.name }}">
@@ -8,7 +8,7 @@
             {% endif %}
             <div class="card-img-overlay">
                 <div style="background-color: rgba(0, 0, 0, 0.9)" class="pl-2 py-1 rounded-3">
-                    <h5 class="card-title mb-0 text-light"><strong>{{ result.name }}</strong></h5>
+                    <p class="card-title mb-0 text-light"><strong>{{ result.name }}</strong></p>
                 </div>
             </div>
         </a>

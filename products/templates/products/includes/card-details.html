@@ -1,18 +1,18 @@
-<div class="card-body pt-3 m-0 align-items-center border-info border-top">
+<div class="card-body p-1 pb-3 pt-lg-3 m-0 align-items-center border-info border-top">
     <div class="row mb-3">
-        <div class="col-8 offset-2 text-center">
+        <div class="col-lg-8 offset-lg-2 text-center w-100">
             {% if result.price != result.discounted_price %}
-                <h5 class="my-0"><s class="text-muted">€{{ result.full_price }}</s><strong>&nbsp&nbsp€{{ result.discounted_price }}</strong></h5>
+                <p class="my-0"><s class="text-muted">€{{ result.full_price }}</s><strong>&nbsp&nbsp€{{ result.discounted_price }}</strong></p>
             {% else %}
-                <h5 class="my-0"><strong>€{{ result.discounted_price }}</strong></h5>
+                <p class="my-0"><strong>€{{ result.discounted_price }}</strong></p>
             {% endif %}
         </div>
     </div>
-    <hr>
+    <hr class="d-none d-lg-block">
     <form class="form" action="{% url 'add_product_to_cart' result.id %}" method="POST">
         {% csrf_token %}
-        <div class="form-row">
-            <div class="col-8 align-content-center">
+        <div class="form-row mb-lg-3">
+            <div class="col-lg-7 m-auto pl-lg-3" style="width:unset">
                 <div class="input-group">
                     <span class="input-group-btn">
                         <button type="button" class="quantity-left-minus btn btn-info btn-number" data-type="minus"
@@ -30,7 +30,7 @@
                     </span>
                 </div>
             </div>
-            <div class="col-3 align-content-center">
+            <div class="col-lg-4 text-center m-auto pt-2 pt-lg-0 mr-lg-2">
                 <input type="submit" class="btn btn-warning text-center py-1 mt-1 text-uppercase" value="add">
             </div>
         </div>

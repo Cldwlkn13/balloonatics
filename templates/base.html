@@ -131,7 +131,7 @@
     </div>
 
      {% if messages %}
-        <div class="message-container d-none d-md-block">
+        <div class="message-container d-none d-lg-block">
             {% for message in messages %}
                 {% with message.extra_tags as extra_tags %}
                     {% if message.level == 40 %}
@@ -152,7 +152,7 @@
       {% block page_header %}
       {% endblock %}
 
-      <div class="content-container">
+      <div class="content-container container">
       {% block content %}
       {% endblock %}
       </div>
