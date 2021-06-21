@@ -13,7 +13,7 @@ class BundleSelectorForm(forms.Form):
         super().__init__(*args, **kwargs)
         categories = BundleCategory.objects.exclude(name='custom')
         self.fields['categories'].choices = self._load_choices(
-            categories, 'Step 1. Select a category...')
+            categories, '1. What is the occasion?')
         ages = [(_, _) for _ in range(100)]
         self.fields['categories'].label = ''
         self.fields['age'].choices = ages

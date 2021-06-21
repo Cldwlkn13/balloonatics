@@ -7,9 +7,30 @@ def index(request):
     categories = Category.objects.all()
     sub_categories = Sub_Category.objects.all()
 
+    slideshow_images_bundle = {
+        'age_2_pink.jpg': 'Our Wedding Bundle',
+        'mr_mrs.jpg': 'Our Wedding Bundle 2',
+        'red-balloon.jpg': 'Our Wedding Bundle 3',
+    }
+
+    slideshow_images_printing = {
+        'age_2_pink.jpg': 'Our Wedding Bundle',
+        'mr_mrs.jpg': 'Our Wedding Bundle 2',
+    }
+
+    slideshow_images_event = {
+        'age_2_pink.jpg': 'Our Wedding Bundle',
+        'mr_mrs.jpg': 'Our Wedding Bundle 2',
+        'leopard.jpg': 'Leopard yoke',
+        'foil_A_lg.jpg': 'Our Wedding Bundle 4',
+    }
+    
     context = {
         'categories': categories, 
-        'sub_cateogories': sub_categories 
+        'sub_cateogories': sub_categories,
+        'slideshow_images_bundle': slideshow_images_bundle,
+        'slideshow_images_printing': slideshow_images_printing,
+        'slideshow_images_event': slideshow_images_event,
     }
 
     return render(request, 'home/index.html', context)

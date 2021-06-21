@@ -11,8 +11,13 @@ from products.models import Product
 def bundle_categories(request):
     selector_form = BundleSelectorForm()
 
+    slideshow_images = {
+        'age_2_pink.jpg': 'Our Wedding Bundle',
+        }
+    
     context = {
         'selector_form': selector_form,
+        'slideshow_images': slideshow_images,
     }
 
     return render(request, 'bundles/bundles.html', context)

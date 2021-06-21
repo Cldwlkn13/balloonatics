@@ -19,9 +19,14 @@ def load_print_selector(request):
     
     products = Product.objects.filter(is_printable=True)
 
+    slideshow_images = {
+        'age_2_pink.jpg': 'Our Wedding Bundle',
+    }
+
     context = {
         'products': products,
-        'cntxt': 'add'
+        'cntxt': 'add',
+        'slideshow_images': slideshow_images,
     }
     return render(request, 'printing/printing.html', context)
 

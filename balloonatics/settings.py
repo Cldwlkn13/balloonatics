@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 import os
 import dj_database_url
+import mimetypes
+mimetypes.add_type("text/css", ".css", True)
 
 from pathlib import Path
 from dotenv import load_dotenv

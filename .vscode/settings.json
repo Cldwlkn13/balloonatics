@@ -23,4 +23,7 @@
    "workbench.colorTheme": "Solarized Dark",
 "editor.defaultFormatter": "HookyQR.beautify",
 "editor.autoSave": "off",
+"[html]": {
+   "editor.defaultFormatter": "vscode.html-language-features"
+},
 }
