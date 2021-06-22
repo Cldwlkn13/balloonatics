@@ -20,7 +20,7 @@ def load_print_selector(request):
     products = Product.objects.filter(is_printable=True)
 
     slideshow_images = {
-        'age_2_pink.jpg': 'Our Wedding Bundle',
+        'age_2_pink.JPG': 'Our Wedding Bundle',
     }
 
     context = {
