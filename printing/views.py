@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.conf import settings
 
 from .models import CustomPrintOrder
-from .forms import ProductSelectorForm, CustomPrintForm
+from .forms import CustomPrintForm
 
 from products.models import Product
 from cart.views import add_or_update_custom_print_for_cart
@@ -20,7 +20,7 @@ def load_print_selector(request):
     products = Product.objects.filter(is_printable=True)
 
     slideshow_images = {
-        'age_2_pink.JPG': 'Our Wedding Bundle',
+        'age_2_pink.jpg': 'Our Wedding Bundle',
     }
 
     context = {
@@ -32,8 +32,6 @@ def load_print_selector(request):
 
 
 def new_order_handler(request):
-
-    http_referrer = request.META['HTTP_REFERER']
 
     products = Product.objects.filter(is_printable=True)
 
