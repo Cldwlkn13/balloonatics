@@ -31,6 +31,9 @@ def products(request):
                 sortkey=f'-{sortkey}'
         products = products.order_by(sortkey)
 
+    if 'q' in request.GET:
+        products = Product.objects.filter(name=request.GET['q'])
+
     cart = request.session.get('cart', {})
 
     for product in products:
