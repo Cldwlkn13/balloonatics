@@ -10,7 +10,7 @@ def index(request):
     slideshow_images_bundle = {
         'age_2_pink.jpg': 'Our Wedding Bundle',
         'mr_mrs.jpg': 'Our Wedding Bundle 2',
-        'red-balloon.Jjpg': 'Our Wedding Bundle 3',
+        'red-balloon.jpg': 'Our Wedding Bundle 3',
     }
 
     slideshow_images_printing = {
