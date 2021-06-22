@@ -114,7 +114,7 @@ def add_product(request):
             return redirect(reverse('product_detail', args=[product.id]))
         else:
             messages.error(request,
-                           f'Error adding product: {product.name} '
+                           f'Error adding product'
                            'Please check the form and try again.',
                            extra_tags='render_toast')
     else:
