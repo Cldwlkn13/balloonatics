@@ -29,7 +29,6 @@ urlpatterns = [
     path('bundle/', include('bundles.urls')),
     path('printing/', include('printing.urls')),
     path('events/', include('events.urls')),
-    path('gallery/', include('gallery.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler400 = 'home.views.bad_request_view'
