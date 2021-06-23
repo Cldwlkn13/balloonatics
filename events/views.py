@@ -19,7 +19,8 @@ def events(request):
             'event_type': request.POST['event_type']
         }
 
-        event_type = EventType.objects.get(pk=int(form_data['event_type']))
+        event_type = EventType.objects.get(
+            pk=int(form_data['event_type']))
 
         event_form = EventForm(form_data)
 
@@ -41,10 +42,10 @@ def events(request):
         event.save()
 
         messages.success(request, 
-        f'''Thank your for your enquiry! 
-        A member of our team will be in 
-        touch shortly to discuss.''', 
-        extra_tags='render_toast')
+            f'''Thank your for your enquiry! 
+            A member of our team will be in 
+            touch shortly to discuss.''', 
+            extra_tags='render_toast')
 
         return redirect(reverse('events'))     
  
