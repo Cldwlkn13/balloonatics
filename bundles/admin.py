@@ -17,8 +17,6 @@ class BundleAdmin(admin.ModelAdmin):
         'total_cost',
     )
     
-
-
 admin.site.register(BundleCategory)
 admin.site.register(Bundle, BundleAdmin)
 admin.site.register(BundleItem)

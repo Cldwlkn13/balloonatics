@@ -27,7 +27,8 @@ def cache_checkout_data(request):
         pid = request.POST.get('client_secret').split('_secret')[0]
         stripe.api_key = settings.STRIPE_SECRET_KEY
         stripe.PaymentIntent.modify(pid, metadata={
-            'cart': json.dumps(request.session.get('cart', {'products':{},'bundles':{},'custom_prints':{}})),
+            'cart': json.dumps(request.session.get('cart', 
+                {'products':{},'bundles':{},'custom_prints':{}})),
             'save_info': request.POST.get('save_info'),
             'username': request.user,
         })
@@ -47,7 +48,8 @@ def checkout(request):
     stripe_public_key = settings.STRIPE_PUBLIC_KEY
     stripe_secret_key = settings.STRIPE_SECRET_KEY
 
-    cart = request.session.get('cart', {'products':{},'bundles':{},'custom_prints':{}})
+    cart = request.session.get('cart', 
+        {'products':{},'bundles':{},'custom_prints':{}})
 
     if request.method == 'POST':
         address_form_data = {
@@ -77,10 +79,10 @@ def checkout(request):
                 postal_code=address_form_data['postal_code'])
             order_id = uuid.uuid4().hex.upper()
             order = Order(order_id=order_id,
-                          cust_name=order_form_data['cust_name'],
-                          cust_email=order_form_data['cust_email'],
-                          cust_phone=order_form_data['cust_phone'],
-                          address=address)
+                cust_name=order_form_data['cust_name'],
+                cust_email=order_form_data['cust_email'],
+                cust_phone=order_form_data['cust_phone'],
+                address=address)
             pid = request.POST.get('client_secret').split('_secret')[0]
             order.stripe_pid = pid
             order.original_cart = json.dumps(cart)
@@ -91,8 +93,8 @@ def checkout(request):
                 try:
                     product = Product.objects.get(id=item_id)
                     order_item = OrderItem(order=order,
-                                        product=product,
-                                        quantity=item_data)
+                        product=product,
+                        quantity=item_data)
                     product.qty_held -= item_data
                     product.save()
                     order_item.save()
@@ -103,7 +105,7 @@ def checkout(request):
                         "Please contact us for assistance",
                         extra_tags='render_toast')
                     order.delete()
-                    return redirect(reverse('view_cart'))    
+                    return redirect(reverse('checkout'))    
             
             # handle bundles in cart
             for item_id, item_data in cart['bundles'].items():                  
@@ -116,8 +118,8 @@ def checkout(request):
                         item.product.save()
 
                     order_item = OrderItem(order=order,
-                                        quantity=item_data,
-                                        bundle=bundle)
+                        quantity=item_data,
+                        bundle=bundle)
                     order_item.save()
                 except Bundle.DoesNotExist:
                     messages.error(
@@ -126,7 +128,7 @@ def checkout(request):
                         "Please contact us for assistance",
                         extra_tags='render_toast')
                     order.delete()
-                    return redirect(reverse('view_cart'))
+                    return redirect(reverse('checkout'))
             
             # handle custom_print_orders in cart
             for item_id, item_data in cart['custom_prints'].items():                  
@@ -136,31 +138,31 @@ def checkout(request):
                     custom_print_order.base_product.save()
 
                     order_item = OrderItem(order=order,
-                                        quantity=item_data,
-                                        custom_print_order=custom_print_order)
+                        quantity=item_data,
+                        custom_print_order=custom_print_order)
                     order_item.save()
                 except CustomPrintOrder.DoesNotExist:
-                    messages.error(
-                        request,
+                    messages.error(request,
                         f"Custom Print Order with id {item_id} could not be processed "
                         "Please contact us for assistance",
                         extra_tags='render_toast')
                     order.delete()
-                    return redirect(reverse('view_cart'))
+                    return redirect(reverse('checkout'))
                 
-
             request.session['save_info'] = 'save-info' in request.POST
 
             return redirect(reverse('checkout_success',
                                     args=[order_id]))
         else:
             messages.error(request,
-                           "Your form could not be processed. "
-                           "Please check your information and try "
-                           "again",
-                           extra_tags='render_toast')
+                "Your form could not be processed. "
+                "Please check your information and try "
+                "again",
+                extra_tags='render_toast')
+            return redirect(reverse('checkout'))
     else:
-        cart = request.session.get('cart', {'products':{},'bundles':{},'custom_prints':{}})
+        cart = request.session.get('cart',
+            {'products':{},'bundles':{},'custom_prints':{}})
         if not cart:
             messages.error(request, "Your cart is empty",
                            extra_tags='render_toast')
