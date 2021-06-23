@@ -80,13 +80,12 @@
                         <div class="row p-0 text-center align-items-center">
                             <div class="col-lg-2 p-0 py-lg-3 mr-2">
                                 <p class="text-muted mb-0"><small>name</small></p>
-                                <strong><a href="{% url 'with_items' item.item_id %}" class="text-underline text-light">{{
-                                        item.bundle.name }}</a></strong>
+                                <strong><a href="{% url 'with_items' item.item_id %}" class="text-underline text-light">{{item.bundle.name }}</a></strong>
                             </div>
                             <div class="col-lg-4 p-0 pl-3 py-lg-3 mr-4">
                                 <p class="text-muted mb-0"><small>bundle items</small></p>
                                 {% for k, v in item.bundle_items.items %}
-                                <p class="mb-1">{{v}} x {{k}}</p>
+                                    <p class="mb-1">{{v}} x {{k}}</p>
                                 {% endfor %}
                             </div>
                             <div class="col-lg-2 p-0 py-lg-3 ml-1 mr-3">
@@ -125,8 +124,8 @@
                         <div class="row p-0 text-center align-items-center">
                             <div class="col-lg-2 p-0 py-lg-3 mr-2">
                                 <p class="text-muted mb-0"><small>print product name</small></p>
-                                <strong><a href="{% url 'update_order_handler' item.item_id %}" class="text-underline text-light">{{
-                                        item.custom_print_order.base_product.name }}</a></strong>
+                                <strong><a href="{% url 'update_order_handler' item.item_id %}" class="text-underline text-light">
+                                    {{item.custom_print_order.base_product.name }}</a></strong>
                             </div>
                             <div class="col-lg-2 p-0 py-lg-3 ml-1 mr-1">
                                 <p class="text-muted mb-0"><small>message</small></p>

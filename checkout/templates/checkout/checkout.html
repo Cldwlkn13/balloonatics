@@ -105,7 +105,7 @@
                     </div>
                     <hr class="bg-light">
                 {% elif item.type == 'bundle' %}
-                    <!--BUNDLE ITEMS IN ORDER-->0
+                    <!--BUNDLE ITEMS IN ORDER-->
                     <div class="row align-items-center p-1 pl-lg-5">
                         <div class="col-md-6 col-lg-3 text-center">
                             {% if item.bundle.image %}
@@ -140,8 +140,8 @@
                         </div>
                         <div class="col-md-6 col-lg-9">
                             <div class="row p-0 align-items-center text-center">
-                                <div class="col-lg-4 p-0 py-lg-3"><strong>Custom Print: {{
-                                        item.custom_print_order.base_product.name }}</strong></div>
+                                <div class="col-lg-4 p-0 py-lg-3"><strong>Custom Print: 
+                                    {{ item.custom_print_order.base_product.name }}</strong></div>
                                 <div class="col-lg-4 p-0 py-lg-3">qty x {{ item.custom_print_order.qty }}</div>
                                 <div class="col-lg-4 p-0 py-lg-3"><strong>€{{ item.custom_print_order.total_cost }}</strong>
                                 </div>
@@ -153,12 +153,12 @@
             {% endfor%}
             <!--ORDER TOTALS-->
             <div class="row mt-5">
-                <div class="col-lg-2 offset-lg-10 text-center">
-                    <p class="text-muted mb-0">Items Total</p>
+                <div class="col-lg-4 offset-lg-8 text-center">
+                    <p class="text-muted mb-0"><small>Items Total</small></p>
                     <p>€{{ total }}</p>
-                    <p class="text-muted mb-0">Delivery Charges</p>
+                    <p class="text-muted mb-0"><small>Delivery Charges</small></p>
                     <p>€{{ delivery }}</p>
-                    <h6 class="text-muted text-center mt-3">Grand Total </h6>
+                    <h6 class="text-muted text-center mt-3"><small>Grand Total</small></h6>
                     <h4 class="text-center"><strong> €{{ grand_total|floatformat:2 }}</strong></h4>
                 </div>
             </div>

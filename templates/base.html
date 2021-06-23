@@ -155,8 +155,9 @@
         </div>
     </div>
 
-    <!--MESSAGE CONTAINER-->
+
     {% if messages %}
+    <!--MESSAGE CONTAINER-->
     <div class="message-container d-none d-lg-block">
         {% for message in messages %}
             {% with message.extra_tags as extra_tags %}
@@ -179,9 +180,9 @@
         {% endblock %}
     </div>
     <!--FOOTER-->
-    <!--Inspiration https://bbbootstrap.com/snippets/simple-footer-social-media-icons-37929510-->
     <div class="container-fluid pb-0 mb-0 justify-content-center bg-site">
-        <footer>
+        <!--Inspiration https://bbbootstrap.com/snippets/simple-footer-social-media-icons-37929510-->
+        <footer>  
             <div class="row my-0 justify-content-center py-5">
                 <div class="col-11">
                     <div class="row ">
@@ -237,7 +238,7 @@
         </footer>
     </div>
 
-
+    <!--POSTLOAD JS-->
     {% block postloadjs %}
         {% if request.user.is_authenticated %}
             <script type="text/javascript">

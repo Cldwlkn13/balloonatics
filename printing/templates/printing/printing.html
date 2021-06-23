@@ -63,7 +63,7 @@
                 <!--ADD TO CART-->
                 <div class="text-center">
                     {% if cntxt == 'add' %}
-                    <button type="submit" class="btn btn-warning mt-3" id="submit-btn">submit</button>
+                    <button type="submit" class="btn btn-warning mt-3" id="submit-btn">add to cart</button>
                     {% else %}
                     <button type="submit" method="POST"
                         formaction="{% url 'update_order_handler' custom_print_order.id %}" class="btn btn-warning mt-3"
