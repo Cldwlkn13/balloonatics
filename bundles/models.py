@@ -8,6 +8,7 @@ from products.models import Product
 from decimal import Decimal
 
 import uuid
+import math
 
 
 class BundleCategory(models.Model):
@@ -50,8 +51,9 @@ class Bundle(models.Model):
         super().save(*args, **kwargs)
 
     def calc_bundle_total(self):
-        self.total_cost = self.bundle_items.aggregate(
+        total_cost = self.bundle_items.aggregate(
             Sum('item_cost'))['item_cost__sum'] or 0
+        self.total_cost = math.ceil(total_cost) - 0.01
         self.save()
 
 

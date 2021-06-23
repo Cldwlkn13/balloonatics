@@ -5,6 +5,8 @@ from products.models import Product
 
 from decimal import Decimal
 
+import math
+
 
 class CustomPrintOrder(models.Model):
 
@@ -24,7 +26,8 @@ class CustomPrintOrder(models.Model):
 
 
     def save(self, *args, **kwargs):
-        self.total_cost = self.calc_total_cost()
+        total_cost = self.calc_total_cost()
+        self.total_cost = math.ceil(total_cost) - 0.01
         super().save(*args, **kwargs)
 
     

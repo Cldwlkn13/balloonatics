@@ -19,7 +19,7 @@ def get_total_price(request):
         item_cost = Decimal(product.discounted_price) * int(qty)
         with_printing = round(item_cost * Decimal(
             settings.PRINTING_SURCHARGE),2)
-        with_printing = math.ceil(with_printing)
+        with_printing = math.ceil(with_printing) - 0.01
     except Product.DoesNotExist:
         return HttpResponse(content=0, status=400)
 
