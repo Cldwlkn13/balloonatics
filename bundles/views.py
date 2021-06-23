@@ -4,6 +4,7 @@ from django.forms import formset_factory
 
 from .models import Bundle, BundleItem
 from .forms import BundleSelectorForm, BundleBuilderForm
+from .helpers import validate_bundle_items
 
 from products.models import Product
 
@@ -13,7 +14,7 @@ def bundle_categories(request):
 
     slideshow_images = {
         'age_2_pink.jpg': 'Our Wedding Bundle',
-        }
+    }
     
     context = {
         'selector_form': selector_form,
@@ -59,16 +60,20 @@ def with_items(request, bundle_id):
                       extra_tags='render_toast')
         return redirect(reverse('bundle_categories'))
 
+    # get the adjusted bundle items from the request
     adjusted_bundle = validate_bundle_items(bundle_items)
     bundle_items = adjusted_bundle[0]
     adj_total_cost = adjusted_bundle[1]
 
+    # get the bundle and the total cost 
     bundle = bundle_items[0].bundle
     bundle.total_cost = adj_total_cost
     
+    # init the formset
     BundleBuilderFormset = formset_factory(
         BundleBuilderForm, extra=0)
     
+    # load up the formset with the data from the bundle
     formset = BundleBuilderFormset(
         initial=[{
                 'product': item.product.pk, 
@@ -83,17 +88,7 @@ def with_items(request, bundle_id):
     return render(request, 'bundles/with_items.html', context)
 
 
-def validate_bundle_items(bundle_items):
-    total = 0
-    for item in bundle_items:
-        product = Product.objects.get(pk=item.product.id)
-        qty_held = product.qty_held
-        if item.item_qty > qty_held:
-            item.item_qty = qty_held
-            item.item_cost = product.discounted_price * item.item_qty
-        total += item.item_cost
-    
-    return [bundle_items, total]
+
 
 
 

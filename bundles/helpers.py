@@ -24,3 +24,18 @@ def get_total_price(request):
     return HttpResponse(content=total, status=200)
 
 
+def validate_bundle_items(bundle_items):
+    total = 0
+    for item in bundle_items:
+        product = Product.objects.get(pk=item.product.id)
+        qty_held = product.qty_held
+        if item.item_qty > qty_held:
+            item.item_qty = qty_held
+            item.item_cost = product.discounted_price * item.item_qty
+        total += item.item_cost
+    
+    total = math.ceil(total) - 0.01
+
+    return [bundle_items, total]
+
+
