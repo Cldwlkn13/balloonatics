@@ -11,6 +11,13 @@ class BundleAdmin(admin.ModelAdmin):
     inlines = (BundleItemInline,)
     readonly_fields=('bundle_id',)
 
+    list_display = (
+        'name',
+        'category',
+        'total_cost',
+    )
+    
+
 
 admin.site.register(BundleCategory)
 admin.site.register(Bundle, BundleAdmin)
