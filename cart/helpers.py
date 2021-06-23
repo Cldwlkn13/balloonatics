@@ -1,4 +1,5 @@
 from products.models import Product
+from bundles.models import BundleItem
 
 def custom_formset_dictionary_parser(requestDictionary):
     d = {}
