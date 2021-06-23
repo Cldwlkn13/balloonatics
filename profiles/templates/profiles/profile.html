@@ -6,30 +6,30 @@
 {% endblock %}
 
 {% block content %}
-<div class="container bg-container-dark text-center">
+<div class="container bg-container-dark text-center pb-5">
     <!--CONTENT HEADER-->
     <div class="row">
-        <div class="col-8 offset-2">
+        <div class="col-lg-8 offset-lg-2">
             <h4>Profile</h4>
         </div>
     </div>
     <hr class="bg-light">
     <!--PROFILE FORM-->
     <div class="row">
-        <div class="col-12 col-md-6 p-5">
+        <div class="col-lg-6">
             <h6>Save time by saving your details with us</h6>
             <hr class="bg-light">
-            <form action="{% url 'profile' %}" method="POST" id="payment-form" class="mt-5">
+            <form action="{% url 'profile' %}" method="POST" id="payment-form" class="mt-lg-5">
                 {% csrf_token %}
                 <!--CUST DETAILS-->
-                <fieldset class="rounded px-3 mb-5">
+                <fieldset class="rounded px-3 mb-lg-5">
                     <legend class="fieldset-label small text-light text-left">Your Details</legend>
                     {{ profile_form.cust_name | as_crispy_field }}
                     {{ profile_form.cust_email | as_crispy_field }}
                     {{ profile_form.cust_phone | as_crispy_field }}
                 </fieldset>
                 <!--CUST ADDRESS-->
-                <fieldset class="rounded px-3 mb-5">
+                <fieldset class="rounded px-3">
                     <legend class="fieldset-label small text-light text-left">Your Address</legend>
                     {{ profile_form.street_address_1 | as_crispy_field }}
                     {{ profile_form.street_address_2 | as_crispy_field }}
@@ -39,7 +39,7 @@
                     {{ profile_form.postal_code | as_crispy_field }}
                 </fieldset>
                 <!--SUBMIT-->
-                <button id="submit-button" class="btn btn-warning text-uppercase mt-3">
+                <button id="submit-button" class="btn btn-warning text-uppercase mt-lg-3">
                     <span>Update Profile</span>
                     <span class="icon">
                         <i class="fas fa-user"></i>
@@ -48,11 +48,11 @@
             </form>
         </div>
         <!--ORDER HISTORY-->
-        <div class="col-12 col-md-6 p-5">
+        <div class="col-lg-6 mt-5 text-center">
             <h6>Your Order History</h6>
             <hr class="bg-light">
             {% if orders %}
-            <table class="table border border-light text-light my-5">
+            <table class="table-responsive">
                 <thead class="bg-info">
                     <th>order id</th>
                     <th>order date</th>
@@ -61,8 +61,7 @@
                 <tbody>
                     {% for order in orders %}
                     <tr>
-                        <td><a href="{% url 'checkout_success' order.order_id %}"
-                                class="text-dcoration-none text-light">{{ order.order_id }}</a></td>
+                        <td style="word-wrap: break-word;">{{ order.order_id }}<p><a href="{% url 'checkout_success' order.order_id %}">Go To Order</a></p></td>
                         <td>{{ order.date }}</td>
                         <td>€{{ order.grand_total }}</td>
                     </tr>

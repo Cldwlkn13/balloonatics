@@ -5,25 +5,27 @@
 <div class="container bg-container-dark text-center pb-5">
     <!--CONTENT HEADER-->
     <div class="row">
-        <div class="col-8 offset-2">
+        <div class="col-lg-8 offset-lg-2 text-center">
             <h4 class="text-success">Order Complete!</h4>
         </div>
     </div>
     <hr class="bg-light">
-    <!--EMAIL CONFFIRMATION-->
+    <!--EMAIL CONFIRMATION-->
     <div class="row">
-        <div class="col-8 offset-2">
-            <h6>Your Order Id: <strong>{{ order.order_id }}</strong></h6>
-            <p>You will shortly recieve a confirmation to <u>{{ order.cust_email }}</u></p>
-            <a href="{% url 'categories' %}" class="btn btn-warning text-uppercase my-5"><i
+        <div class="col-lg-8 offset-lg-2">
+            <p class="mb-0 text-light-muted"><small>Your Order Id:</small></p>
+            <p> <strong>{{ order.order_id }}</strong></p>
+            <p class="mb-0 text-light-muted"><small>A confirmation email has been sent to</small></p>
+            <p><u>{{ order.cust_email }}</u></p>
+            <a href="{% url 'categories' %}" class="btn btn-warning text-uppercase mt-lg-5 mb-5"><i
                     class="fas fa-chevron-left"></i>&nbsp continue shopping</a>
         </div>
     </div>
     <!--CUSTOMER DETAILS-->
-    <div class="row mb-5">
-        <div class="col-10 offset-1 text-left text-light">
-            <h5>Your Details</h5>
-            <table class="table border border-light text-light">
+    <div class="row mb-2 mb-lg-5">
+        <div class="col-lg-10 offset-lg-1 text-left">
+            <p class="mb-0">Your Details</p>
+            <table class="table-responsive">
                 <thead class="bg-info">
                     <th>name</th>
                     <th>email</th>
@@ -43,10 +45,10 @@
     </div>
     {% if order_items %}
         <!--PRODUCTS IN ORDER-->
-        <div class="row mb-5">
-            <div class="col-10 offset-1 text-left text-light">
-                <h5>Your Items</h5>
-                <table class="table border border-light text-light">
+        <div class="row mb-2 mb-lg-5">
+            <div class="col-lg-10 offset-lg-1 text-left">
+                <p class="mb-0">Your Items</p>
+                <table class="table-responsive w-100">
                     <thead class="bg-info">
                         <th>item</th>
                         <th>item id</th>
@@ -71,11 +73,11 @@
     {% endif %}
     {% if order_bundles %}
         <!--BUNDLES IN ORDER-->
-        <div class="row mb-5">
-            <div class="col-10 offset-1 text-left text-light">
-                <h5>Your Bundles</h5>
+        <div class="row mb-2 mb-lg-5">
+            <div class="col-lg-10 offset-lg-1 text-left">
+                <p class="mb-0">Your Bundles</p>
                 {% for bundle, items in order_bundles.items %}
-                <table class="table border border-light text-light">
+                <table class="table-responsive">
                     <thead class="bg-info">
                         <th>name</th>
                         <th>id</th>
@@ -86,7 +88,7 @@
                     <tbody>
                         <tr>
                             <td>{{ bundle.name }}</td>
-                            <td>{{ bundle.bundle_id }}</td>
+                            <td style="word-wrap: break-word;">{{ bundle.bundle_id }}</td>
                             <td>1</td>
                             <td>
                                 {% for item in items %}
@@ -103,10 +105,10 @@
     {% endif %}
     {% if order_prints %}
         <!--PRINTS IN ORDER-->
-        <div class="row mb-5">
-            <div class="col-10 offset-1 text-left text-light">
-                <h5>Your Custom Prints</h5>
-                <table class="table border border-light text-light">
+        <div class="row mb-2 mb-lg-5">
+            <div class="col-lg-10 offset-lg-1 text-left">
+                <p class="mb-0">Your Custom Prints</p>
+                <table class="table-responsive">
                     <thead class="bg-info">
                         <th>item</th>
                         <th>item id</th>
@@ -131,11 +133,10 @@
     {% endif %}
     <!--ORDER TOTALS-->
     <div class="row">
-        <div class="col-10 offset-1 text-left text-light">
-            <h5>Your Order Details</h5>
-            <table class="table border border-light text-light">
+        <div class="col-lg-10 offset-lg-1 text-left">
+            <p class="mb-0">Your Order Details</p>
+            <table class="table-responsive">
                 <thead class="bg-info">
-                    <th>id</th>
                     <th>date</th>
                     <th>delivery charges</th>
                     <th>items total</th>
@@ -143,7 +144,6 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{{ order.order_id }}</td>
                         <td>{{ order.date }}</td>
                         <td>€{{ order.delivery_surcharge }}</td>
                         <td>€{{ order.items_total }}</td>

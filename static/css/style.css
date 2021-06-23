@@ -14,9 +14,6 @@ body {
     z-index: -10;
     min-height: 90vh;
     margin: 0;
-    transition: background-colo .5s ease ;
-    transition-duration: 2s;
-    transition-delay: 1s;
 }
 
 .content-container {
@@ -63,6 +60,23 @@ a {
 
 a:hover {
     color: pink;
+}
+
+p { 
+    word-break: break-all 
+}
+
+.table-responsive {
+    border-radius: 3px;
+}
+
+th, td {
+    padding: 8px;
+    border: 1px solid gray;
+}
+
+td { 
+    background-color: rgba(0,0,0,0.8);
 }
 
 .border-3 {
@@ -235,6 +249,8 @@ img.card-img-tn {
 
     .bg-container-dark {
         padding-top: 25px;
+        padding-right: 25px;
+        padding-left: 25px;
     }
 
     .navbar{
@@ -257,5 +273,16 @@ img.card-img-tn {
     img.card-img-top {
         height: 175px;
         width: 175px;
+    }
+
+    th, td {
+        font-size: 12px;
+    }
+}
+
+/* ---------------XS AND BELOW */
+@media (max-width: 666px) {   
+    th, td {
+        font-size: 8px;
     }
 }

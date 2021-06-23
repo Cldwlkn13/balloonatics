@@ -90,7 +90,7 @@
                                 {% if request.user.is_authenticated %}
                                     <p class="my-0" id="account-text">{{ request.user }}</p>
                                 {% else %}
-                                    <p class="my-0" id="account-text">My Account</p>
+                                    <p class="my-0" id="account-text">Login/Register</p>
                                 {% endif %}
                             </div>
                         </a>
@@ -161,17 +161,13 @@
         {% for message in messages %}
             {% with message.extra_tags as extra_tags %}
                 {% if message.level == 40 %}
-                    {% include './includes/toasts/toast-base.html' with extra_tags=extra_tags toast_class='danger'
-                    header_message='Eeek!' %}
+                    {% include './includes/toasts/toast-base.html' with extra_tags=extra_tags toast_class='danger' header_message='Eeek!' %}
                 {% elif message.level == 30 %}
-                    {% include './includes/toasts/toast-base.html' with extra_tags=extra_tags toast_class='warning'
-                    header_message='Careful now!' %}
+                    {% include './includes/toasts/toast-base.html' with extra_tags=extra_tags toast_class='warning' header_message='Careful now!' %}
                 {% elif message.level == 25 %}
-                    {% include './includes/toasts/toast-base.html' with extra_tags=extra_tags toast_class='success'
-                    header_message='Woohoo!' %}
+                    {% include './includes/toasts/toast-base.html' with extra_tags=extra_tags toast_class='success' header_message='Woohoo!' %}
                 {% else %}
-                    {% include './includes/toasts/toast-base.html' with extra_tags=extra_tags toast_class='info'
-                    header_message='Heads Up!' %}
+                    {% include './includes/toasts/toast-base.html' with extra_tags=extra_tags toast_class='info' header_message='Heads Up!' %}
                 {% endif %}
             {% endwith %}
         {% endfor %}
