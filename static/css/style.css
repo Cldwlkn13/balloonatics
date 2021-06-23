@@ -1,3 +1,5 @@
+
+/* ---------------GENERAL SITE CSS */
 html {
     height: 100%;
 }
@@ -12,10 +14,9 @@ body {
     z-index: -10;
     min-height: 90vh;
     margin: 0;
-}
-
-.header-container {
-    min-height: 184px;
+    transition: background-colo .5s ease ;
+    transition-duration: 2s;
+    transition-delay: 1s;
 }
 
 .content-container {
@@ -29,11 +30,6 @@ body {
 
 .logo-balloon {
     height: 35px;
-}
-
-.bg-form-row {
-    background: rgba(0,0,0,0.5);
-    border-radius: 15px;
 }
 
 .bg-container-dark {
@@ -52,10 +48,64 @@ body {
     padding-right: 50px;
 }
 
+.div-bg-opacity{
+    background: rgba(0,0,0,0.8);
+}
+
+
 input[name="quantity"] {
     max-width: 40px;
 }
 
+a { 
+    color: inherit; 
+} 
+
+a:hover {
+    color: pink;
+}
+
+.border-3 {
+    border-width:3px !important;
+}
+
+.rounded-3 {
+    border-radius: 0.25rem;
+}
+
+.text-light-muted {
+    color: rgb(155, 155, 155)
+}
+
+
+/* ---------------HEADER */
+.header-container {
+    min-height: 184px;
+}
+
+.nav-link {
+    color: #fff;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+.main-logo-link {
+    width: fit-content;
+}
+
+#delivery-banner {
+    min-height: 45px;
+}
+
+/* ---------------MESSAGES */
+.message-container {
+    position: absolute;
+    top: 70px;
+    right: 20px;
+    z-index: 2000;
+}
+
+/* ---------------PRODUCT CARDS & IMGS */
 .product-card,
 .bundle-card {
     width: 275px;
@@ -68,14 +118,6 @@ input[name="quantity"] {
     font-size: 0.75rem;
 }
 
-a { 
-    color: inherit; 
-} 
-
-a:hover {
-    color: pink;
-}
-
 img.card-img-top {
     height: 275px;
     width: 275px;
@@ -86,78 +128,8 @@ img.card-img-tn {
     height: 135px;
 }
 
-.border-3 {
-    border-width:3px !important;
-}
-
-.div-bg-opacity{
-    background: rgba(0,0,0,0.8);
-}
-
-#delivery-banner {
-    min-height: 45px;
-}
-
-.nav-link {
-    color: #fff;
-    margin-left: 30px;
-    margin-right: 30px;
-}
-
-a.nav-link:hover {
-    color: pink;
-}
-
-#home-container {
-    margin-top: 50px;
-}
-
-.home-product-row {
-    min-height: 100px;
-    border-radius: 24px;
-}
-
-.home-cat-text {
-    font-weight: 700;
-    font-size: 2vw;
-    font-size: 24px;
-}
-
 .card-img-overlay {
     padding: 0.25rem;
-}
-
-.message-container {
-    position: absolute;
-    top: 70px;
-    right: 20px;
-    z-index: 2000;
-}
-
-.rounded-3 {
-    border-radius: 0.25rem;
-}
-
-*/
-/* from Bulma */
-.icon {
-    align-items: center;
-    display: inline-flex;
-    justify-content: center;
-    height: 1.5rem;
-    width: 1.5rem;
-}
-
-.main-logo-link {
-    width: fit-content;
-}
-
-.qty-input {
-    max-width: 50px;
-}
-
-.increment-qty, .decrement-qty {
-    padding: .25rem .5rem !important;
 }
 
 .product-detail-img {
@@ -175,31 +147,68 @@ a.nav-link:hover {
     width: 60px;
 }
 
+/* ---------------HOME */
+#home-container {
+    margin-top: 50px;
+}
+
+.home-product-row {
+    min-height: 100px;
+    border-radius: 24px;
+}
+
+.home-cat-text {
+    font-weight: 700;
+    font-size: 2vw;
+    font-size: 24px;
+}
+
+/* ---------------BUNDLES */
+.bg-form-row {
+    background: rgba(0,0,0,0.5);
+    border-radius: 15px;
+}
+
+/* ---------------from Bulma */
+.icon {
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
+    height: 1.5rem;
+    width: 1.5rem;
+}
+
+/* ---------------QTY WIDGET */
+.qty-input {
+    max-width: 50px;
+}
+
+.increment-qty, .decrement-qty {
+    padding: .25rem .5rem !important;
+}
+
+/* ---------------CART */
 .cart-notification-wrapper {
     max-height: 75vh;
     overflow-y: auto;
     overflow-x: hidden;
 }
 
+
+/* ---------------TOASTS */
 .fade-toast {
       transition: opacity 0.5s linear !important;
 }
 
-.text-light-muted {
-    color: rgb(155, 155, 155)
-}
-
 /* ---------------MEDIA QUERIES */
-@media (min-width: 1200px) {
-
-}
-
+/* ---------------MD AND BELOW */
 @media (max-width: 1200px) { 
     .nav-link{       
         margin: 0px 10px;
     }
 }
 
+/* ---------------BIGGER THAN MD */
 @media (min-width: 992px) {
     .fixed-top-desktop-only {
         position: fixed;
@@ -210,8 +219,8 @@ a.nav-link:hover {
     }
 }
 
-@media (max-width: 991px) {
-    
+/* ---------------SM AND BELOW */
+@media (max-width: 991px) {   
     .header-container {
         min-height: 70px;
     }
