@@ -2,212 +2,236 @@
 {% load static %}
 
 {% block content %}
-    <div class="container bg-container-dark text-light pb-5">
-        <div class="row mt-2">
-            <div class="col-12 text-center">
-                <h3>Your Bundle</h3>
-                <p class="mb-1"><span><i class="fas fa-check text-success"></i></span><small class="text-light-muted"> 1. Select your Category:</small> {{ bundle.category }} </p>
-                <p class="mb-1"><span><i class="fas fa-check text-success"></i></span><small class="text-light-muted"> 2. Select your Bundle:</small>  {{ bundle.name }} </p>
-            </div>
-            {% if bundle.image %}
-                <div class="col-8 offset-2 text-center">
-                    <img src="{{ bundle.image.url }}" class="card-img-top rounded-3">
-                </div>    
-            {% endif %}      
+<div class="container bg-container-dark text-light pb-5">
+    <!--BUNDLE SELECTED DETAILS-->
+    <div class="row mt-2">  
+        <div class="col-12 text-center">
+            <h3>Your Bundle</h3>
+            <p class="mb-1"><span><i class="fas fa-check text-success"></i></span><small class="text-light-muted"> 1.
+                    Select your Category:</small> {{ bundle.category }} </p>
+            <p class="mb-1"><span><i class="fas fa-check text-success"></i></span><small class="text-light-muted"> 2.
+                    Select your Bundle:</small> {{ bundle.name }} </p>
         </div>
-        <div class="col-12">
-            <hr class="bg-light">
+        {% if bundle.image %}
+        <!--BUNDLE IMAGE-->
+        <div class="col-8 offset-2 text-center">
+            <img src="{{ bundle.image.url }}" class="card-img-top rounded-3">
         </div>
-        <div class="row mt-md-2">
-            <div class="col-md-10 offset-md-1">
-                <p class="text-center">3. Customise the items in your bundle</p>
-                <form action="{% url 'add_bundle_to_cart' %}" method="POST" id="item-formset">
-                    {% csrf_token %}
-                    {% for form in formset %}
-                        <div class="row align-items-center formset-row bg-form-row mt-0 mb-4 p-4" id="formset-row-{{ forloop.counter0 }}">
-                            <div class="col-md-2 offset-1 m-1 d-flex justify-content-center justify-content-md-end img-col">
-                                <div class="cart-img">
-                                    <img src="" id="img-{{ forloop.counter0 }}" alt="" class="cart-img rounded-3">
-                                </div>
-                            </div>
-                            <div class="col-md-4 p-1">
-                                {{ form.product|as_crispy_field }}
-                            </div>
-                            <div class="col-md-2 d-flex justify-content-center">
-                                {{ form.item_qty|as_crispy_field }}
-                            </div>
-                            <div class="col-md-1 d-flex justify-content-center">
-                                <a href="#" class="text-danger remove-form mb-lg-3" id="remove-{{ forloop.counter0 }}"><i class="fas fa-trash"></i></a>
-                            </div>
-                            <div class="col-10 offset-1 row-divider">
-                                <hr class="bg-light d-none d-lg-block">
-                            </div>
-                        </div>
-                    {% endfor %}
-                    <div class="col-md-6 offset-md-5 text-center text-md-right mt-2 pr-md-0">
-                        <a href="#" class="btn btn-info add-form mb-3"><i class="fas fa-plus"></i> add product</a>
-                    </div>
-                    <div class="col-12">
-                        <hr class="bg-light">
-                    </div>
-                    <div class="row mt-4">
-                        <div class="col-6 offset-3 text-center">
-                            <p class="text-light-muted mb-0"><small>extras included:</small></p>
-                            <p class="mb-0">- Balloon ties and ribbons</p>
-                            <p>- Balloon weight</p>
-                            <span class="text-muted"><small>total price:</small></span>
-                            <span id="bundle-total-price">€{{ bundle.total_cost|floatformat:2 }}</span>
+        {% endif %}
+    </div>
+    <div class="col-12">
+        <hr class="bg-light">
+    </div>
+    <!--BUNDLE CUSTOMISATION FORM-->
+    <div class="row mt-md-2">
+        <div class="col-md-10 offset-md-1">
+            <p class="text-center">3. Customise the items in your bundle</p>
+            <form action="{% url 'add_bundle_to_cart' %}" method="POST" id="item-formset">
+                {% csrf_token %}
+                {% for form in formset %}
+                <div class="row align-items-center formset-row bg-form-row mt-0 mb-4 p-4"
+                    id="formset-row-{{ forloop.counter0 }}">
+                    <div class="col-md-2 offset-1 m-1 d-flex justify-content-center justify-content-md-end img-col">
+                        <div class="cart-img">
+                            <img src="" id="img-{{ forloop.counter0 }}" alt="" class="cart-img rounded-3">
                         </div>
                     </div>
-                        <div class="row mt-2 mb-5">
-                            <div class="col-10 offset-1 text-center">
-                                {% if not bundle.custom %}
-                                    <button type="submit" class="btn btn-warning text-uppercase"><i class="fas fa-shopping-cart"></i> add bundle to cart</button>
-                                {% else %}
-                                    <button type="submit" formaction="{% url 'update_bundle_in_cart' bundle.bundle_id %}" class="btn btn-warning text-uppercase"><i class="fas fa-shopping-cart"></i> update bundle</button>
-                                {% endif %}
-                            </div>
-                        </div>
-                    <input type="hidden" name="orig_bundle_pk" value="{{ bundle.pk }}">
-                </form>
-            </div>
+                    <div class="col-md-4 p-1">
+                        {{ form.product|as_crispy_field }}
+                    </div>
+                    <div class="col-md-2 d-flex justify-content-center">
+                        {{ form.item_qty|as_crispy_field }}
+                    </div>
+                    <div class="col-md-1 d-flex justify-content-center">
+                        <a href="#" class="text-danger remove-form mb-lg-3" id="remove-{{ forloop.counter0 }}"><i
+                                class="fas fa-trash"></i></a>
+                    </div>
+                    <div class="col-10 offset-1 row-divider">
+                        <hr class="bg-light d-none d-lg-block">
+                    </div>
+                </div>
+                {% endfor %}
+                <!--ADD NEW PRODUCT-->
+                <div class="col-md-6 offset-md-5 text-center text-md-right mt-2 pr-md-0">
+                    <a href="#" class="btn btn-info add-form mb-3"><i class="fas fa-plus"></i> add product</a>
+                </div>
+                <div class="col-12">
+                    <hr class="bg-light">
+                </div>
+                <!--BUNDLE EXTRAS-->
+                <div class="row mt-4">
+                    <div class="col-6 offset-3 text-center">
+                        <p class="text-light-muted mb-0"><small>extras included:</small></p>
+                        <p class="mb-0">- Balloon ties and ribbons</p>
+                        <p>- Balloon weight</p>
+                        <span class="text-muted"><small>total price:</small></span>
+                        <span id="bundle-total-price">€{{ bundle.total_cost|floatformat:2 }}</span>
+                    </div>
+                </div>
+                <!--MANAGE IN CART-->
+                <div class="row mt-2 mb-5">
+                    <div class="col-10 offset-1 text-center">
+                        {% if not bundle.custom %}
+                        <button type="submit" class="btn btn-warning text-uppercase"><i
+                                class="fas fa-shopping-cart"></i> add bundle to cart</button>
+                        {% else %}
+                        <button type="submit" formaction="{% url 'update_bundle_in_cart' bundle.bundle_id %}"
+                            class="btn btn-warning text-uppercase"><i class="fas fa-shopping-cart"></i> update
+                            bundle</button>
+                        {% endif %}
+                    </div>
+                </div>
+                <input type="hidden" name="orig_bundle_pk" value="{{ bundle.pk }}">
+            </form>
         </div>
     </div>
+</div>
 {% endblock %}
+
 {% block postloadjs %}
-{{ block.super }}
-<script>    
-    $(document).ready(function(){
-        $('#item-formset').find('select').each(function(index) {
-            getImage(function(output){
-                $('#img-' + index).attr("src", output);
-            }, this.value);
-        });
+    {{ block.super }}
+        <script>
+            $(document).ready(function () {
+                // on load get all the product images for the components of the bundle
+                $('#item-formset').find('select').each(function (index) {
+                    getImage(function (output) {
+                        $('#img-' + index).attr("src", output);
+                    }, this.value);
+                });
 
-        // on load toggle the row on the validity of the loaded value in the select 
-        // e.g. when bundle loads and item has 0 qty_held we dont't want to see it 
-        $('#item-formset').find('.formset-row').each(function(index) {
-            $(this).toggle($('#formset-row-' + index).find('select').first().prop('selectedIndex') != 0);
-        });
+                // on load toggle the row on the validity of the loaded value in the select 
+                // e.g. when bundle loads and item has 0 qty_held we dont't want to see it 
+                $('#item-formset').find('.formset-row').each(function (index) {
+                    $(this).toggle($('#formset-row-' + index).find('select').first().prop('selectedIndex') != 0);
+                });
 
-        // on load toggle the img displayed on the validity of the loaded value in the select
-        $('#item-formset').find('img').each(function(index) {
-            $(this).toggle($('#formset-row-' + index).find('select').first().prop('selectedIndex') != 0);
-        });
-        
-        $('#item-formset').find('select').on('change', function(e)  {
-            var selected = $(this).attr('name').split('-')[1];
-            var row = $('#formset-row-' + selected);
-            $(row).find('.cart-img').toggle($(this).prop('selectedIndex') != 0);
-            if(this.value != 0){ 
-                getImage(function(output){
-                    $('#img-' + selected).attr("src", output);
-                }, this.value);
-            }
-            updateBundlePrice(function(output){
-                var html = `€${output}`
-                $('#bundle-total-price').text(html);
-            });
-        });
+                // on load toggle the img displayed on the validity of the loaded value in the select
+                $('#item-formset').find('img').each(function (index) {
+                    $(this).toggle($('#formset-row-' + index).find('select').first().prop('selectedIndex') != 0);
+                });
 
-        $('#item-formset').find('input').on('change', function(e)  {
-            if($(this).val() < 1) {
-                $(this).val(1);
-            }
-            updateBundlePrice(function(output){
-                var html = `€${output}`
-                $('#bundle-total-price').text(html);
-            });
-        });
+                // when component product updated then get that product img and update bundle price 
+                $('#item-formset').find('select').on('change', function (e) {
+                    var selected = $(this).attr('name').split('-')[1];
+                    var row = $('#formset-row-' + selected);
+                    $(row).find('.cart-img').toggle($(this).prop('selectedIndex') != 0);
+                    if (this.value != 0) {
+                        getImage(function (output) {
+                            $('#img-' + selected).attr("src", output);
+                        }, this.value);
+                    }
+                    updateBundlePrice(function (output) {
+                        var html = `€${output}`
+                        $('#bundle-total-price').text(html);
+                    });
+                });
 
-        function getImage(handleData, p_id) {
-            if(p_id == 0){
-                return;
-            }
-            $.get({
-                url: '/products/serveimage/' + p_id,
-                success: function (response) {              
-                    handleData(response);
-                },
-                error: function () {
-                    handleData(response);
+                // perform clone row when add row btn clicked
+                $('.add-form').on('click', function (e) {
+                    var formsCount = $('.formset-row').length;
+                    cloneRow($('.formset-row').first(), formsCount);
+                });
+
+                // perform remove row when remove row btn clicked
+                $('.remove-form').on('click', function (e) {
+                    var i = $(this).attr('id').split('-')[1];
+                    removeRow(i);
+                    updateBundlePrice(function (output) {
+                        var html = `€${output}`
+                        $('#bundle-total-price').text(html);
+                    });
+                });
+
+                // when component qty updated then get that product img and update bundle price 
+                $('#item-formset').find('input').on('change', function (e) {
+                    if ($(this).val() < 1) {
+                        $(this).val(1);
+                    }
+                    updateBundlePrice(function (output) {
+                        var html = `€${output}`
+                        $('#bundle-total-price').text(html);
+                    });
+                });
+
+                // ajax call to backend to get img
+                function getImage(handleData, p_id) {
+                    if (p_id == 0) {
+                        return;
+                    }
+                    $.get({
+                        url: '/products/serveimage/' + p_id,
+                        success: function (response) {
+                            handleData(response);
+                        },
+                        error: function () {
+                            handleData(response);
+                        }
+                    });
                 }
-            });
-        }
 
-        function updateBundlePrice(handleData) {
-            var form = $('#item-formset')
-            var data = $(form).serialize();
-            var url = '/bundle/gettotalprice/'
+                // ajax call to backend to get the updated price
+                function updateBundlePrice(handleData) {
+                    var form = $('#item-formset')
+                    var data = $(form).serialize();
+                    var url = '/bundle/gettotalprice/'
 
-            $.post({
-                url: url,
-                data: data,
-                success: function (response) {              
-                    handleData(response);
-                },
-                error: function () {
-                    handleData(response);
+                    $.post({
+                        url: url,
+                        data: data,
+                        success: function (response) {
+                            handleData(response);
+                        },
+                        error: function () {
+                            handleData(response);
+                        }
+                    });
                 }
+
+                // clone the row to be added to at the bottom of the form
+                function cloneRow(selector, formsCount) {
+                    var newRow = $(selector).clone(true);
+                    $(newRow).attr('id', 'formset-row-' + formsCount);
+                    $(newRow).show();
+                    $(newRow).focus();
+
+                    var productDiv = newRow.find('#div_id_form-0-product').attr('id', '#div_id_form-' + formsCount + '-product');
+                    var qtyDiv = newRow.find('#div_id_form-0-item_qty').attr('id', '#div_id_form-' + formsCount + '-item_qty');
+
+                    var productSelect = productDiv.find('select').first();
+                    var qtySelect = qtyDiv.find('input').first();
+
+                    $(newRow).find('.cart-img').hide();
+                    $(newRow).find('img').attr('id', 'img-' + formsCount);
+                    $(newRow).find('img').attr('src', '');
+
+                    $(productSelect).attr('id', 'id_form-' + formsCount + '-product');
+                    $(productSelect).attr('name', 'form-' + formsCount + '-product');
+                    $(productSelect).find('option:eq(0)').prop('selected', true);
+
+                    $(qtySelect).attr('id', 'id_form-' + formsCount + '-item_qty');
+                    $(qtySelect).attr('name', 'form-' + formsCount + '-item_qty');
+                    $(qtySelect).val(1);
+
+                    $(newRow).find('#remove-0').attr('id', 'remove-' + formsCount);
+
+                    $('.formset-row').last().after(newRow);
+                    scrollTo(newRow);
+                }
+
+                // remove a row 
+                function removeRow(i) {
+                    var row = $('#item-formset').find('#formset-row-' + i);
+                    $(row).find('select option:eq(0)').prop('selected', true);
+                    $(row).hide();
+                }
+
+                // scroll to the new row added
+                // https://stackoverflow.com/questions/6677035/jquery-scroll-to-element
+                function scrollTo(elem) {
+                    $([document.documentElement, document.body]).animate({
+                        scrollTop: $(elem).offset().top
+                    }, 1000);
+                };
             });
-        }
-
-        function cloneRow(selector, formsCount) {
-            var newRow = $(selector).clone(true);
-            $(newRow).attr('id','formset-row-' + formsCount);
-            $(newRow).show();
-            $(newRow).focus();
-
-            var productDiv = newRow.find('#div_id_form-0-product').attr('id', '#div_id_form-' + formsCount + '-product');
-            var qtyDiv = newRow.find('#div_id_form-0-item_qty').attr('id', '#div_id_form-' + formsCount + '-item_qty');
-           
-            var productSelect = productDiv.find('select').first();
-            var qtySelect = qtyDiv.find('input').first();
-
-            $(newRow).find('.cart-img').hide();
-            $(newRow).find('img').attr('id', 'img-' + formsCount);
-            $(newRow).find('img').attr('src', '');
-
-            $(productSelect).attr('id','id_form-'+ formsCount +'-product');
-            $(productSelect).attr('name','form-'+ formsCount +'-product');
-            $(productSelect).find('option:eq(0)').prop('selected', true);
-
-            $(qtySelect).attr('id','id_form-'+ formsCount + '-item_qty');
-            $(qtySelect).attr('name','form-'+ formsCount + '-item_qty');
-            $(qtySelect).val(1);
-            
-            $(newRow).find('#remove-0').attr('id', 'remove-' + formsCount);
-
-            $('.formset-row').last().after(newRow);
-            scrollTo(newRow);
-        }
-
-        function removeRow(i) {
-            var row = $('#item-formset').find('#formset-row-' + i);
-            $(row).find('select option:eq(0)').prop('selected', true);
-            $(row).hide();
-        }
-
-        // https://stackoverflow.com/questions/6677035/jquery-scroll-to-element
-        function scrollTo(elem) {
-            $([document.documentElement, document.body]).animate({
-                scrollTop: $(elem).offset().top
-            }, 1000);
-        };
-
-        $('.add-form').on('click', function(e) {
-            var formsCount = $('.formset-row').length;
-            cloneRow($('.formset-row').first(), formsCount);
-        });
-
-        $('.remove-form').on('click', function(e) {
-            var i = $(this).attr('id').split('-')[1];
-            removeRow(i);
-            updateBundlePrice(function(output){
-                var html = `€${output}`
-                $('#bundle-total-price').text(html);
-            });
-        });
-    });
-</script>
+        </script>
 {% endblock %}

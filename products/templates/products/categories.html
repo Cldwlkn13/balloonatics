@@ -3,16 +3,18 @@
 
 {% block content %}
     <div class="container bg-container-dark text-light">
+        <!--CONTENT HEADER-->
         <div class="row">
             <div class="col text-center text-lg-left my-5">
-                <h2><strong>product categories</strong></h2>
+                <h2><strong>Product Categories</strong></h2>
                 <hr class="bg-light">
             </div>
         </div>
+        <!--CATEGORIES-->
         <div class="row">
-                {% for category in categories %}
-                    {% include './includes/card.html' with result=category cntxt='categories' %}
-                {% endfor %}
+            {% for category in categories %}
+                {% include './includes/card.html' with result=category cntxt='categories' %}
+            {% endfor %}
         </div>
     </div>
 {% endblock %}

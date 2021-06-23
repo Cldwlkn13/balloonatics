@@ -2,49 +2,54 @@
 {% load static %}
 
 {% block content %}
-    <div class="container bg-container-dark text-light pb-5">
-        <div class="row">
-            <div class="col-12 col-md-10 text-center text-md-left my-1">
-                <div class="row">
-                    <div class="col-10 offset-1">
-                        <h3>add a product</h3>
-                        <a href="{% url 'load_products' %}" class="btn btn-warning text-uppercase text-center"><i class="fas fa-chevron-left"></i> product management</a>
-                        <hr class="bg-light">
-                    </div>
+<div class="container bg-container-dark text-light pb-5">
+    <div class="row">
+        <div class="col-12 col-md-10 text-center text-md-left my-1">
+            <!--PRODUCT MANAGEMENT CONTROLS-->
+            <div class="row">
+                <div class="col-10 offset-1">
+                    <h3>Add a Product</h3>
+                    <a href="{% url 'load_products' %}" class="btn btn-warning text-uppercase text-center"><i
+                            class="fas fa-chevron-left"></i> product management</a>
+                    <hr class="bg-light">
                 </div>
-                {% if form %}
+            </div>
+            <!--PRODUCT MANAGEMENT FORM-->
+            {% if form %}
                 <div class="row">
                     <div class="col-10 offset-1">
-                        <form action="{% url 'add_product' %}" method="POST" class="mt-2 mb-5" enctype="multipart/form-data">   
-                            {% csrf_token %}
-                            {{ form|crispy }}
+                        <form action="{% url 'add_product' %}" method="POST" class="mt-2 mb-5"
+                            enctype="multipart/form-data">
+                                {% csrf_token %}
+                                {{ form|crispy }}
                             <div class="row mt-5">
                                 <div class="col-12 text-center my-auto">
-                                    <button type="submit" class="btn btn-warning text-uppercase"><i class="fas fa-plus"></i> add product</button>
+                                    <button type="submit" class="btn btn-warning text-uppercase"><i class="fas fa-plus"></i>
+                                        add product</button>
                                 </div>
                             </div>
                         </form>
                     </div>
                 </div>
-                {% endif %}
-            </div>
+            {% endif %}
         </div>
     </div>
+</div>
 {% endblock %}
 
 {% block postloadjs %}
-{{ block.super }}
-    <script>      
-        $(document).ready(function() {
-            var elem = $('input[name="is_bundle"]');
-            var checked = $(elem).prop("checked");
-            $('#div_id_bundle_items').toggle(checked);
+    {{ block.super }}
+        <script>
+            $(document).ready(function () {
+                var elem = $('input[name="is_bundle"]');
+                var checked = $(elem).prop("checked");
+                $('#div_id_bundle_items').toggle(checked);
 
-            $('input[name="is_bundle"]').change(function() {
-                var elem = $('input[name="is_bundle"]')
-                var checked = $(elem).prop("checked")
-                $('#div_id_bundle_items').toggle(checked)
+                $('input[name="is_bundle"]').change(function () {
+                    var elem = $('input[name="is_bundle"]')
+                    var checked = $(elem).prop("checked")
+                    $('#div_id_bundle_items').toggle(checked)
+                });
             });
-        });
-    </script>
+        </script>
 {% endblock %}

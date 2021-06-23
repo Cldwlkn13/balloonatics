@@ -1,23 +1,25 @@
-<form class="form" action="{% url 'update_product_cart' item.product.id %}" method="POST" style="width: 150px; margin: 0 auto; margin-top:-5px !important;">
+<!--QTY UPDATE WIDGET-->
+<form class="form" action="{% url 'update_product_cart' item.product.id %}" method="POST"
+    style="width: 150px; margin: 0 auto; margin-top:-5px !important;">
     {% csrf_token %}
-        <div class="col-12 align-content-center">
-            <div class="input-group">
-                <span class="input-group-btn">
-                    <button type="button" class="quantity-left-minus btn btn-info btn-number border-info" data-type="minus"
-                        data-field="">
-                        <span class="fas fa-minus"></span>
-                    </button>
-                </span>
-                <input type="text" id="qty" name="qty" class="form-control input-number text-center qty-input" value="{{ item.qty }}" min="1" max="100">
-                <input type="submit" class="d-none" id="update-qty">
-                <span class="input-group-btn">
-                    <button type="button" class="quantity-right-plus btn btn-info btn-number border-info" data-type="plus"
-                        data-field="">
-                        <span class="fas fa-plus"></span>
-                    </button>
-                </span>
-            </div>
+    <div class="col-12 align-content-center">
+        <div class="input-group">
+            <span class="input-group-btn">
+                <button type="button" class="quantity-left-minus btn btn-info btn-number border-info" data-type="minus"
+                    data-field="">
+                    <span class="fas fa-minus"></span>
+                </button>
+            </span>
+            <input type="text" id="qty" name="qty" class="form-control input-number text-center qty-input"
+                value="{{ item.qty }}" min="1" max="100">
+            <input type="submit" class="d-none" id="update-qty">
+            <span class="input-group-btn">
+                <button type="button" class="quantity-right-plus btn btn-info btn-number border-info" data-type="plus"
+                    data-field="">
+                    <span class="fas fa-plus"></span>
+                </button>
+            </span>
         </div>
+    </div>
     <input type="hidden" name="this_url" value="{{ request.get_full_path }}">
 </form>
-

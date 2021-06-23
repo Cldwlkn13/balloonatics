@@ -2,139 +2,165 @@
 {% load static %}
 
 {% block extracss %}
-    <link rel="stylesheet" href="{% static 'css/slideshow.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static 'css/slideshow.css' %}" type="text/css">
 {% endblock %}
 
-{% block content %}  
-        <div class="row">
-            <div class="col p-0">
-                <div class="row mx-5 mb-3 px-lg-5">
-                    <div class="col-lg-4 mb-3 mb-lg-0">
-                        <div class="row div-bg-opacity home-product-row border border-light align-items-center p-2">
-                            <p class="p-2 text-center"> 
-                                <small>
-                                    At Balloonatics we are <b style="color:pink"><u>loon-a-tics</u></b>  for providing you with the best balloon products & service in Ireland!
-                                    We are Irish run, and will do whatever we can to make your big day go with a bang!
-                                </small>
-                            </p>
-                            
-                        </div>
-                    </div>
-                    <div class="col-lg-7 offset-lg-1">
-                        <div class="row div-bg-opacity home-product-row border border-light align-items-center p-2">
-                            <div class="col-1 d-none d-lg-flex">
-                                <span><img src="{{ MEDIA_URL }}pink-balloon.png" class="logo-balloon" alt="pink-balloon"></span>
-                            </div>
-                            <div class="col-lg-3 text-center">
-                                <a href="{% url 'categories' %}" class="text-decoration-none font-weight-bold nav-link m-0 p-0">
-                                    <h1 class="home-cat-text">Shop Online</h1>
-                                    <p class="d-lg-none"><small>Shop here for balloons and accessories!</small></p>
-                                </a>
-                            </div>
-                            <div class="col-8 d-none d-lg-block">
-                                <div class="row align-items-top px-1">
-                                    {% for key, values in menu_context.items %}
-                                    <div class="col-3 d-none d-md-block text-center mr-2">
-                                        <a href="{% url 'sub_categories' %}?category={{ key }}" class="text-light text-bold text-decoration-none home-cat-link"><strong>{{ key }}</strong></a>
-                                        {% for sub_cat in values %}
-                                            <p class="my-0">
-                                                <a href="{% url 'products' %}?sub_category={{ sub_cat }}" class="text-light-muted text-decoration-none home-sub-cat-link"><small>{{ sub_cat }}</small></a>
-                                            </p>
-                                        {% endfor %}
-                                    </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+{% block content %}
+<div class="row">
+    <div class="col p-0">
+        <!--ROW SHOP ONLINE-->
+        <div class="row mx-5 mb-3 px-lg-5">
+            <!--ABOUT US-->
+            <div class="col-lg-4 mb-3 mb-lg-0">
+                <div class="row div-bg-opacity home-product-row border border-light align-items-center p-2">
+                    <p class="p-2 text-center">
+                        <small>
+                            At Balloonatics we are <b style="color:pink"><u>loon-a-tics</u></b> for providing you with
+                            the best balloon products & service in Ireland!
+                            We are Irish run, and will do whatever we can to make your big day go with a bang!
+                        </small>
+                    </p>
+
                 </div>
-                <div class="row align-items-center mx-5 mb-3 pl-lg-5">
-                    <div class="col-lg-7 pl-3">
-                        <div class="row align-items-center div-bg-opacity home-product-row border border-light p-2">
-                            <div class="col-8 d-none d-lg-block text-right">
-                                <p>Customise your own bundle of balloons for a loved one or your special event in 3 easy steps...</p>
-                                <small class="text-light-muted">
-                                    <p class="mb-0"><span class="text-light">1.</span>  Select your type of bundle</p>
-                                    <p class="mb-0"><span class="text-light">2.</span> Customise the items and confirm</p>
-                                    <p><span class="text-light">3.</span> We'll add ribbons & weights, then deliver to you!</p>
-                                </small> 
-                            </div>
-                            <div class="col-lg-3 pr-lg-0">
-                                <a href="#" class="text-center text-decoration-none font-weight-bold nav-link m-0 p-0">
-                                    <h1 class="home-cat-text">Build-a-Bundle &trade;</h1>
-                                    <p class="d-lg-none"><small>Customise your own bundle of balloons for a special occasion!</small></p>
-                                </a>
-                            </div>
-                            <div class="col-1 d-none d-lg-flex justify-content-end">
-                                <span><img src="{{ MEDIA_URL }}yellow-balloon.png" class="logo-balloon" alt="yellow-balloon"></span>
-                            </div>
-                        </div>
+            </div>
+            <!--SHOP ONLINE-->
+            <div class="col-lg-7 offset-lg-1">
+                <div class="row div-bg-opacity home-product-row border border-light align-items-center p-2">
+                    <div class="col-1 d-none d-lg-flex">
+                        <span><img src="{{ MEDIA_URL }}pink-balloon.png" class="logo-balloon" alt="pink-balloon"></span>
                     </div>
-                    <div class="col-lg-5 d-none d-lg-block">
-                        <div class="slideshow px-3">
-                            {% include 'includes/slideshow.html' with container=0 slideshow_images=slideshow_images_bundle float_left=True %}
-                        </div>
+                    <div class="col-lg-3 text-center">
+                        <a href="{% url 'categories' %}" class="text-decoration-none font-weight-bold nav-link m-0 p-0">
+                            <h1 class="home-cat-text">Shop Online</h1>
+                            <p class="d-lg-none"><small>Shop here for balloons and accessories!</small></p>
+                        </a>
                     </div>
-                </div>
-                <div class="row align-items-center mx-5 mb-3 pr-lg-5">
-                    <div class="col-lg-5 d-none d-lg-block">
-                        <div class="slideshow px-3">
-                            {% include 'includes/slideshow.html' with container=1 slideshow_images=slideshow_images_printing float_right=True %}
-                        </div>
-                    </div>
-                    <div class="col-lg-7">
-                        <div class="row align-items-center div-bg-opacity home-product-row border border-light p-2">
-                            <div class="col-1 d-none d-lg-flex">
-                                <span><img src="{{ MEDIA_URL }}blue-balloon.png" class="logo-balloon" alt="blue-balloon"></span>
+                    <div class="col-8 d-none d-lg-block">
+                        <div class="row align-items-top px-1">
+                            {% for key, values in menu_context.items %}
+                            <div class="col-3 d-none d-md-block text-center mr-2">
+                                <a href="{% url 'sub_categories' %}?category={{ key }}"
+                                    class="text-light text-bold text-decoration-none home-cat-link"><strong>{{ key
+                                        }}</strong></a>
+                                {% for sub_cat in values %}
+                                <p class="my-0">
+                                    <a href="{% url 'products' %}?sub_category={{ sub_cat }}"
+                                        class="text-light-muted text-decoration-none home-sub-cat-link"><small>{{
+                                            sub_cat }}</small></a>
+                                </p>
+                                {% endfor %}
                             </div>
-                            <div class="col-lg-3">
-                                <a href="#" class="text-center text-decoration-none font-weight-bold nav-link m-0 p-0">
-                                    <h1 class="home-cat-text">Balloon Printing</h1>
-                                    <p class="d-lg-none"><small>Print a personalised message on as many balloons as you like!</small></p>
-                                </a>
-                            </div>
-                            <div class="col-8 d-none d-lg-block">
-                                <p>Add your own personalised message balloons in 3 easy steps...</p>
-                                <small class="text-light-muted">
-                                    <p class="mb-0"><span class="text-light">1.</span> Select your type of Balloon.</p>
-                                    <p class="mb-0"><span class="text-light">2.</span> Add your own customised message.</p>
-                                    <p><span class="text-light">3.</span> We'll print them and deliver them directly to you!</p>
-                            </small> 
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row align-items-center mx-5 mb-3 pl-lg-5">
-                    <div class="col-lg-7">
-                        <div class="row align-items-center div-bg-opacity home-product-row border border-light p-2">
-                            <div class="col-8 d-none d-lg-block text-right">
-                                <p>Holding an event or party? Then we have packages to suit your needs!</p>
-                                <small class="text-light-muted">
-                                    <p>Just fill in the quick form and we'll be in touch to discuss what we can do for you!</p>
-                                </small>
-                            </div>
-                            <div class="col-lg-3 pr-lg-0">
-                                <a href="#" class="text-center text-decoration-none font-weight-bold nav-link m-0 p-0">
-                                    <h1 class="home-cat-text">Your Event</h1>
-                                    <p class="d-lg-none"><small>Holding an event or party? Check out what we can do for you!</small></p>
-                                </a>
-                            </div>
-                            <div class="col-1 d-none d-lg-flex justify-content-end">
-                                <span><img src="{{ MEDIA_URL }}dark-pink-balloon.png" class="logo-balloon" alt="dark-pink-balloon"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-5 d-none d-lg-block">
-                        <div class="slideshow px-3">
-                            {% include 'includes/slideshow.html' with container=2 slideshow_images=slideshow_images_event float_left=True %}
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <!--ROW 2 BUILD A BUNDLE-->
+        <div class="row align-items-center mx-5 mb-3 pl-lg-5">
+            <!--BUNDLE INFO-->
+            <div class="col-lg-7 pl-3">
+                <div class="row align-items-center div-bg-opacity home-product-row border border-light p-2">
+                    <div class="col-8 d-none d-lg-block text-right">
+                        <p>Customise your own bundle of balloons for a loved one or your special event in 3 easy
+                            steps...</p>
+                        <small class="text-light-muted">
+                            <p class="mb-0"><span class="text-light">1.</span> Select your type of bundle</p>
+                            <p class="mb-0"><span class="text-light">2.</span> Customise the items and confirm</p>
+                            <p><span class="text-light">3.</span> We'll add ribbons & weights, then deliver to you!</p>
+                        </small>
+                    </div>
+                    <div class="col-lg-3 pr-lg-0">
+                        <a href="#" class="text-center text-decoration-none font-weight-bold nav-link m-0 p-0">
+                            <h1 class="home-cat-text">Build-a-Bundle &trade;</h1>
+                            <p class="d-lg-none"><small>Customise your own bundle of balloons for a special
+                                    occasion!</small></p>
+                        </a>
+                    </div>
+                    <div class="col-1 d-none d-lg-flex justify-content-end">
+                        <span><img src="{{ MEDIA_URL }}yellow-balloon.png" class="logo-balloon"
+                                alt="yellow-balloon"></span>
+                    </div>
+                </div>
+            </div>
+            <!--BUNDLE SLIDESHOW-->
+            <div class="col-lg-5 d-none d-lg-block">
+                <div class="slideshow px-3">
+                    {% include 'includes/slideshow.html' with container=0 slideshow_images=slideshow_images_bundle
+                    float_left=True %}
+                </div>
+            </div>
+        </div>
+        <!--ROW 3 BALLOON PRINTING-->
+        <div class="row align-items-center mx-5 mb-3 pr-lg-5">
+            <!--PRINTING SLIDESHOW-->
+            <div class="col-lg-5 d-none d-lg-block">
+                <div class="slideshow px-3">
+                    {% include 'includes/slideshow.html' with container=1 slideshow_images=slideshow_images_printing
+                    float_right=True %}
+                </div>
+            </div>
+            <!--BALLOON PRINTING INFO-->
+            <div class="col-lg-7">
+                <div class="row align-items-center div-bg-opacity home-product-row border border-light p-2">
+                    <div class="col-1 d-none d-lg-flex">
+                        <span><img src="{{ MEDIA_URL }}blue-balloon.png" class="logo-balloon" alt="blue-balloon"></span>
+                    </div>
+                    <div class="col-lg-3">
+                        <a href="#" class="text-center text-decoration-none font-weight-bold nav-link m-0 p-0">
+                            <h1 class="home-cat-text">Balloon Printing</h1>
+                            <p class="d-lg-none"><small>Print a personalised message on as many balloons as you
+                                    like!</small></p>
+                        </a>
+                    </div>
+                    <div class="col-8 d-none d-lg-block">
+                        <p>Add your own personalised message balloons in 3 easy steps...</p>
+                        <small class="text-light-muted">
+                            <p class="mb-0"><span class="text-light">1.</span> Select your type of Balloon.</p>
+                            <p class="mb-0"><span class="text-light">2.</span> Add your own customised message.</p>
+                            <p><span class="text-light">3.</span> We'll print them and deliver them directly to you!</p>
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--ROW 4 YOUR EVENT =-->
+        <div class="row align-items-center mx-5 mb-3 pl-lg-5">
+            <!--YOUR EVENT INFO-->
+            <div class="col-lg-7">
+                <div class="row align-items-center div-bg-opacity home-product-row border border-light p-2">
+                    <div class="col-8 d-none d-lg-block text-right">
+                        <p>Holding an event or party? Then we have packages to suit your needs!</p>
+                        <small class="text-light-muted">
+                            <p>Just fill in the quick form and we'll be in touch to discuss what we can do for you!</p>
+                        </small>
+                    </div>
+                    <div class="col-lg-3 pr-lg-0">
+                        <a href="#" class="text-center text-decoration-none font-weight-bold nav-link m-0 p-0">
+                            <h1 class="home-cat-text">Your Event</h1>
+                            <p class="d-lg-none"><small>Holding an event or party? Check out what we can do for
+                                    you!</small></p>
+                        </a>
+                    </div>
+                    <div class="col-1 d-none d-lg-flex justify-content-end">
+                        <span><img src="{{ MEDIA_URL }}dark-pink-balloon.png" class="logo-balloon"
+                                alt="dark-pink-balloon"></span>
+                    </div>
+                </div>
+            </div>
+            <!--YOUR EVENT SLIDESHOW-->
+            <div class="col-lg-5 d-none d-lg-block">
+                <div class="slideshow px-3">
+                    {% include 'includes/slideshow.html' with container=2 slideshow_images=slideshow_images_event
+                    float_left=True %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block postloadjs %}
-{{ block.super }}
+    {{ block.super }}
     <script src="{% static 'js/slideshow.js' %}" type="text/javascript"></script>
 {% endblock %}

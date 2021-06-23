@@ -2,42 +2,47 @@
 {% load static %}
 
 {% block content %}
-    <div class="container bg-container-dark text-center pb-5">
-        <div class="row">
-            <div class="col-8 offset-2">
-                <h4 class="text-success">Order Complete!</h4>
-            </div>
+<div class="container bg-container-dark text-center pb-5">
+    <!--CONTENT HEADER-->
+    <div class="row">
+        <div class="col-8 offset-2">
+            <h4 class="text-success">Order Complete!</h4>
         </div>
-        <hr class="bg-light">
-        <div class="row">
-            <div class="col-8 offset-2">
-                <h6>Your Order Id: <strong>{{ order.order_id }}</strong></h6>
-                <p>You will shortly recieve a confirmation to <u>{{ order.cust_email }}</u></p>
-                <a href="{% url 'categories' %}" class="btn btn-warning text-uppercase my-5"><i class="fas fa-chevron-left"></i>&nbsp continue shopping</a>
-            </div>
+    </div>
+    <hr class="bg-light">
+    <!--EMAIL CONFFIRMATION-->
+    <div class="row">
+        <div class="col-8 offset-2">
+            <h6>Your Order Id: <strong>{{ order.order_id }}</strong></h6>
+            <p>You will shortly recieve a confirmation to <u>{{ order.cust_email }}</u></p>
+            <a href="{% url 'categories' %}" class="btn btn-warning text-uppercase my-5"><i
+                    class="fas fa-chevron-left"></i>&nbsp continue shopping</a>
         </div>
-        <div class="row mb-5">
-            <div class="col-10 offset-1 text-left text-light">
-                <h5>Your Details</h5>
-                <table class="table border border-light text-light">
-                    <thead class="bg-info">
-                        <th>name</th>
-                        <th>email</th>
-                        <th>phone</th>
-                        <th>address</th>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{{ order.cust_name }}</td>
-                            <td>{{ order.cust_email }}</td>
-                            <td>{{ order.cust_phone }}</td>
-                            <td>{{ order.address }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+    </div>
+    <!--CUSTOMER DETAILS-->
+    <div class="row mb-5">
+        <div class="col-10 offset-1 text-left text-light">
+            <h5>Your Details</h5>
+            <table class="table border border-light text-light">
+                <thead class="bg-info">
+                    <th>name</th>
+                    <th>email</th>
+                    <th>phone</th>
+                    <th>address</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ order.cust_name }}</td>
+                        <td>{{ order.cust_email }}</td>
+                        <td>{{ order.cust_phone }}</td>
+                        <td>{{ order.address }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        {% if order_items %}
+    </div>
+    {% if order_items %}
+        <!--PRODUCTS IN ORDER-->
         <div class="row mb-5">
             <div class="col-10 offset-1 text-left text-light">
                 <h5>Your Items</h5>
@@ -51,20 +56,21 @@
                     </thead>
                     <tbody>
                         {% for item in order_items %}
-                            <tr>
-                                <td>{{ item.product.name }}</td>
-                                <td>{{ item.product.id }}</td>
-                                <td>{{ item.quantity }}</td>
-                                <td>€{{ item.product.discounted_price }}</td>
-                                <td>€{{ item.item_total }}</td>
-                            </tr>
+                        <tr>
+                            <td>{{ item.product.name }}</td>
+                            <td>{{ item.product.id }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>€{{ item.product.discounted_price }}</td>
+                            <td>€{{ item.item_total }}</td>
+                        </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
-        {% endif %}
-        {% if order_bundles %}
+    {% endif %}
+    {% if order_bundles %}
+        <!--BUNDLES IN ORDER-->
         <div class="row mb-5">
             <div class="col-10 offset-1 text-left text-light">
                 <h5>Your Bundles</h5>
@@ -84,7 +90,7 @@
                             <td>1</td>
                             <td>
                                 {% for item in items %}
-                                    <p class="m-0">{{ item.item_qty }} x {{ item.product.name}}</p>
+                                <p class="m-0">{{ item.item_qty }} x {{ item.product.name}}</p>
                                 {% endfor %}
                             </td>
                             <td>€{{ bundle.total_cost }}</td>
@@ -94,8 +100,9 @@
                 {% endfor %}
             </div>
         </div>
-        {% endif %}
-        {% if order_prints %}
+    {% endif %}
+    {% if order_prints %}
+        <!--PRINTS IN ORDER-->
         <div class="row mb-5">
             <div class="col-10 offset-1 text-left text-light">
                 <h5>Your Custom Prints</h5>
@@ -109,41 +116,42 @@
                     </thead>
                     <tbody>
                         {% for item in order_prints %}
-                            <tr>
-                                <td>{{ item.custom_print_order.base_product.name }}</td>
-                                <td>{{ item.custom_print_order.id }}</td>
-                                <td><small>{{ item.custom_print_order.custom_message }}</small></td>
-                                <td>{{ item.custom_print_order.qty }}</td>
-                                <td>€{{ item.custom_print_order.total_cost }}</td>
-                            </tr>
+                        <tr>
+                            <td>{{ item.custom_print_order.base_product.name }}</td>
+                            <td>{{ item.custom_print_order.id }}</td>
+                            <td><small>{{ item.custom_print_order.custom_message }}</small></td>
+                            <td>{{ item.custom_print_order.qty }}</td>
+                            <td>€{{ item.custom_print_order.total_cost }}</td>
+                        </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
-        {% endif %}
-        <div class="row">
-            <div class="col-10 offset-1 text-left text-light">
-                <h5>Your Order Details</h5>
-                <table class="table border border-light text-light">
-                    <thead class="bg-info">
-                        <th>id</th>
-                        <th>date</th>
-                        <th>delivery charges</th>
-                        <th>items total</th>
-                        <th>grand total</th>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{{ order.order_id }}</td>
-                            <td>{{ order.date }}</td>
-                            <td>€{{ order.delivery_surcharge }}</td>
-                            <td>€{{ order.items_total }}</td>
-                            <td><strong>€{{ order.grand_total }}</strong></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+    {% endif %}
+    <!--ORDER TOTALS-->
+    <div class="row">
+        <div class="col-10 offset-1 text-left text-light">
+            <h5>Your Order Details</h5>
+            <table class="table border border-light text-light">
+                <thead class="bg-info">
+                    <th>id</th>
+                    <th>date</th>
+                    <th>delivery charges</th>
+                    <th>items total</th>
+                    <th>grand total</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ order.order_id }}</td>
+                        <td>{{ order.date }}</td>
+                        <td>€{{ order.delivery_surcharge }}</td>
+                        <td>€{{ order.items_total }}</td>
+                        <td><strong>€{{ order.grand_total }}</strong></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
+</div>
 {% endblock %}

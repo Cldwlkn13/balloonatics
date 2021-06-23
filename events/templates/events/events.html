@@ -3,15 +3,18 @@
 
 {% block content %}
 <div class="container bg-container-dark text-light">
+    <!--CONTENT HEADER-->
     <div class="row">
         <div class="col-md-10 offset-md-1 text-center text-md-left my-1">
             <h2><strong>Your Event</strong></h2>
         </div>
     </div>
+    <!--SAMPLE PACKAGES-->
     <div class="row">
         <div class="col-md-10 offset-md-1 text-center text-md-left">
             <p>To give you an idea, here are some sample packages we offer</p>
         </div>
+        <!--PACKAGE 1-->
         <div class="col-lg-4 div-bg-opacity px-5 py-3 my-1" style="border-radius: 20px">
             <h5>Our most POPular</h5>
             <h6>from €499</h6>
@@ -22,6 +25,7 @@
                 <li>7ft x 5ft Balloon Gridz Wall</li>
             </ul>
         </div>
+        <!--PACKAGE 2-->
         <div class="col-lg-4 div-bg-opacity px-5 py-3 my-1" style="border-radius: 20px">
             <h5>BLOW everyone away</h5>
             <h6>from €999</h6>
@@ -32,6 +36,7 @@
                 <li>7ft x 6ft 3d/Gridz Balloon Wall </li>
             </ul>
         </div>
+        <!--PACKAGE 3-->
         <div class="col-lg-4 div-bg-opacity px-5 py-3 my-1" style="border-radius: 20px">
             <h5>Go out with a BANG</h5>
             <h6>from €1499</h6>
@@ -48,6 +53,7 @@
         <p>Thank you for your enquiry!</p>
     {% endif %}
     {% if event_form %}
+    <!--EVENT QUERY FORM-->
         <div class="row">
             <div class="col-md-10 offset-md-1">
                 <form action="{% url 'events' %}" method="POST" id="event-form">
@@ -62,5 +68,3 @@
     {% endif %}
 </div>
 {% endblock %}
-
-

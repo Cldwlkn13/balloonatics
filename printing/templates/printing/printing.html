@@ -2,11 +2,12 @@
 {% load static %}
 
 {% block extracss %}
-    <link rel="stylesheet" href="{% static 'css/slideshow.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static 'css/slideshow.css' %}" type="text/css">
 {% endblock %}
 
 {% block content %}
 <div class="container bg-container-dark text-light pb-5">
+    <!--CONTENT HEADER-->
     <div class="row">
         <div class="col-12 col-md-10 text-center text-md-left my-1">
             <h2><strong>Balloon Printing</strong></h2>
@@ -15,168 +16,185 @@
     </div>
     <hr class="bg-light">
     {% if slideshow_images %}
-    <div class="row d-md-block">
-        <div class="col-10 offset-1 text-center mb-3">
-            <a href="#" class="btn btn-info m-3" id="slideshow-toggle">&#x25BC; Show me some cool custom print ideas</a>
-            <div id="slideshow">
-                {% include 'includes/slideshow.html' with slideshow_images=slideshow_images container=0 %}
-            </div>
-        </div>
-    </div>
-    {% endif %}
-    {% if products %}
-        <div class="row mb-1">
-            <div class="col-10 offset-1">
-                <p class="text-center" id="step-1">1. Select a Balloon {% if order_form %}<i class="fas fa-check text-success"></i>{% endif %}</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-10 offset-1">
-                <div class="row">
-                    {% for product in products %}
-                        {% include './includes/card.html' with result=product cntxt=cntxt %}
-                    {% endfor %}
+        <!--SLIDESHOW-->
+        <div class="row d-md-block">
+            <div class="col-10 offset-1 text-center mb-3">
+                <a href="#" class="btn btn-info m-3" id="slideshow-toggle">&#x25BC; Show me some cool custom print ideas</a>
+                <div id="slideshow">
+                    {% include 'includes/slideshow.html' with slideshow_images=slideshow_images container=0 %}
                 </div>
             </div>
         </div>
     {% endif %}
-    {% if order_form %}
-        <hr class="bg-light">
-        <div class="row">
-            <div class="col-lg-6 offset-lg-3">
-                <p id="step-2" class="text-center"> 2. Add your message {% if cntxt == 'update' %}<i class="fas fa-check text-success"></i>{% endif %}</p>
-                <form action="{% url 'new_order_handler' %}" method="POST" id="order-form" class="mb-5"> 
-                    {% csrf_token %}
-                    {{ order_form|crispy }}
-                    <div class="text-center">
-                        <span class="text-muted">total price:</span>
-                        <span id="print-total-price"></span>
-                    </div>
-                    <div class="text-center">
-                        {% if cntxt == 'add' %}
-                            <button type="submit" class="btn btn-warning mt-3" id="submit-btn">submit</button>
-                        {% else %}
-                            <button type="submit" method="POST" formaction="{% url 'update_order_handler' custom_print_order.id %}" class="btn btn-warning mt-3" id="submit-btn">update your print item</button>
-                        {% endif %}
-                        <input type="hidden" name="p_id" value="{{ product.id }}">
-                    </div>
-                </form>
+    {% if products %}
+    <!--SELECT A BALLOON HEADER-->
+    <div class="row mb-1">
+        <div class="col-10 offset-1">
+            <p class="text-center" id="step-1">1. Select a Balloon {% if order_form %}<i
+                    class="fas fa-check text-success"></i>{% endif %}</p>
+        </div>
+    </div>
+    <!--BALLOONS TO SELECT-->
+    <div class="row">
+        <div class="col-10 offset-1">
+            <div class="row">
+                {% for product in products %}
+                    {% include './includes/card.html' with result=product cntxt=cntxt %}
+                {% endfor %}
             </div>
         </div>
+    </div>
+    {% endif %}
+    {% if order_form %}
+    <hr class="bg-light">
+    <!--CUSTOM MESSAGE AND QTY FORM-->
+    <div class="row">
+        <div class="col-lg-6 offset-lg-3">
+            <p id="step-2" class="text-center"> 2. Add your message {% if cntxt == 'update' %}<i
+                    class="fas fa-check text-success"></i>{% endif %}</p>
+            <form action="{% url 'new_order_handler' %}" method="POST" id="order-form" class="mb-5">
+                {% csrf_token %}
+                {{ order_form|crispy }}
+                <!--PRINT PRICE-->
+                <div class="text-center">
+                    <span class="text-muted">total price:</span>
+                    <span id="print-total-price"></span>
+                </div>
+                <!--ADD TO CART-->
+                <div class="text-center">
+                    {% if cntxt == 'add' %}
+                    <button type="submit" class="btn btn-warning mt-3" id="submit-btn">submit</button>
+                    {% else %}
+                    <button type="submit" method="POST"
+                        formaction="{% url 'update_order_handler' custom_print_order.id %}" class="btn btn-warning mt-3"
+                        id="submit-btn">update your print item</button>
+                    {% endif %}
+                    <input type="hidden" name="p_id" value="{{ product.id }}">
+                </div>
+            </form>
+        </div>
+    </div>
     {% endif %}
 </div>
 {% endblock %}
 
 {% block postloadjs %}
-{{ block.super }}
+    {{ block.super }}
+    <script src="{% static 'js/slideshow.js' %}" type="text/javascript"></script>
 
-<script src="{% static 'js/slideshow.js' %}" type="text/javascript"></script>
-
-<script> 
-    $(document).ready(function(){
-        $('#submit-btn').click(function(ev) {
-            var message = $('input[name="custom_message"]').val();
-            var qty = $('input[name="qty"]').val();
-            var form = $('#order-form');
-            if(validator(message, qty) == 'ok'){
-                form.submit();
-            } else {
-                ev.preventDefault();
-                return;
-            }
-        });
-
-        $('.print-card-select').click(function(){
-            var thisid = $(this).children('p').first().text(); 
-            $('.border-success').removeClass('border-success border-3');  
-            $(this).parent().addClass('border-success border-3');
-            $('input[name="p_id"]').val() = thisid; 
-        })
-
-        $('.print-card-select').each(function(index){
-            var id = $(this).children('p').first().text();
-            var selectedid = $('input[name="p_id"]').val();
-            $(this).parent().toggleClass('border-success border-3', id == selectedid);
-        })
-
-        $('input[name="custom_message"]').on('input',function(e){
-            var message = $('input[name="custom_message"]').val();
-            var qty = $('input[name="qty"]').val();
-            var valid = validator(message);
-            if(valid == 'ok'){
-                $('#step-2').html(`<p> 2. Add your message <i class="fas fa-check text-success"></i></p>`)
-            } else {
-                $('#step-2').html(`<p> 2. Add your message <span class="text-danger"><small>${valid}<small></span></p>`);
-            }
-        });
-
-        function validator(message, qty = 1) {
-            if(typeof message == 'undefined'){
-                return 'undefined'
-            }       
-            if(message.startsWith(' ')){
-                return 'Message cannot start with a blank space';
-            }
-            if(message.length < 1){
-                return 'Please add a message';
-            }
-            if(message.length > 40){
-                return 'Message is too long. 40 characters max.';
-            }
-            if(qty < 1){
-                return 'Invalid Quantity Selected';
-            }
-            return 'ok';
-        };
-
-        $('#order-form').find('input').on('change', function(e)  {
-            updateTotalPrice();
-        });
-
-        function updateTotalPrice(){
-            var message = $('input[name="custom_message"]').val();
-            var qty = $('input[name="qty"]').val();
-            var valid = validator(message);
-            if(valid == 'ok'){
-                getTotalPrintPrice(function(output){
-                    var html = `€${output}`
-                    $('#print-total-price').text(html);
+        <script>
+            $(document).ready(function () {
+                // submit the form if passes client side validation
+                $('#submit-btn').click(function (ev) {
+                    var message = $('input[name="custom_message"]').val();
+                    var qty = $('input[name="qty"]').val();
+                    var form = $('#order-form');
+                    if (validator(message, qty) == 'ok') {
+                        form.submit();
+                    } else {
+                        ev.preventDefault();
+                        return;
+                    }
                 });
-            } else {
-                var html = 'n/a';
-                $('#print-total-price').text(html);
-            };
-        }
-        updateTotalPrice();
 
-        function getTotalPrintPrice(handleData) {
-            var form = $('#order-form')
-            var data = $(form).serialize();
-            var url = '/printing/gettotalprice/'
+                // update form with selected balloon & highlight its border
+                $('.print-card-select').click(function () {
+                    var thisid = $(this).children('p').first().text();
+                    $('.border-success').removeClass('border-success border-3');
+                    $(this).parent().addClass('border-success border-3');
+                    $('input[name="p_id"]').val() = thisid;
+                })
 
-            $.post({
-                url: url,
-                data: data,
-                success: function (response) {              
-                    handleData(response);
-                },
-                error: function () {
-                    handleData(response);
+                // on load highlight selected balloon border if in update mode
+                $('.print-card-select').each(function (index) {
+                    var id = $(this).children('p').first().text();
+                    var selectedid = $('input[name="p_id"]').val();
+                    $(this).parent().toggleClass('border-success border-3', id == selectedid);
+                })
+
+                // custom message input validation
+                $('input[name="custom_message"]').on('input', function (e) {
+                    var message = $('input[name="custom_message"]').val();
+                    var qty = $('input[name="qty"]').val();
+                    var valid = validator(message);
+                    if (valid == 'ok') {
+                        $('#step-2').html(`<p> 2. Add your message <i class="fas fa-check text-success"></i></p>`)
+                    } else {
+                        $('#step-2').html(`<p> 2. Add your message <span class="text-danger"><small>${valid}<small></span></p>`);
+                    }
+                });
+
+                //slideshow controls
+                $('#slideshow').hide();
+                $('#slideshow-toggle').click(function () {
+                    var visible = $('#slideshow').is(":visible");
+                    $('#slideshow').fadeToggle(500);
+                    if (visible) {
+                        $(this).html(`<span>&#x25BC; Show me some cool custom print ideas</span>`)
+                    } else {
+                        $(this).html(`<span>&#x25B2; Hide Slideshow</span>`)
+                    }
+                });
+
+                // update the total price on form input change event
+                $('#order-form').find('input').on('change', function (e) {
+                    updateTotalPrice();
+                });
+
+                // custom form validation 
+                function validator(message, qty = 1) {
+                    if (typeof message == 'undefined') {
+                        return 'undefined'
+                    }
+                    if (message.startsWith(' ')) {
+                        return 'Message cannot start with a blank space';
+                    }
+                    if (message.length < 1) {
+                        return 'Please add a message';
+                    }
+                    if (message.length > 40) {
+                        return 'Message is too long. 40 characters max.';
+                    }
+                    if (qty < 1) {
+                        return 'Invalid Quantity Selected';
+                    }
+                    return 'ok';
+                };
+
+                //updated price handler
+                function updateTotalPrice() {
+                    var message = $('input[name="custom_message"]').val();
+                    var qty = $('input[name="qty"]').val();
+                    var valid = validator(message);
+                    if (valid == 'ok') {
+                        getTotalPrintPrice(function (output) {
+                            var html = `€${output}`
+                            $('#print-total-price').text(html);
+                        });
+                    } else {
+                        var html = 'n/a';
+                        $('#print-total-price').text(html);
+                    };
                 }
-            });
-        }
+                updateTotalPrice();
 
-        $('#slideshow').hide();
-        $('#slideshow-toggle').click(function() {
-            var visible = $('#slideshow').is(":visible");
-            $('#slideshow').fadeToggle(500);
-            if(visible) {
-                $(this).html(`<span>&#x25BC; Show me some cool custom print ideas</span>`)
-            } else {
-                $(this).html(`<span>&#x25B2; Hide Slideshow</span>`)
-            }
-        });
-    })
+                //ajax call to server for updated price
+                function getTotalPrintPrice(handleData) {
+                    var form = $('#order-form')
+                    var data = $(form).serialize();
+                    var url = '/printing/gettotalprice/'
 
-</script>
+                    $.post({
+                        url: url,
+                        data: data,
+                        success: function (response) {
+                            handleData(response);
+                        },
+                        error: function () {
+                            handleData(response);
+                        }
+                    });
+                }
+            })
+        </script>
 {% endblock %}

@@ -7,7 +7,8 @@
         <div class="col-8 offset-2 align-items-center text-center">
             <h3><strong>Your Cart</strong></h3>
             <p>{{ action }}</p>
-            <a href="{% url 'categories' %}" class="btn btn-warning text-uppercase my-lg-5"><i class="fas fa-chevron-left"></i>&nbsp continue shopping</a>
+            <a href="{% url 'categories' %}" class="btn btn-warning text-uppercase my-lg-5"><i
+                    class="fas fa-chevron-left"></i>&nbsp continue shopping</a>
         </div>
     </div>
     <hr class="bg-light">
@@ -16,18 +17,21 @@
     {% else %}
         {% for item in cart_items %}
             {% if item.type == 'product' %}
+                <!--PRODUCT ITEMS IN CART-->
                 <div class="row align-items-center p-1 p-lg-2">
                     <div class="col-12 col-md-6 col-lg-3 text-center px-5">
                         {% if item.product.image %}
-                        <a href="{% url 'product_detail' item.product.id %}">
-                            <img class="img-fluid cart-img rounded-3" src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
-                        </a>
+                            <a href="{% url 'product_detail' item.product.id %}">
+                                <img class="img-fluid cart-img rounded-3" src="{{ item.product.image.url }}"
+                                    alt="{{ item.product.name }}">
+                            </a>
                         {% else %}
-                        <a href="{% url 'product_detail' item.product.id %}">
-                            <img class="img-fluid cart-img rounded-3" src="{{ MEDIA_URL }}noimage.png" alt="{{ item.product.name }}">
-                        </a>
+                            <a href="{% url 'product_detail' item.product.id %}">
+                                <img class="img-fluid cart-img rounded-3" src="{{ MEDIA_URL }}noimage.png"
+                                    alt="{{ item.product.name }}">
+                            </a>
                         {% endif %}
-                    </div>  
+                    </div>
                     <div class="col-12 col-md-6 col-lg-9">
                         <div class="row p-0 text-center align-items-center">
                             <div class="col-lg-2 p-0 py-lg-3 mr-2">
@@ -59,6 +63,7 @@
         {% endfor %}
         {% for item in cart_items %}
             {% if item.type == 'bundle' %}
+                <!--BUNDLE ITEMS IN CART-->
                 <div class="row align-items-center p-1 p-lg-2">
                     <div class="col-md-6 col-lg-3 text-center px-5">
                         {% if item.bundle.image %}
@@ -70,18 +75,19 @@
                             <img class="img-fluid cart-img rounded-3" src="{{ MEDIA_URL }}noimage.png" alt="{{ bundle.name }}">
                         </a>
                         {% endif %}
-                    </div> 
+                    </div>
                     <div class="col-12 col-md-6 col-lg-9">
                         <div class="row p-0 text-center align-items-center">
                             <div class="col-lg-2 p-0 py-lg-3 mr-2">
                                 <p class="text-muted mb-0"><small>name</small></p>
-                                <strong><a href="{% url 'with_items' item.item_id %}" class="text-underline text-light">{{ item.bundle.name }}</a></strong>
+                                <strong><a href="{% url 'with_items' item.item_id %}" class="text-underline text-light">{{
+                                        item.bundle.name }}</a></strong>
                             </div>
                             <div class="col-lg-4 p-0 pl-3 py-lg-3 mr-4">
                                 <p class="text-muted mb-0"><small>bundle items</small></p>
                                 {% for k, v in item.bundle_items.items %}
-                                    <p class="mb-1">{{v}} x {{k}}</p>
-                                {% endfor %}     
+                                <p class="mb-1">{{v}} x {{k}}</p>
+                                {% endfor %}
                             </div>
                             <div class="col-lg-2 p-0 py-lg-3 ml-1 mr-3">
                                 <p class="text-muted mb-0"><small>bundle price</small></p>
@@ -95,28 +101,32 @@
                         </div>
                     </div>
                 </div>
-                <hr class="bg-light">
+            <hr class="bg-light">
             {% endif %}
         {% endfor %}
         {% for item in cart_items %}
             {% if item.type == 'custom_print' %}
+                <!--PRINT ITEMS IN CART-->
                 <div class="row align-items-center p-1 p-lg-2">
                     <div class="col-md-6 col-lg-3 text-center px-5">
                         {% if item.bundle.image %}
                         <a href="{% url 'update_order_handler' item.item_id %}">
-                            <img class="img-fluid cart-img rounded-3" src="{{ item.custom_print_order.base_product.image.url }}" alt="{{ custom_print_order.base_product.name }}">
+                            <img class="img-fluid cart-img rounded-3" src="{{ item.custom_print_order.base_product.image.url }}"
+                                alt="{{ custom_print_order.base_product.name }}">
                         </a>
                         {% else %}
                         <a href="{% url 'update_order_handler' item.item_id %}">
-                            <img class="img-fluid cart-img rounded-3" src="{{ MEDIA_URL }}noimage.png" alt="{{ custom_print_order.base_product.name }}">
+                            <img class="img-fluid cart-img rounded-3" src="{{ MEDIA_URL }}noimage.png"
+                                alt="{{ custom_print_order.base_product.name }}">
                         </a>
                         {% endif %}
-                    </div> 
+                    </div>
                     <div class="col-md-6 col-lg-9">
                         <div class="row p-0 text-center align-items-center">
                             <div class="col-lg-2 p-0 py-lg-3 mr-2">
                                 <p class="text-muted mb-0"><small>print product name</small></p>
-                                <strong><a href="{% url 'update_order_handler' item.item_id %}" class="text-underline text-light">{{ item.custom_print_order.base_product.name }}</a></strong>
+                                <strong><a href="{% url 'update_order_handler' item.item_id %}" class="text-underline text-light">{{
+                                        item.custom_print_order.base_product.name }}</a></strong>
                             </div>
                             <div class="col-lg-2 p-0 py-lg-3 ml-1 mr-1">
                                 <p class="text-muted mb-0"><small>message</small></p>
@@ -138,10 +148,11 @@
                         </div>
                     </div>
                 </div>
-                <hr class="bg-light">
+            <hr class="bg-light">
             {% endif %}
         {% endfor %}
     {% endif %}
+    <!--DELIVERY CHARGES-->
     <div class="row mt-5">
         <div class="col-12 col-lg-2 offset-lg-10 text-center">
             <p class="text-muted mb-0">Delivery Charges</p>
@@ -150,38 +161,40 @@
             <h4 class="text-center"><strong> €{{ grand_total|floatformat:2 }}</strong></h4>
         </div>
     </div>
+    <!--CHECKOUT BTN-->
     <div class="row mt-5">
         <div class="col-12 col-lg-2 offset-lg-10 text-center">
             <a href="{% url 'checkout' %}" class="btn btn-warning btn-lg">
-            <span class="text-uppercase">Secure Checkout</span>
-            <span class="icon">
-                <i class="fas fa-lock"></i>
-            </span>
-        </a>
+                <span class="text-uppercase">Secure Checkout</span>
+                <span class="icon">
+                    <i class="fas fa-lock"></i>
+                </span>
+            </a>
         </div>
     </div>
 </div>
 {% endblock %}
 
 {% block postloadjs %}
-{{block.super}}
-<script>
-    $(document).ready(function () {
-        var quantity = 0;
-        $('.quantity-right-plus').click(function (e) {
-            e.preventDefault();
-            $(this).parent().siblings('#qty').first().trigger('change');
-        });
+    {{block.super}}
+        <script>
+            $(document).ready(function () {
+                // custom script to handle product qtys in the cart with qty widget
+                var quantity = 0;
+                $('.quantity-right-plus').click(function (e) {
+                    e.preventDefault();
+                    $(this).parent().siblings('#qty').first().trigger('change');
+                });
 
-        $('.quantity-left-minus').click(function (e) {
-            e.preventDefault();
-                $(this).parent().siblings('#qty').first().trigger('change');
+                $('.quantity-left-minus').click(function (e) {
+                    e.preventDefault();
+                    $(this).parent().siblings('#qty').first().trigger('change');
+                });
+
+                $('input').on('change', function () {
+                    console.log($(this));
+                    $(this).siblings('#update-qty').first().trigger('click');
+                });
             });
-
-        $('input').on('change', function () {
-            console.log($(this));
-            $(this).siblings('#update-qty').first().trigger('click');
-        });
-    });
-</script>
+        </script>
 {% endblock %}
