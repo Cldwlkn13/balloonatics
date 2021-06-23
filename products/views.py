@@ -17,22 +17,25 @@ def products(request):
 
     if 'sub_category' in request.GET:
         sub_category = request.GET['sub_category']
-        products = Product.objects.filter(sub_category__name=sub_category)
+        products = Product.objects.filter(
+            sub_category__name=sub_category)
+
+    if 'q' in request.GET:
+        products = Product.objects.filter(
+            name__icontains=request.GET['q'])
 
     if 'sort' in request.GET:
         sortkey = request.GET['sort']
         sort = sortkey
         if sortkey == 'name':
             sortkey = 'lower_name'
-            products = products.annotate(lower_name=Lower('name'))
+            products = products.annotate(
+                lower_name=Lower('name'))
         if 'dir' in request.GET:
             direction = request.GET['dir']
             if direction == 'desc':
                 sortkey=f'-{sortkey}'
         products = products.order_by(sortkey)
-
-    if 'q' in request.GET:
-        products = Product.objects.filter(name=request.GET['q'])
 
     cart = request.session.get('cart', {})
 
