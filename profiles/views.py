@@ -15,8 +15,8 @@ def profile(request):
             try:
                 profile_form.save()
                 messages.success(request,
-                                 "Your profile has been saved!",
-                                 extra_tags='render_toast')
+                    "Your profile has been saved!",
+                    extra_tags='render_toast')
 
                 context = {
                     'profile_form': profile_form,
@@ -25,14 +25,14 @@ def profile(request):
 
             except UserProfile.DoesNotExist:
                 messages.error(request,
-                           "Error saving your profile!",
-                           extra_tags='render_toast')
+                    "Error saving your profile!",
+                    extra_tags='render_toast')
                 return redirect(reverse('profile'))
 
         else:
             messages.error(request,
-                           "Error saving your profile!",
-                           extra_tags='render_toast')
+                "Error saving your profile!",
+                extra_tags='render_toast')
             return redirect(reverse('profile'))
 
     else:
