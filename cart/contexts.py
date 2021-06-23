@@ -1,8 +1,10 @@
 from django.conf import settings
 from django.shortcuts import get_object_or_404
+
 from products.models import Product
 from bundles.models import Bundle, BundleItem
 from printing.models import CustomPrintOrder
+
 from decimal import Decimal
 
 
@@ -12,8 +14,10 @@ def cart_contents(request):
     total = 0
     product_count = 0
     delivery = 0.00
-    cart = request.session.get('cart', {'products':{},'bundles':{},'custom_prints':{}})
+    cart = request.session.get('cart', 
+        {'products':{},'bundles':{},'custom_prints':{}})
     
+    # update the products cart items
     for i, q in cart['products'].items():
         item_total = 0
         product = get_object_or_404(Product, pk=i)
@@ -28,6 +32,7 @@ def cart_contents(request):
             'item_total': item_total,
         })
     
+    # update the bundles cart items
     for i, q in cart['bundles'].items():
         bundle = Bundle.objects.get(bundle_id=i)
         bundle_items = BundleItem.objects.filter(bundle__bundle_id=i)
@@ -49,6 +54,7 @@ def cart_contents(request):
             'bundle_total_cost': bundle_total_cost,
         })
     
+     # update the prints cart items
     for i, q in cart['custom_prints'].items():
         item_total = 0
         custom_print_order = get_object_or_404(CustomPrintOrder, pk=i)

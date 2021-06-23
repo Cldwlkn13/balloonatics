@@ -3,7 +3,7 @@ from django.shortcuts import (render, redirect,
                               HttpResponse)
 from django.contrib import messages
 
-from .helpers import custom_formset_dictionary_parser
+from .helpers import *
 
 from products.models import Product
 from bundles.models import Bundle, BundleItem, BundleCategory
@@ -19,10 +19,14 @@ def view_cart(request):
 
 def add_product_to_cart(request, item_id):
       
+    # get referring url for redirect
     referred_from = request.META['HTTP_REFERER']
 
-    cart = request.session.get('cart', {'products':{},'bundles':{},'custom_prints':{}})
+    # load up the cart
+    cart = request.session.get('cart', 
+        {'products':{},'bundles':{},'custom_prints':{}})
     
+    # get product and qty from request
     product = get_object_or_404(Product, pk=item_id)
     qty = int(request.POST.get('qty'))
 
@@ -34,6 +38,7 @@ def add_product_to_cart(request, item_id):
                          extra_tags='render_toast')
         return redirect(referred_from)
 
+    # add to the session cart
     if item_id in list(cart['products'].keys()):
         cart['products'][item_id] += qty
     else:
@@ -45,19 +50,25 @@ def add_product_to_cart(request, item_id):
         extra_tags='render_toast render_preview')
 
     request.session['cart'] = cart
+
     return redirect(referred_from)
 
 
 def update_product_cart(request, item_id):
     
-    product = get_object_or_404(Product, pk=item_id)
+    # get referring url for redirect
     referred_from = request.META['HTTP_REFERER']
+    
+    # get product and qty from request
+    product = get_object_or_404(Product, pk=item_id)
     qty = int(request.POST.get('qty'))
 
+    # check qty is valid
     if request.POST.get('qty') == '':
         messages.error(request, 'Invalid quantity', '')
         return redirect(referred_from)
 
+    # check there is enough stock
     if product.qty_held < qty:
         messages.warning(request,
                          'Sorry! We could not update this item '
@@ -67,10 +78,15 @@ def update_product_cart(request, item_id):
                          extra_tags='render_toast')
         return redirect(referred_from)
 
-    cart = request.session.get('cart', {'products':{},'bundles':{},'custom_prints':{}})
-    cart['products'][item_id] = qty
-    extra_tags = 'render_toast render_preview'
+    # load up the cart
+    cart = request.session.get('cart', 
+        {'products':{},'bundles':{},'custom_prints':{}})
 
+    # set the values in the cart
+    cart['products'][item_id] = qty
+
+    # set the extra tage for the toasts
+    extra_tags = 'render_toast render_preview'
     if 'cart' in referred_from:
         extra_tags = ''
 
@@ -86,11 +102,18 @@ def update_product_cart(request, item_id):
 
 def remove_product_from_cart(request, item_id):
     
-    product = get_object_or_404(Product, pk=item_id)
-    cart = request.session.get('cart', {'products':{},'bundles':{},'custom_prints':{}})
+    # get referring url for redirect
     referred_from = request.META['HTTP_REFERER']
-    extra_tags = 'render_toast render_preview'
+    
+    # get product and qty from request
+    product = get_object_or_404(Product, pk=item_id)
 
+    # load up the cart
+    cart = request.session.get('cart', 
+        {'products':{},'bundles':{},'custom_prints':{}})
+
+    # set the extra tage for the toasts
+    extra_tags = 'render_toast render_preview'
     if 'cart' in referred_from:
         extra_tags = ''
 
@@ -261,10 +284,13 @@ def remove_bundle_from_cart(request, bundle_id):
 def add_or_update_custom_print_for_cart(request, custom_print_id):
 
     # load the cart from the session
-    cart = request.session.get('cart', {'products':{},'bundles':{},'custom_prints':{}})
+    cart = request.session.get('cart', 
+        {'products':{},'bundles':{},'custom_prints':{}})
 
+    # get the custom print id from the request
     custom_print_order = CustomPrintOrder.objects.get(pk=custom_print_id)
 
+    # check we have enough in stock
     if int(custom_print_order.base_product.qty_held) < int(custom_print_order.qty):
         messages.warning(request,
                          'Sorry! We could add this item to your cart. '
@@ -273,9 +299,11 @@ def add_or_update_custom_print_for_cart(request, custom_print_id):
                          extra_tags='render_toast')
         HttpResponse(status=400, content=request)
 
+    # set the item in the cart
     cart['custom_prints'][custom_print_id] = custom_print_order.qty
 
     request.session['cart'] = cart
+
     return HttpResponse(status=200, content=request)
 
 
@@ -311,82 +339,7 @@ def remove_custom_print_order_from_cart(request, custom_print_id):
     return redirect(referred_from)
 
 
-''' helper functions '''
 
-
-def validate_bundle_item_products(bundle_item_dict):
-    product_ids = []
-    valid = False
-    for k, item in bundle_item_dict.items(): 
-        if item['product'] != '0':
-            product = Product.objects.get(pk=item['product'])
-            if product.id in product_ids:
-                return { 'is_valid': False, 'product': product }
-            product_ids.append(product.id)
-            valid = True # set when at least one item valid (i.e. cannot validate 0 bundle items) 
-    return {'is_valid': valid, 'product': None }
-
-
-def validate_bundle_item_qtys(bundle_item_dict):
-    for k, item in bundle_item_dict.items(): 
-        if item['product'] != '0':
-            product = Product.objects.get(pk=item['product'])
-            if (int(item['item_qty']) > product.qty_held or 
-                int(item['item_qty']) == 0):
-                return { 'is_valid': False, 'product': product }
-    return { 'is_valid': True }
-
-
-def save_bundle_items(bundle_item_dict, bundle): 
-    for k, item in bundle_item_dict.items():
-        if item['product'] != '0':
-            product = Product.objects.get(pk=item['product'])
-            bundle_item = BundleItem(
-                product=product,
-                bundle=bundle,
-                item_qty=int(item['item_qty'])
-            )
-            bundle_item.save()
-
-
-def get_bundle_item_dictionary(request_body):
-    requestDictionary = request_body.decode("utf-8").split('&')
-    return custom_formset_dictionary_parser(requestDictionary)
-
-
-def getCannotProcessMessageProducts(product):
-    msg = ''
-    if product: 
-        msg = f'''
-            Invalid configuration of products, 
-            more than one {product.name} 
-            present in the bundle. 
-            Please adjust your selections.
-            '''
-    else:
-        msg = f'''
-            No valid products in your bundle. 
-            Please try again.
-            '''
-    return msg
-
-
-def getCannotProcessMessageQtys(product):
-    msg = ''
-    if product.qty_held == 0:
-        msg = f'''
-        Sorry! We could not update your bundle. 
-        We currently have no item <strong>{ product.name }</strong> 
-        in stock!
-        Please replace it with an alternative product.'''
-    else:
-        msg = f'''
-        Sorry! We could not update your bundle. 
-        The qty of item <strong>{ product.name }</strong> 
-        is too high! 
-        We only have { product.qty_held } in stock.'''
-        
-    return msg
             
 
 
