@@ -96,8 +96,8 @@ class Product(models.Model):
         return self.name
 
     def calc_qty_in_bag(self, cart):
-        if str(self.pk) in cart:
-            return cart[str(self.pk)]
+        if str(self.pk) in cart['products']:
+            return cart['products'][str(self.pk)]
         else:
             return 0
 
