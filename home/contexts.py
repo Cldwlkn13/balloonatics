@@ -1,7 +1,7 @@
 from products.models import Product, Category, Sub_Category
 from django.conf import settings
 
-
+''' define the menu items available based on availability fo products '''
 def menu_context(request):
 
     categories = Category.objects.exclude(
@@ -13,7 +13,8 @@ def menu_context(request):
         sub_category_pks = []
         matching_sub_categories = Product.objects.filter(
             category__name=c.name).exclude(
-                category__name='custom').distinct().values('sub_category')
+                category__name='custom').distinct().values(
+                    'sub_category')
 
         for msc in matching_sub_categories:
             for v in msc.values():
@@ -34,7 +35,7 @@ def menu_context(request):
             'menu_context': menu_context
         }
 
-
+''' function to configure toasts from settings.py '''
 def configure_toasts(request):
 
     if 'toast_autohide' in request.POST:

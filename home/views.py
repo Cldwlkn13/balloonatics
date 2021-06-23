@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.http import HttpResponseForbidden, Http404,HttpResponseServerError, HttpResponseBadRequest
 from products.models import Category, Sub_Category
 
 
@@ -7,6 +6,7 @@ def index(request):
     categories = Category.objects.all()
     sub_categories = Sub_Category.objects.all()
 
+    # load up the slideshow images 
     slideshow_images_bundle = {
         'age_2_pink.jpg': 'Our Wedding Bundle',
         'mr_mrs.jpg': 'Our Wedding Bundle 2',
@@ -36,6 +36,7 @@ def index(request):
     return render(request, 'home/index.html', context)
 
 
+''' error views '''
 def bad_request_view(request, exception):
 
     context = {
