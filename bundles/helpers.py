@@ -5,6 +5,8 @@ from cart.helpers import custom_formset_dictionary_parser
 
 from decimal import Decimal
 
+import math
+
 
 def get_total_price(request):
     reqDict = request.body.decode("utf-8").split('&')
@@ -16,6 +18,8 @@ def get_total_price(request):
                 pk=item['product'])
             item_total = Decimal(item['item_qty']) * product.discounted_price
             total += item_total
+
+    total = math.ceil(total) - 0.01
 
     return HttpResponse(content=total, status=200)
 

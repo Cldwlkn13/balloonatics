@@ -5,6 +5,8 @@ from products.models import Product
 
 from decimal import Decimal
 
+import math
+
 
 def get_total_price(request):
 
@@ -17,6 +19,7 @@ def get_total_price(request):
         item_cost = Decimal(product.discounted_price) * int(qty)
         with_printing = round(item_cost * Decimal(
             settings.PRINTING_SURCHARGE),2)
+        with_printing = math.ceil(with_printing)
     except Product.DoesNotExist:
         return HttpResponse(content=0, status=400)
 
