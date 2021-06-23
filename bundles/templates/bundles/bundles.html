@@ -65,34 +65,5 @@
 {% block postloadjs %}
     {{ block.super }}
         <script src="{% static 'js/slideshow.js' %}" type="text/javascript"></script>
-
-        <script>
-            $(document).ready(function () {
-                $('#div_id_age').toggle(
-                    $('select[name="categories"] option:selected').text().toLowerCase() == 'birthday')
-
-                $('select[name="categories"]').on('change', function (e) {
-                    if ($(this).find(":selected").text().toLowerCase() != 'birthday') {
-                        $('#selector-form').find('button').first().trigger('click');
-                    } else {
-                        $('#div_id_age').toggle($(this).find(":selected").text().toLowerCase() == 'birthday')
-                    }
-                });
-
-                $('select[name="age"]').on('change', function (e) {
-                    $('#selector-form').find('button').first().trigger('click');
-                });
-
-                $('#slideshow').hide();
-                $('#slideshow-toggle').click(function () {
-                    var visible = $('#slideshow').is(":visible");
-                    $('#slideshow').fadeToggle(500);
-                    if (visible) {
-                        $(this).html(`<span>&#x25BC; Show me some cool bundles</span>`)
-                    } else {
-                        $(this).html(`<span>&#x25B2; Hide Slideshow</span>`)
-                    }
-                });
-            });
-        </script>
+        <script src="{% static 'bundles/js/bundles.js' %}" type="text/javascript"></script>
 {% endblock %}

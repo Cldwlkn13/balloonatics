@@ -215,9 +215,7 @@ if 'USE_AWS' in os.environ:
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 DELIVERY_SURCHARGE = 0.15
-
 QTY_LOW_ALERT_THRESHOLD = 5
-
 PRINTING_SURCHARGE = 1.10
 
 STRIPE_CURRENCY = 'eur'

@@ -38,18 +38,16 @@
                     <div class="col-8 d-none d-lg-block">
                         <div class="row align-items-top px-1">
                             {% for key, values in menu_context.items %}
-                            <div class="col-3 d-none d-md-block text-center mr-2">
-                                <a href="{% url 'sub_categories' %}?category={{ key }}"
-                                    class="text-light text-bold text-decoration-none home-cat-link"><strong>{{ key
-                                        }}</strong></a>
-                                {% for sub_cat in values %}
-                                <p class="my-0">
-                                    <a href="{% url 'products' %}?sub_category={{ sub_cat }}"
-                                        class="text-light-muted text-decoration-none home-sub-cat-link"><small>{{
-                                            sub_cat }}</small></a>
-                                </p>
-                                {% endfor %}
-                            </div>
+                                <div class="col-3 d-none d-md-block text-center mr-2">
+                                    <a href="{% url 'sub_categories' %}?category={{ key }}"
+                                        class="text-light text-bold text-decoration-none home-cat-link"><strong>{{ key }}</strong></a>
+                                    {% for sub_cat in values %}
+                                        <p class="my-0">
+                                            <a href="{% url 'products' %}?sub_category={{ sub_cat }}"
+                                                class="text-light-muted text-decoration-none home-sub-cat-link"><small>{{ sub_cat }}</small></a>
+                                        </p>
+                                    {% endfor %}
+                                </div>
                             {% endfor %}
                         </div>
                     </div>
@@ -86,8 +84,7 @@
             <!--BUNDLE SLIDESHOW-->
             <div class="col-lg-5 d-none d-lg-block">
                 <div class="slideshow px-3">
-                    {% include 'includes/slideshow.html' with container=0 slideshow_images=slideshow_images_bundle
-                    float_left=True %}
+                    {% include 'includes/slideshow.html' with container=0 slideshow_images=slideshow_images_bundle float_left=True %}
                 </div>
             </div>
         </div>
@@ -96,8 +93,7 @@
             <!--PRINTING SLIDESHOW-->
             <div class="col-lg-5 d-none d-lg-block">
                 <div class="slideshow px-3">
-                    {% include 'includes/slideshow.html' with container=1 slideshow_images=slideshow_images_printing
-                    float_right=True %}
+                    {% include 'includes/slideshow.html' with container=1 slideshow_images=slideshow_images_printing float_right=True %}
                 </div>
             </div>
             <!--BALLOON PRINTING INFO-->
@@ -151,8 +147,7 @@
             <!--YOUR EVENT SLIDESHOW-->
             <div class="col-lg-5 d-none d-lg-block">
                 <div class="slideshow px-3">
-                    {% include 'includes/slideshow.html' with container=2 slideshow_images=slideshow_images_event
-                    float_left=True %}
+                    {% include 'includes/slideshow.html' with container=2 slideshow_images=slideshow_images_event float_left=True %}
                 </div>
             </div>
         </div>
