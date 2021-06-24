@@ -62,10 +62,6 @@ a:hover {
     color: pink;
 }
 
-p { 
-    word-break: break-all 
-}
-
 .table-responsive {
     border-radius: 3px;
 }
