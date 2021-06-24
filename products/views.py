@@ -27,7 +27,7 @@ def products(request):
         products = Product.objects.filter(
             name__icontains=request.GET['q'])
 
-    # sort products by key if present
+    # sort products by key in request if present
     if 'sort' in request.GET:
         sortkey = request.GET['sort']
         sort = sortkey
@@ -35,6 +35,8 @@ def products(request):
             sortkey = 'lower_name'
             products = products.annotate(
                 lower_name=Lower('name'))
+        if sortkey == 'price':
+            sortkey = 'discounted_price'
         if 'dir' in request.GET:
             direction = request.GET['dir']
             if direction == 'desc':
