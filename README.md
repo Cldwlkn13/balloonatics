@@ -393,7 +393,7 @@ Testing conducted on [Responsive Design Checker](https://www.browserstack.com/re
 #### User Story Testing  
 
 #### As the site owner...
-##### <u>US001 I want prospective users/providers to be greeted with an attractive Home Page, that has a simple, intuitive layout. &check;</u>
+##### <ins>US001 I want prospective users/providers to be greeted with an attractive Home Page, that has a simple, intuitive layout. &check;</ins>
     - Given a user has navigated to the home page
     - When the page loads
     - Then they are met with an attractive and simple layout with relevant information
