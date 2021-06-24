@@ -28,7 +28,7 @@ class CustomPrintForm(forms.ModelForm):
         model = CustomPrintOrder
         fields = ('custom_message', 'qty')
 
-    custom_message = forms.CharField(label='Your message')
+    custom_message = forms.CharField(label='Your message (max 40 chars)')
 
     def __init__(self, message, qty, *args, **kwargs):
         super().__init__(*args, **kwargs)
