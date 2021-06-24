@@ -3,9 +3,9 @@
 - The products and images used on this site are purely for demonstration. They have been acquired from various sources across the web including [Balloons For You](https://www.balloonsforyou.ie/), [Barrys Balloons](https://barryballoons.ie/), [Balloons Direct](https://balloonsdirect.ie/). If you are looking for Balloons in Dublin, then please visit these legends. 
 
 Am I Responsive?
-![](/readme-files/amiresponsive.jpg)
+![](readme-files/amiresponsive.jpg)
 
-## UX TBC
+## UX
 ### Brief
 Balloonatics is a real company founded by Niamh Traynor & Ruth Holbrook in Dublin, Ireland. As a duo they currently provide balloon bundling and corporate packages to their clients through word of mouth contacts and a small Facebook page. The company is currently only operating on a part time basis, but due to their success they are looking to expand and establish themselves as a brand online. They briefed for a new website with the following features:
 
@@ -234,7 +234,6 @@ Balloonatics is a real company founded by Niamh Traynor & Ruth Holbrook in Dubli
 
 
 ### Wireframes
-
 Wireframes were designed using JustInMind and images of the slides can be viewed in the following table:
 
 |      Desktop    |      Mobile     | 
@@ -394,7 +393,7 @@ Testing conducted on [Responsive Design Checker](https://www.browserstack.com/re
 #### User Story Testing  
 
 #### As the site owner...
-##### <ins>US001 I want prospective users/providers to be greeted with an attractive Home Page, that has a simple, intuitive layout. &check;</ins>
+##### <u>US001 I want prospective users/providers to be greeted with an attractive Home Page, that has a simple, intuitive layout. &check;</u>
     - Given a user has navigated to the home page
     - When the page loads
     - Then they are met with an attractive and simple layout with relevant information
