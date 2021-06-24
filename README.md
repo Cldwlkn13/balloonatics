@@ -335,7 +335,36 @@ Wireframes were designed using JustInMind and images of the slides can be viewed
 - Add more detailed and intuitive delivery costing, rather than a blanket surcharge
 - Inform the customer whether the item needs to be shipped inflated or deflated
 
-  
+### Models
+* Bundles (3 [models](https://github.com/Cldwlkn13/balloonatics/blob/master/bundles/models.py))
+    - BundleCategory
+    - Bundle
+    - BundleItem
+
+* Checkout (3 [models](https://github.com/Cldwlkn13/balloonatics/blob/master/checkout/models.py))
+    - Address 
+    - Order
+    - OrderItem
+
+* Events (2 [models](https://github.com/Cldwlkn13/balloonatics/blob/master/events/models.py))
+    - Event
+    - EventType
+
+* Printing (1 [model](https://github.com/Cldwlkn13/balloonatics/blob/master/printing/models.py))
+    - CustomPrintOrder
+
+* Products (6 [models](https://github.com/Cldwlkn13/balloonatics/blob/master/products/models.py))
+    - Category
+    - Material
+    - Color
+    - Size
+    - SubCategory
+    - Product
+
+* Profiles (1 [model](https://github.com/Cldwlkn13/balloonatics/blob/master/profiles/models.py))
+    - UserProfile
+
+
 ## Technologies
 
 #### Development:
@@ -393,38 +422,38 @@ Testing conducted on [Responsive Design Checker](https://www.browserstack.com/re
 #### User Story Testing  
 
 #### As the site owner...
-##### <u>US001 I want prospective users/providers to be greeted with an attractive Home Page, that has a simple, intuitive layout. &check;</u>
+##### <ins>US001 I want prospective users/providers to be greeted with an attractive Home Page, that has a simple, intuitive layout. &check;</ins>
     - Given a user has navigated to the home page
     - When the page loads
     - Then they are met with an attractive and simple layout with relevant information
 **Features laid out in a nice grid, clearly labelled. Keep text to a minimum to avoid information overload.** 
  
-##### US002 I want prospective users/providers to see some examples of the products and services we offer in a visual format &check;
+##### <ins>US002 I want prospective users/providers to see some examples of the products and services we offer in a visual format &check;</ins>
     - Given a user has navigated to the home page
     - When the page loads
     - They have various examples of the products and services we offer in a digestable, appealing format
 **Interactive slideshows of related products for the site features give to user a compact, accessible way to view content**
 
-##### US003 I want users to be able to contact us when necessary, so we can provide them with the best service possible &check;
+##### <ins>US003 I want users to be able to contact us when necessary, so we can provide them with the best service possible &check;</ins>
     - Given a user has navigated to the site (not necessarily logged in)
     - When they search for contact details
     - Then they are easily available
 **Contact details present in the Footer of each page** 
 
-##### US004 I want to ensure users are given relevant and accurate information about site operational or user errors (e.g. Toasts/Messages/Error Pages) &check;
+##### <ins>US004 I want to ensure users are given relevant and accurate information about site operational or user errors (e.g. Toasts/Messages/Error Pages) &check;</ins>
     - Given an operation within the application is triggered
     - When that operation succeeds or fails
     - Then the user is given information pertaining to that operations' success/failure
 **Toasts pop up to display messages to the user across the site.**
 **Custom error pages display human readable exception content to the user when something serious goes awry**
 
-##### US005 I want to be able to have a space where we can promote products in line woith upcoming seasons or other promotions &check;
+##### <ins>US005 I want to be able to have a space where we can promote products in line woith upcoming seasons or other promotions &check;</ins>
     - Given it is coming up to a particular season (Communion, Christmas, etc)
     - When I have decided on the promotion we would like to run
     - Then the the details of that promotion is prominent and visible to customers
 **Promotional banner sits just underneath the header content on all > large screens**
 
-##### US006 I want customers to be able to combine products into bundles in line with our brand usp &check;
+##### <ins>US006 I want customers to be able to combine products into bundles in line with our brand usp &check;</ins>
     - Given a user has navigated to the bundle page
     - When they select a category of bundle (birthday, wedding, etc)
     - Then they are presented with the relevant bundles to choose from
@@ -471,7 +500,7 @@ Testing conducted on [Responsive Design Checker](https://www.browserstack.com/re
 **When the user clicks on the little red trash can within the cart, the item is removed from the cart, deleted from the custom bundles in the db and the cart total is updated**
 
 
-##### US007 I want customers to be able to customise printed messages onto balloons, so they can build their own customised orders &check;
+##### <ins>US007 I want customers to be able to customise printed messages onto balloons, so they can build their own customised orders &check;</ins>
     - Given a user has navigated to the printing page
     - When they select a balloon product they wish to use to print on
     - Then they are given the option to compose the message and select a quantity
@@ -502,7 +531,7 @@ Testing conducted on [Responsive Design Checker](https://www.browserstack.com/re
     - Then the print order is removed from the cart and the custom entity is removed from the database
 **When the user clicks on the little red trash can within the cart, the item is removed from the cart, deleted from the custom print orders in the db and the cart total is updated**
  
-##### US008 I want customers to be able to see the types of event package we offer, so they have a good idea of our capabilities &check;
+##### <ins>US008 I want customers to be able to see the types of event package we offer, so they have a good idea of our capabilities &check;</ins>
     - Given a user has navigated to the events page
     - When the page loads
     - They can see examples the packages we offer
@@ -513,21 +542,21 @@ Testing conducted on [Responsive Design Checker](https://www.browserstack.com/re
     - Then the query is recieved and they are given the relevant feedback
 **When the user submits the form correctly, they are thanked and the query appears in the database to be actioned**
 
-##### US009 I want to be able to add new products to the site, so we can keep the product inventory fresh &check;
+##### <ins>US009 I want to be able to add new products to the site, so we can keep the product inventory fresh &check;</ins>
     - Given we have a new product available for sale 
     - When I want to add that product 
     - Then I have a space where I can do that easily
 **When logged in as a superuser, the user can navigate to product management and click to add a product. They are then presented with a form to complete to add the required details**
 **If the form is completed adequately then a new product entry is added to the Products table of the database**
 
-##### US010 I want to be able to edit products we have on the site, so I can keep the product inventory up to date &check;
+##### <ins>US010 I want to be able to edit products we have on the site, so I can keep the product inventory up to date &check;</ins>
     - Given there is a product who's information has changed
     - When I want to edit that product
     - Then I have a space where I can do that easily
 **At the same url (products/loadproducts), the user can click to edit an existing product from the list of all products. Selecting a product loads the form**
 **If the form is completed adequately then the product entry is updated on the Products table of the database**
 
-##### US011 I want to be able to delete products we have on the site, so we do not have a lot of legacy products we do not want in the system &check;
+##### <ins>US011 I want to be able to delete products we have on the site, so we do not have a lot of legacy products we do not want in the system &check;</ins>
     - Given there is a product that is no longer for sale
     - When I want to delete that product
     - Then I have a space where I can do that easily
@@ -535,44 +564,44 @@ Testing conducted on [Responsive Design Checker](https://www.browserstack.com/re
 **The product entry is deleted on the Products table of the database**
 
 #### As a shopping customer...
-##### US101 I want to be able to select a category of products, so that I can quickly locate the product I am interested in &check;
+##### <ins>US101 I want to be able to select a category of products, so that I can quickly locate the product I am interested in &check;</ins>
     - Given I have navigated to the products pages 
     - When I click on a product category
     - Then I am presented with products only from that category
 **Selecting a product category will load all the available sub categories with products. No sub categories should be shown to the user that do no have products with that associated Category key**
 
-##### US102 I want to view a list of products, so that I can add the ones I wish to purchase to my shopping bag &check;
+##### <ins>US102 I want to view a list of products, so that I can add the ones I wish to purchase to my shopping bag &check;</ins>
     - Given I have navigated to the products pages 
     - When I click on an item to add to my shopping bag
     - Then that item is added to my shopping bag and the bag total is adjusted accordingly
 **Users can select a group of products from the sub categories, or they can filter by name in the header search bar**
 **Users can hit the 'add' btn to add the product to their bag. The cart total is updated accordingly**
 
-##### US103 I want to sort a list of products by different properties (price, name, etc), so that I can quickly identify ones I may wish to purchase &check;
+##### <ins>US103 I want to sort a list of products by different properties (price, name, etc), so that I can quickly identify ones I may wish to purchase &check;</ins>
     - Given I have navigated to the products pages 
     - When I want to see products listed by a certain property
     - Then the items are displayed according to my selection
 **On the products page, users can sort their products by both name and price for convinience**
 
-##### US104 I want to view more details of a particular product, so that I can gather more information and decide whether I wish to purchase it &check;
+##### <ins>US104 I want to view more details of a particular product, so that I can gather more information and decide whether I wish to purchase it &check;</ins>
     - Given I have navigated to the products pages 
     - When I click on an item
     - Then I am redirected to a page with more details regarding that item.
 **When a user clicks on a product image, they a redirected to the url for that product where they can view more information**
 
-##### US105 I want to view the total in my shopping bag at any time, so that I can keep track of the total of the items I have added &check;
+##### <ins>US105 I want to view the total in my shopping bag at any time, so that I can keep track of the total of the items I have added &check;</ins>
     - Given I have added items to the shopping cart
     - Whenever I am present on the site
     - Then I can view the total in my shopping cart
 **Cart links are available on all screens in the top right of the header bar. A total in the bag is displayed for convinience and clicking the icon links to the cart page**
 
-##### US106 I want to add products to my shopping cart so that I can purchase them &check;
+##### <ins>US106 I want to add products to my shopping cart so that I can purchase them &check;</ins>
     - Given I have decided that I wish to purchase a product, and selected the appropriate quantity
     - When click add to bag
     - Then product is added to my shoppping cart
 **Users can add products to their cart from the product-card previews for convinience, or from the product detail url for each product**
 
-##### US107 I want to be able to edit the items in my shopping bag &check;
+##### <ins>US107 I want to be able to edit the items in my shopping bag &check;</ins>
     - Given I have items in my shopping bag
     - When I decide I want to remove one and click delete
     - Then product is removed from my shopping bag and the bag total is updated
@@ -583,14 +612,14 @@ Testing conducted on [Responsive Design Checker](https://www.browserstack.com/re
     - Then the quantity is amended and the bag total is updated
 **With the cart page, users can edit quantities on a product in their bag and the totals will automatically update**
 
-##### US108 I wish to be able to register for an account &check;
+##### <ins>US108 I wish to be able to register for an account &check;</ins>
     - Given I have decided I would like an account
     - When I navigate to the registration form and submit my details
     - Then an account is created for me
 **Users can register for a new account in the register form which can be linked to from any page in the header 'Login/Register' link**
 **A new row for the user is added to the Users table in the database**
 
-##### US109 I wish to be able complete my purchase of items in my shopping bag &check;
+##### <ins>US109 I wish to be able complete my purchase of items in my shopping bag &check;</ins>
     - Given I have selected all the items I wish to purchase 
     - When I submit my details correctly
     - Then I am given confirmation the purchase has completed, along with an order number
@@ -605,7 +634,7 @@ Testing conducted on [Responsive Design Checker](https://www.browserstack.com/re
 
 
 #### As an existing customer...
-##### US201 I want to be able to login to my profile so that I can perform actions agaisnt my profile and purchase more products &check;
+##### <ins>US201 I want to be able to login to my profile so that I can perform actions agaisnt my profile and purchase more products &check;</ins>
     - Given I have navigated to the site 
     - When I want to log in
     - Then I can easily do so
@@ -626,13 +655,13 @@ Testing conducted on [Responsive Design Checker](https://www.browserstack.com/re
     - Then I am able to view my order history and their contents
 **Users can view their order history on their profile page**
 
-##### US202 I want to be able to recover my password, so that I can always access my account even if I forget it &check;
+##### <ins>US202 I want to be able to recover my password, so that I can always access my account even if I forget it &check;</ins>
     - Given I am trying to log in 
     - When I have forgotten my password
     - Then I click a link to set a new one
 **On the login page, users can hit the 'forgot password' link where they are invited to add their registered email address to a form and will be sent a link**
 
-##### US202 I want to be able to log out of my account &check;
+##### <ins>US202 I want to be able to log out of my account &check;</ins>
     - Given I am logged in to my account
     - When I wish to log out
     - Then I can click a link to log out, and I am logged out
