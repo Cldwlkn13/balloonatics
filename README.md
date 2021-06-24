@@ -1,59 +1,136 @@
-![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
+# Balloonatics 
+[site available here](https://balloonatics.herokuapp.com/)
 
-Welcome Cldwlkn13,
 
-This is the Code Institute student template for Gitpod. We have preinstalled all of the tools you need to get started. You can safely delete this README.md file, or change it for your own project. Please do read it at least once, though! It contains some important information about Gitpod and the extensions we use.
+## UX TBC
 
-## Gitpod Reminders
 
-To run a frontend (HTML, CSS, Javascript only) application in Gitpod, in the terminal, type:
+### User Stories TBC
 
-`python3 -m http.server`
 
-A blue button should appear to click: _Make Public_,
+### Wireframes TBC
 
-Another blue button should appear to click: _Open Browser_.
+Wireframes were designed using JustInMind and images of the slides can be viewed in the following table:
 
-To run a backend Python file, type `python3 app.py`, if your Python file is named `app.py` of course.
-
-A blue button should appear to click: _Make Public_,
-
-Another blue button should appear to click: _Open Browser_.
-
-In Gitpod you have superuser security privileges by default. Therefore you do not need to use the `sudo` (superuser do) command in the bash terminal in any of the lessons.
-
-To log into the Heroku toolbelt CLI:
-
-1. Log in to your Heroku account and go to *Account Settings* in the menu under your avatar.
-2. Scroll down to the *API Key* and click *Reveal*
-3. Copy the key
-4. In Gitpod, from the terminal, run `heroku_config`
-5. Paste in your API key when asked
-
-You can now use the `heroku` CLI program - try running `heroku apps` to confirm it works. This API key is unique and private to you so do not share it. If you accidently make it public then you can create a new one with _Regenerate API Key_.
-
-## Updates Since The Instructional Video
-
-We continually tweak and adjust this template to help give you the best experience. Here is the version history:
-
-**May 10 2021:** Added `heroku_config` script to allow Heroku API key to be stored as an environment variable.
-
-**April 7 2021:** Upgraded the template for VS Code instead of Theia.
-
-**October 21 2020:** Versions of the HTMLHint, Prettier, Bootstrap4 CDN and Auto Close extensions updated. The Python extension needs to stay the same version for now.
-
-**October 08 2020:** Additional large Gitpod files (`core.mongo*` and `core.python*`) are now hidden in the Explorer, and have been added to the `.gitignore` by default.
-
-**September 22 2020:** Gitpod occasionally creates large `core.Microsoft` files. These are now hidden in the Explorer. A `.gitignore` file has been created to make sure these files will not be committed, along with other common files.
-
-**April 16 2020:** The template now automatically installs MySQL instead of relying on the Gitpod MySQL image. The message about a Python linter not being installed has been dealt with, and the set-up files are now hidden in the Gitpod file explorer.
-
-**April 13 2020:** Added the _Prettier_ code beautifier extension instead of the code formatter built-in to Gitpod.
-
-**February 2020:** The initialisation files now _do not_ auto-delete. They will remain in your project. You can safely ignore them. They just make sure that your workspace is configured correctly each time you open it. It will also prevent the Gitpod configuration popup from appearing.
-
-**December 2019:** Added Eventyret's Bootstrap 4 extension. Type `!bscdn` in a HTML file to add the Bootstrap boilerplate. Check out the <a href="https://github.com/Eventyret/vscode-bcdn" target="_blank">README.md file at the official repo</a> for more options.
+|    Wireframes   |   
+|      :----:     |    
+|[Landing]()|
+|[Game Start]()|
+|[Gameplay]()|
 
 ---
 
-Happy coding!
+## Features TBC
+
+**Header** contains
+- INFO
+
+*The header is fixed at the top of the page, always visible. 
+
+**Footer** contains
+- INFO
+
+*The footer is available at the bottom of the page
+
+
+### Feature Roadmap
+- INFO
+  
+## Technologies
+
+#### Development:
+- [GitHub](https://github.com/) - site host.
+- [Gitpod](https://gitpod.io/) - dev IDE.
+
+#### Key content, styling & logic:
+- [HTML5](https://en.wikipedia.org/wiki/HTML5) - site content
+- [CSS3](https://en.wikipedia.org/wiki/Cascading_Style_Sheets) - site styling
+- [Bootstrap](https://getbootstrap.com/) - project layout & additional styling
+- [Javascript](https://en.wikipedia.org/wiki/JavaScript) - functional logic & gameplay
+
+#### 
+
+#### Supplementary technologies
+- [JustInMind](https://www.justinmind.com/) - wireframes and site prototype
+- [Jasmine](https://jasmine.github.io/) - javascript testing framework
+- [FontAwesome](https://fontawesome.com/) - inline icons
+- [GoogleFonts](https://fonts.google.com/) - font faces
+- [EmailJS](https://www.emailjs.com/) - email automation library
+
+
+## Testing
+
+#### Code Validation TBC
+- [HTML Validation]() 
+
+- CSS Validation
+    0 [Errors]().
+
+- [Javascript Validation - JSHint](https://jshint.com/)  
+
+
+#### Browser Compatibility TBC
+
+- **Google Chrome** No issues identified; Game perfroms well throughout. All specs pass.
+ 
+ - **Microsoft Edge** No issues identified; Game perfroms well throughout. All specs pass.
+   
+ - **Mozilla Firefox** No issues identified; Game perfroms well throughout. All specs pass.
+    
+ - **Opera** No issues identified; Game perfroms well throughout. All specs pass.
+
+  - **Microsoft Internet Explorer**
+
+
+#### Responsiveness Quality Testing TBC
+Testing conducted on [Responsive Design Checker](https://responsivedesignchecker.com/)
+
+-   [Mobile](readme-files/mobile-testing.JPG) - 0 issues TBC
+-   [Tablet](readme-files/tablet-testing.JPG) - 0 issues
+-   [Desktop](readme-files/desktop-testing.JPG) - 0 issues
+
+#### Automated Testing ?
+
+
+#### User Story Testing  
+
+* info [visible]() 
+    
+##### #US001 info &check;
+
+    - Given 
+    - When 
+    - Then 
+    
+* INFO
+
+**Bugs**
+- INFO
+
+
+## Deployment
+
+#### To deploy
+
+heroku / aws
+
+#### To clone from Github
+
+1. In the Github repository click the green **Code** button.
+2. Select clone protocol of your choice (SSL/HTTP/CLI)
+3. Go to your IDE.
+3. Open **Git Bash**.
+4. Change the current working directory to the location where you want the cloned directory to be made.
+5. Type **git clone**, and then paste the URL copied from GitHub.
+6. Press **enter** and the local clone will be created.
+
+*for more information on cloning in git hub, please see [github cloning documentation](https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/cloning-a-repository)
+
+## Credits
+- info
+
+
+## Acknowledgments
+[Precious Ijege](https://www.linkedin.com/in/precious-ijege-908a00168/?originalSubdomain=ng) for all his support and guidance.
+
+I would also like to thank Susan for their feedback and support through this process!
