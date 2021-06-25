@@ -14,6 +14,7 @@ class ProductAdmin(admin.ModelAdmin):
         'discounted_price',
         'qty_held',
     )
+    ordering = ('name',)
 
 
 admin.site.register(Category)
