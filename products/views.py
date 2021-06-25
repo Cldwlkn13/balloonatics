@@ -71,7 +71,8 @@ def products(request):
 
 
 def categories(request):
-    categories = Category.objects.all().order_by('name')
+    categories = Category.objects.exclude(
+        name='custom').order_by('name')
 
     context = {
         'categories': categories
