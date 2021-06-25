@@ -87,6 +87,11 @@ td {
     color: rgb(155, 155, 155)
 }
 
+.qty-input::-webkit-inner-spin-button, 
+.qty-input::-webkit-outer-spin-button {  
+   display: none;
+}
+
 
 /* ---------------HEADER */
 .header-container {
