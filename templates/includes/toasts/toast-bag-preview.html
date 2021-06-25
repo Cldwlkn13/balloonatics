@@ -46,7 +46,7 @@
                                 class="text_decoration-none text-dark">{{ item.bundle.name }}</a></strong> x {{ item.qty }}</p>
                 </div>
                 <div class="col-3">
-                    <p>€{{ item.item_total }}</p>
+                    <p>€{{ item.bundle_total_cost }}</p>
                 </div>
                 <div class="col-1 text-right">
                     <a href="{% url 'remove_bundle_from_cart' item.item_id %}">
