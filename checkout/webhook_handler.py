@@ -1,13 +1,15 @@
-from printing.models import CustomPrintOrder
 from django.http import HttpResponse
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.conf import settings
+
 from datetime import datetime, timedelta, timezone
 
-from products.models import Product, Category, Sub_Category
-from bundles.models import Bundle, BundleItem
 from .models import Order, OrderItem, Address
+
+from products.models import Product
+from bundles.models import Bundle, BundleItem
+from printing.models import CustomPrintOrder
 from profiles.models import UserProfile
 
 import json
@@ -99,8 +101,7 @@ class StripeWH_Handler:
                     city_town=shipping_details.address.city,
                     county_area=shipping_details.address.state,
                     country=shipping_details.address.country,
-                    postal_code=shipping_details.address.postal_code
-                )
+                    postal_code=shipping_details.address.postal_code)
                 order.address = address
                 break
             else:
