@@ -356,8 +356,7 @@ def remove_custom_print_order_from_cart(request, custom_print_id):
         CustomPrintOrder, pk=custom_print_id)
 
     # delete the 'custom print order as we no longer want it
-    CustomPrintOrder.objects.filter(
-        pk=custom_print_id).delete()
+    custom_print_order.delete()
     
     # if we are already in the cart view don't show toast
     extra_tags = 'render_toast render_preview'
