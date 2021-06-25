@@ -690,7 +690,7 @@ Testing conducted on [Responsive Design Checker](https://www.browserstack.com/re
 - Navigate to the dashboard, then deploy tab. 
 - Hit deploy branch. 
 
-##### Required Environment Variables
+#### Required Environment Variables
 - AWS_ACCESS_KEY_ID (your access key from your account in AWS IAM)
 - AWS_SECRET_ACCESS_KEY (your secret access key from your account in AWS IAM)
 - DATABASE_URL (the postgres database url. This should automatically populate when you create your heroku app)
