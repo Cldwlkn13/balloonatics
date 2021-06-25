@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
@@ -62,7 +63,7 @@ class StripeWH_Handler:
         profile = None
         username = intent.metadata.username
         if username != 'AnonymousUser':
-            profile = UserProfile.objects.get(user__username=username)
+            profile = get_object_or_404(UserProfile, user__username=username)
             if save_info:
                 profile.phone_number = shipping_details.phone
                 profile.street_address_1 = shipping_details.address.line1
@@ -135,7 +136,7 @@ class StripeWH_Handler:
 
                 # handle products in cart
                 for item_id, item_data in json.loads(cart)['products'].items():
-                    product = Product.objects.get(id=item_id)
+                    product = get_object_or_404(Product, pk=item_id)
                     order_item = OrderItem(
                         order=order,
                         product=product,
@@ -147,7 +148,7 @@ class StripeWH_Handler:
             
                 # handle bundles in cart
                 for item_id, item_data in json.loads(cart)['bundles'].items():
-                    bundle = Bundle.objects.get(bundle_id=item_id)
+                    bundle = get_object_or_404(Bundle,bundle_id=item_id)
                     bundle_items = list(BundleItem.objects.filter(
                         bundle__bundle_id=item_id))
                     for item in bundle_items:
@@ -161,7 +162,8 @@ class StripeWH_Handler:
 
                 # handle custom prints in cart
                 for item_id, item_data in json.loads(cart)['custom_prints'].items():
-                    custom_print_order = CustomPrintOrder.objects.get(pk=item_id)
+                    custom_print_order = get_object_or_404(
+                        CustomPrintOrder, pk=item_id)
                     order_item = OrderItem(
                         order=order,
                         quantity=item_data,
