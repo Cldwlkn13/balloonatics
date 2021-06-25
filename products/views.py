@@ -12,7 +12,7 @@ from .forms import ProductForm, ProductSelectorForm
 def products(request):
 
     products = Product.objects.all()
-    sub_category = 'all'
+    sub_category = 'search results'
     sort = None
     direction = None
 
