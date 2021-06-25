@@ -78,7 +78,6 @@ $(document).ready(function () {
     //updated price handler
     function updateTotalPrice() {
         var message = $('input[name="custom_message"]').val();
-        var qty = $('input[name="qty"]').val();
         var valid = validator(message);
         if (valid == 'ok') {
             getTotalPrintPrice(function (output) {
