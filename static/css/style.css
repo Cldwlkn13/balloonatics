@@ -196,6 +196,7 @@ img.card-img-tn {
 /* ---------------QTY WIDGET */
 .qty-input {
     max-width: 50px;
+    font-size: 12px;
 }
 
 .increment-qty, .decrement-qty {
