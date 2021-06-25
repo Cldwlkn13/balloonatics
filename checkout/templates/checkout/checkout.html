@@ -26,14 +26,14 @@
             <form action="{% url 'checkout' %}" method="POST" id="payment-form" class="mt-lg-5">
                 {% csrf_token %}
                 <!--CUSTOMER DETAILS-->
-                <fieldset class="rounded px-3 mb-lg-5">
+                <fieldset class="rounded px-3 mb-lg-5" id="customer-fieldset">
                     <legend class="fieldset-label small text-light text-left">Details</legend>
                     {{ order_form.cust_name | as_crispy_field }}
                     {{ order_form.cust_email | as_crispy_field }}
                     {{ order_form.cust_phone | as_crispy_field }}
                 </fieldset>
                 <!--ADDRESS-->
-                <fieldset class="rounded px-3 mb-5">
+                <fieldset class="rounded px-3 mb-5" id="address-fieldset">
                     <legend class="fieldset-label small text-light text-left">Address</legend>
                     {{ address_form.street_address_1 | as_crispy_field }}
                     {{ address_form.street_address_2 | as_crispy_field }}
@@ -55,8 +55,20 @@
                         {% endif %}
                     </div>
                 </fieldset>
+                <button id="pre-submit-btn" class="btn btn-warning btn-lg text-uppercase" formaction="{% url 'validate_order' %}">
+                    <span>Proceed To Payment</span>
+                    <span class="icon">
+                        <i class="fas fa-lock"></i>
+                    </span>
+                </button>
+                {% if proceed %}
+                    <input type="hidden" name="proceed" value="true">
+                    <a href="{% url 'checkout' %}" class="btn btn-warning text-uppercase">Edit Details</a>
+                {% else %}
+                    <input type="hidden" name="proceed" value="false">
+                {% endif %}
                 <!--STRIPE-->
-                <fieldset class="px-3">
+                <fieldset class="px-3" id="stripe-fieldset">
                     <legend class="fieldset-label small text-light text-left">Payment</legend>
                     <!-- A Stripe card element will go here -->
                     <div class="mb-3" id="card-element"></div>
@@ -64,20 +76,21 @@
                     <div class="mb-3 text-danger" id="card-errors" role="alert"></div>
                     <!-- Pass the client secret to the view so we can get the payment intent id -->
                     <input type="hidden" value="{{ client_secret }}" name="client_secret">
+                    <button id="submit-button" class="btn btn-warning btn-lg text-uppercase mt-3">
+                        <span>Complete Order</span>
+                        <span class="icon">
+                            <i class="fas fa-lock"></i>
+                        </span>
+                    </button>
+                    <p class="small text-danger my-1">
+                        <span class="icon">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </span>
+                        <span>Your card will be charged <strong>${{ grand_total|floatformat:2 }}</strong></span>
+                    </p>
                 </fieldset>
-                <button id="submit-button" class="btn btn-warning btn-lg text-uppercase mt-3">
-                    <span>Complete Order</span>
-                    <span class="icon">
-                        <i class="fas fa-lock"></i>
-                    </span>
-                </button>
             </form>
-            <p class="small text-danger my-1">
-                <span class="icon">
-                    <i class="fas fa-exclamation-circle"></i>
-                </span>
-                <span>Your card will be charged <strong>${{ grand_total|floatformat:2 }}</strong></span>
-            </p>
+
         </div>
         <div class="col-lg-6 p-5">
             <h6>Your Order Summary</h6>
@@ -180,4 +193,5 @@
         {{ stripe_public_key|json_script:"id_stripe_public_key" }}
         {{ client_secret|json_script:"id_client_secret" }}
         <script src="{% static 'checkout/js/stripe_elements.js' %}"></script>
+        <script src="{% static 'checkout/js/checkout.js' %}"></script>
 {% endblock %}

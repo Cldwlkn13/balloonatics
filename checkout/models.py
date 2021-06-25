@@ -10,6 +10,8 @@ from profiles.models import UserProfile
 from bundles.models import Bundle
 from printing.models import CustomPrintOrder
 
+from validators import *
+
 import uuid
 
 
@@ -25,7 +27,7 @@ class Address(models.Model):
     city_town = models.CharField(
         max_length=20, null=False, blank=False)
     county_area = models.CharField(
-        max_length=20, null=False, blank=False)
+        max_length=40, null=False, blank=False)
     country = CountryField(
        blank_label='Country *', null=False, blank=False)
     postal_code = models.CharField(
@@ -67,9 +69,11 @@ class Order(models.Model):
     user_profile = models.ForeignKey(UserProfile, on_delete=models.SET_NULL,
                                      null=True, blank=True,
                                      related_name='orders')
-    cust_name = models.CharField(max_length=50, null=False, blank=False)
+    cust_name = models.CharField(max_length=50, null=False, blank=False, 
+        validators=[alpha])
     cust_email = models.EmailField(max_length=254, null=False, blank=False)
-    cust_phone = models.CharField(max_length=20, null=False, blank=False)
+    cust_phone = models.CharField(max_length=20, null=False, blank=False,
+        validators=[numeric])
     date = models.DateTimeField(auto_now_add=True)
     address = models.ForeignKey(Address, null=False, blank=True,
                                 on_delete=models.CASCADE,

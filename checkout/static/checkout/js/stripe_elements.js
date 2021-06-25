@@ -50,16 +50,23 @@ card.addEventListener('change', function (event) {
 });
 
 var form = document.getElementById('payment-form');
+$('#submit-button').on('click', function(ev) {
+    $('#customer-fieldset').find('input').each(function(e) {
+        $(this).prop('disabled', false);
+    })
 
-form.addEventListener('submit', function(ev) {
+    $('#address-fieldset').find('input').each(function(e) {
+        $(this).prop('disabled', false);    
+    })
+    
     ev.preventDefault();
     card.update({ 'disabled': true});
     $('#submit-button').attr('disabled', true);
     $('#payment-form').fadeToggle(100);
     $('#loading-overlay').fadeToggle(100);
 
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val(); 
     var saveInfo = Boolean($('#id-save-info').attr('checked'));
-    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
     var postData = {
         'csrfmiddlewaretoken': csrfToken,
         'client_secret': clientSecret,
@@ -119,3 +126,8 @@ form.addEventListener('submit', function(ev) {
         location.reload();
     })
 });
+
+
+function validateforms(handle, csrfToken) {
+    
+}

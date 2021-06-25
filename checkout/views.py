@@ -3,6 +3,7 @@ from django.shortcuts import (render, redirect, reverse,
 from django.contrib import messages
 from django.conf import settings
 from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
 
 from .forms import OrderForm, AddressForm
 from .models import Order, OrderItem, Address
@@ -41,8 +42,55 @@ def cache_checkout_data(request):
 
 
 def validate_order(request):
-    return HttpResponse(status=200)
+    address_form_data = {
+        'street_address_1': request.POST['street_address_1'],
+        'street_address_2': request.POST['street_address_2'],
+        'city_town': request.POST['city_town'],
+        'county_area': request.POST['county_area'],
+        'country': request.POST['country'],
+        'postal_code': request.POST['postal_code'],
+    }
+    order_form_data = {
+        'cust_name': request.POST['cust_name'],
+        'cust_email': request.POST['cust_email'],
+        'cust_phone': request.POST['cust_phone'],
+    }
 
+    address_form = AddressForm(address_form_data)
+    order_form = OrderForm(order_form_data)
+
+    # set the stripe keys
+    stripe_public_key = settings.STRIPE_PUBLIC_KEY
+    stripe_secret_key = settings.STRIPE_SECRET_KEY
+
+    #load up the stripe payment intents from the cart total
+    current_cart = cart_contents(request)
+    total = current_cart['grand_total']
+    stripe_total = round(total * 100)
+    stripe.api_key = stripe_secret_key
+    intent = stripe.PaymentIntent.create(
+        amount=stripe_total,
+        currency=settings.STRIPE_CURRENCY,
+    )
+
+    if address_form.is_valid() and order_form.is_valid():
+        context = {
+            'order_form': order_form,
+            'address_form': address_form,
+            'stripe_public_key': stripe_public_key,
+            'client_secret': intent.client_secret,
+            'proceed': True,
+        }
+        return render(request, 'checkout/checkout.html', context)
+
+    context = {
+        'order_form': order_form,
+        'address_form': address_form,
+        'stripe_public_key': stripe_public_key,
+        'client_secret': intent.client_secret
+    }
+    return render(request, 'checkout/checkout.html', context)
+    
 
 def checkout(request):
     # set the stripe keys
@@ -169,7 +217,24 @@ def checkout(request):
                 "Please check your information and try "
                 "again",
                 extra_tags='render_toast')
-            return redirect(reverse('checkout'))
+
+            #load up the stripe payment intents from the cart total
+            current_cart = cart_contents(request)
+            total = current_cart['grand_total']
+            stripe_total = round(total * 100)
+            stripe.api_key = stripe_secret_key
+            intent = stripe.PaymentIntent.create(
+                amount=stripe_total,
+                currency=settings.STRIPE_CURRENCY,
+            )
+        
+            context = {
+                'order_form': order_form,
+                'address_form': address_form,
+                'stripe_public_key': stripe_public_key,
+                'client_secret': intent.client_secret
+            }
+            return render(request, 'checkout/checkout.html', context)
     else:
         # load up the cart
         cart = request.session.get('cart',
