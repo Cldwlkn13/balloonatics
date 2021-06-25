@@ -752,6 +752,7 @@ Testing conducted on [Responsive Design Checker](https://www.browserstack.com/re
 - [W3 Schools](https://www.w3schools.com/) for various ideas, snippets and solutions. 
 - Slideshow inspirations and code from [here](https://www.w3schools.com/howto/howto_js_slideshow.asp)
 - Inspiration for the footer design from [here](https://bbbootstrap.com/snippets/simple-footer-social-media-icons-37929510)
+- ScrollTo instruction from [here](https://stackoverflow.com/questions/6677035/jquery-scroll-to-element)
 
 
 ## Acknowledgments
