@@ -71,7 +71,7 @@ def products(request):
 
 
 def categories(request):
-    categories = Category.objects.all()
+    categories = Category.objects.all().order_by('name')
 
     context = {
         'categories': categories
@@ -94,6 +94,8 @@ def sub_categories(request):
 
         sub_categories = Sub_Category.objects.filter(
             id__in=sub_category_pks)
+    
+    sub_categories = sub_categories.order_by('name')
 
     context = {
         "sub_categories": sub_categories,
