@@ -30,7 +30,6 @@ $(document).ready(function () {
     // custom message input validation
     $('input[name="custom_message"]').on('input', function (e) {
         var message = $('input[name="custom_message"]').val();
-        var qty = $('input[name="qty"]').val();
         var valid = validator(message);
         if (valid == 'ok') {
             $('#step-2').html(`<p> 2. Add your message <i class="fas fa-check text-success"></i></p>`)
