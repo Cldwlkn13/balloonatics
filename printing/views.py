@@ -40,8 +40,21 @@ def new_order_handler(request):
     if request.method == 'POST':
 
         # get the product from the request
-        p_id = int(request.POST.get('p_id'))
-        product = Product.objects.get(pk=p_id)
+        try:
+            p_id = int(request.POST.get('p_id'))
+        except ValueError:
+            messages.error(request,
+                'Invalid Product. Please try another.',
+                extra_tags='render_toast')
+            return redirect(reverse('load_print_selector'))
+
+        try:
+            product = Product.objects.get(pk=p_id)
+        except Product.DoesNotExist:
+            messages.error(request,
+                'Invalid Product. Please try another.',
+                extra_tags='render_toast')
+            return redirect(reverse('load_print_selector'))
         
         # get the custom message and qty from the request
         message = request.POST.get('custom_message')
