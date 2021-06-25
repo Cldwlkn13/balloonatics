@@ -28,14 +28,30 @@ def add_product_to_cart(request, item_id):
     
     # get product and qty from request
     product = get_object_or_404(Product, pk=item_id)
-    qty = int(request.POST.get('qty'))
+    qty = 0
+
+    # parse qty
+    try:
+        qty = int(request.POST.get('qty'))
+    except ValueError:
+        messages.error(request,
+            'Invalid Quantity',
+            extra_tags='render_toast')
+        return redirect(referred_from)
+
+    # check qty is valid
+    if qty < 1:
+        messages.error(request,
+            'Invalid Quantity',
+            extra_tags='render_toast')
+        return redirect(referred_from)
 
     if product.qty_held < qty:
         messages.warning(request,
-                         'Sorry! We could add this item to your cart. '
-                         'We do not have the required amount '
-                         'in stock.',
-                         extra_tags='render_toast')
+            'Sorry! We could add this item to your cart. '
+            'We do not have the required amount '
+            'in stock.',
+            extra_tags='render_toast')
         return redirect(referred_from)
 
     # add to the session cart
@@ -61,11 +77,22 @@ def update_product_cart(request, item_id):
     
     # get product and qty from request
     product = get_object_or_404(Product, pk=item_id)
-    qty = int(request.POST.get('qty'))
+    qty = 0 
+    
+    # parse qty
+    try:
+        qty = int(request.POST.get('qty'))
+    except ValueError:
+        messages.error(request,
+            'Invalid Quantity',
+            extra_tags='render_toast')
+        return redirect(referred_from)
 
     # check qty is valid
-    if request.POST.get('qty') == '':
-        messages.error(request, 'Invalid quantity', '')
+    if qty < 1:
+        messages.error(request,
+            'Invalid Quantity',
+            extra_tags='render_toast')
         return redirect(referred_from)
 
     # check there is enough stock
@@ -287,16 +314,24 @@ def add_or_update_custom_print_for_cart(request, custom_print_id):
     cart = request.session.get('cart', 
         {'products':{},'bundles':{},'custom_prints':{}})
 
-    # get the custom print id from the request
-    custom_print_order = CustomPrintOrder.objects.get(pk=custom_print_id)
+    # load up the custom print order
+    try:
+        custom_print_order = CustomPrintOrder.objects.get(
+            pk=custom_print_id)
+    except CustomPrintOrder.DoesNotExist:
+        messages.error(request,
+            f'Sorry! We could not add print order {custom_print_id} to your cart.',
+            extra_tags='render_toast')
+        HttpResponse(status=400, content=request)
 
     # check we have enough in stock
-    if int(custom_print_order.base_product.qty_held) < int(custom_print_order.qty):
+    if (int(custom_print_order.base_product.qty_held) 
+        < int(custom_print_order.qty)):
         messages.warning(request,
-                         'Sorry! We could add this item to your cart. '
-                         'We do not have the required amount '
-                         'in stock.',
-                         extra_tags='render_toast')
+            'Sorry! We could add not this item to your cart. '
+            'We do not have the required amount '
+            'in stock.',
+            extra_tags='render_toast')
         HttpResponse(status=400, content=request)
 
     # set the item in the cart
@@ -313,13 +348,16 @@ def remove_custom_print_order_from_cart(request, custom_print_id):
     referred_from = request.META['HTTP_REFERER']
     
     # load the cart from the session
-    cart = request.session.get('cart', {'products':{},'bundles':{},'custom_prints':{}})
+    cart = request.session.get('cart', 
+        {'products':{},'bundles':{},'custom_prints':{}})
     
     # load the print_order to delete
-    custom_print_order = get_object_or_404(CustomPrintOrder, pk=custom_print_id)
+    custom_print_order = get_object_or_404(
+        CustomPrintOrder, pk=custom_print_id)
 
     # delete the 'custom print order as we no longer want it
-    CustomPrintOrder.objects.filter(pk=custom_print_id).delete()
+    CustomPrintOrder.objects.filter(
+        pk=custom_print_id).delete()
     
     # if we are already in the cart view don't show toast
     extra_tags = 'render_toast render_preview'
@@ -331,7 +369,9 @@ def remove_custom_print_order_from_cart(request, custom_print_id):
         cart['custom_prints'].pop(custom_print_id)
         messages.info(
             request,
-            f'Custom print order: <strong>{custom_print_order.base_product.name}</strong> removed from your cart!',
+            f'''Custom print order: <strong>
+            {custom_print_order.base_product.name}
+            </strong> removed from your cart!''',
             extra_tags=extra_tags)
 
     request.session['cart'] = cart
