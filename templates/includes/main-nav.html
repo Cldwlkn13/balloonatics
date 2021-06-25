@@ -13,7 +13,7 @@
                 {% for key, values in menu_context.items %}
                     <a href="{% url 'sub_categories' %}?category={{ key }}" class="dropdown-item text-bold mt-3 ml-0 pl-3">{{ key }}</a>
                     {% for sub_cat in values %}
-                        <a href="{% url 'products' %}?sub_category={{ sub_cat }}" class="dropdown-item text-muted ml-2 pr-0">{{ sub_cat }}</a>
+                        <a href="{% url 'products' %}?category={{ key }}&sub_category={{ sub_cat }}" class="dropdown-item text-muted ml-2 pr-0">{{ sub_cat }}</a>
                     {% endfor %}
                     {% if not forloop.last %}
                         <hr class="ml-2">

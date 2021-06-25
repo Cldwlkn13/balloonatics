@@ -18,9 +18,17 @@ def products(request):
 
     # load products by sub cat selection in request
     if 'sub_category' in request.GET:
-        sub_category = request.GET['sub_category']
-        products = Product.objects.filter(
-            sub_category__name=sub_category)
+        if 'category' in request.GET:
+            category = request.GET['category']
+            sub_category = request.GET['sub_category']
+            products = Product.objects.filter(
+                category__name=category
+                    ).filter( 
+                sub_category__name=sub_category)
+        else:
+            sub_category = request.GET['sub_category']
+            products = Product.objects.filter(
+                sub_category__name=sub_category)
 
     # load products by name query
     if 'q' in request.GET:

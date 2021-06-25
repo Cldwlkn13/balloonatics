@@ -35,7 +35,7 @@ def menu_context(request):
             'menu_context': menu_context
         }
 
-''' function to configure toasts from settings.py '''
+''' configure toasts from settings.py '''
 def configure_toasts(request):
 
     if 'toast_autohide' in request.POST:
