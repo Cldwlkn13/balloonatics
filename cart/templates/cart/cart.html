@@ -108,7 +108,7 @@
                 <!--PRINT ITEMS IN CART-->
                 <div class="row align-items-center p-1 p-lg-2">
                     <div class="col-md-6 col-lg-3 text-center px-5">
-                        {% if item.bundle.image %}
+                        {% if item.custom_print_order.base_product.image %}
                         <a href="{% url 'update_order_handler' item.item_id %}">
                             <img class="img-fluid cart-img rounded-3" src="{{ item.custom_print_order.base_product.image.url }}"
                                 alt="{{ custom_print_order.base_product.name }}">
