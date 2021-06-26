@@ -669,6 +669,7 @@ Testing conducted on [Responsive Design Checker](https://www.browserstack.com/re
 
 **Bugs**
 - Slideshows can occasionally be a little sticky in transition
+- The order history table 
 
 
 ## Deployment
@@ -677,6 +678,7 @@ Testing conducted on [Responsive Design Checker](https://www.browserstack.com/re
 - Sign Up for Stripe [here](https://dashboard.stripe.com/register)
 - Once registered navigate to the [developer api keys](https://dashboard.stripe.com/test/apikeys) on the dashboard where you can find your api keys
 - In the [webhooks](https://dashboard.stripe.com/test/webhooks) section click 'add new endpoint'. Configure the endpoint to point at your app append the root url with '/checkout/wh/'. Here you can copy the webhook secret that the app needs to verify it with stripe for webhooks. You can also test the connection by sending test webhooks to the endpoint. 
+- Entering the card number **4242424242424242** exp **04/24** cvc **424** zip **42424** will process a test payment to the server. 
 
 #### To Deploy to Heroku
 - Ensure the requirements.txt file is up to date by running in your IDE: **pip3 freeze -- local > requirements.txt**
@@ -758,7 +760,7 @@ Testing conducted on [Responsive Design Checker](https://www.browserstack.com/re
 ## Acknowledgments
 [Precious Ijege](https://www.linkedin.com/in/precious-ijege-908a00168/?originalSubdomain=ng) for all his support and guidance.
 
-I would also like to thank Susan for their feedback and support through this process!
+I would like to thank Susan for their feedback and support through this process!
 
 ## Disclaimer
 This project was completed as part of the Full Stack Developer Milestone 4 project. If you have any questions or issues surrounding copyright please contact me at gavin_rudge@hotmail.co.uk
