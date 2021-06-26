@@ -7,6 +7,10 @@
     <div class="row">
         <div class="col-md-10 offset-md-1 text-center text-md-left my-1">
             <h3><strong>Your Event</strong></h3>
+            {% if thank_you %}
+                <p class="text-success">Thank you for your enquiry!</p>
+            {% endif %}
+            <hr class="bg-light">
         </div>
     </div>
     <!--SAMPLE PACKAGES-->
@@ -53,13 +57,11 @@
         </div>
     </div>
     <hr class="bg-light">
-    {% if thank_you %}
-        <p>Thank you for your enquiry!</p>
-    {% endif %}
     {% if event_form %}
     <!--EVENT QUERY FORM-->
         <div class="row">
             <div class="col-md-10 offset-md-1">
+                <p>Fill in the enquiry form below to let us know about your event and we will be in touch to discuss the best options.</p>
                 <form action="{% url 'events' %}" method="POST" id="event-form">
                     {% csrf_token %}
                     {{ event_form|crispy }}

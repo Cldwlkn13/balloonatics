@@ -24,13 +24,16 @@ def events(request):
 
         event_form = EventForm(form_data)
 
-        if not event_form.is_valid:  
+        if not event_form.is_valid():  
             messages.error(request, 
                 f'''Your enquiry could not be processed. 
                 Please check your information 
                 and try again''', 
                 extra_tags='render_toast') 
-            return redirect(reverse('events'))     
+            context = {
+                'event_form': event_form,
+            }
+            return render(request, 'events/events.html', context)   
 
         event = Event(
             your_name=form_data['your_name'],
@@ -47,7 +50,14 @@ def events(request):
             touch shortly to discuss.''', 
             extra_tags='render_toast')
 
-        return redirect(reverse('events'))     
+        event_form = EventForm()
+
+        context = {
+            'event_form': event_form,
+            'thank_you': True
+        }
+
+        return render(request, 'events/events.html', context)    
  
     event_form = EventForm()
     
