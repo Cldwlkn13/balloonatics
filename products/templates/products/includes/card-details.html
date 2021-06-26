@@ -2,7 +2,7 @@
     <!--PRODUCT PRICE-->
     <div class="row mb-3">
         <div class="col-lg-8 offset-lg-2 text-center w-100">
-            {% if result.price != result.discounted_price %}
+            {% if result.full_price != result.discounted_price %}
                 <p class="my-0"><s class="text-muted">€{{ result.full_price }}</s><strong>&nbsp&nbsp€{{ result.discounted_price }}</strong></p>
             {% else %}
                 <p class="my-0"><strong>€{{ result.discounted_price }}</strong></p>
