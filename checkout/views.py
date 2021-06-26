@@ -239,10 +239,11 @@ def checkout(request):
         # load up the cart
         cart = request.session.get('cart',
             {'products':{},'bundles':{},'custom_prints':{}})
-        if not cart:
-            messages.error(request, "Your cart is empty",
+        if not cart['products'] and not cart['bundles'] and not cart['custom_prints']:
+            messages.error(request, 
+                "Cannot checkout, your cart is empty",
                 extra_tags='render_toast')
-            return redirect(reverse('products'))
+            return redirect(reverse('home'))
 
         #load up the stripe payment intents from the cart total
         current_cart = cart_contents(request)
