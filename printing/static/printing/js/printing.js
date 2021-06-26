@@ -83,6 +83,7 @@ $(document).ready(function () {
             getTotalPrintPrice(function (output) {
                 var html = `€${output}`
                 $('#print-total-price').text(html);
+                flash($('#print-total-price'))
             });
         } else {
             var html = 'n/a';
@@ -108,4 +109,8 @@ $(document).ready(function () {
             }
         });
     }
+
+    function flash(elem){
+        elem.fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
+    };
 })
