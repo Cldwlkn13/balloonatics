@@ -64,7 +64,10 @@ $(document).ready(function () {
         }
         updateBundlePrice(function (output) {
             var html = `€${output}`
-            $('#bundle-total-price').text(html);
+            $('.bundle-total-price').each(function(e){           
+                $(this).text(html);
+                flash($(this));
+            });
         });
     });
 
@@ -80,7 +83,10 @@ $(document).ready(function () {
         removeRow(i);
         updateBundlePrice(function (output) {
             var html = `€${output}`
-            $('#bundle-total-price').text(html);
+            $('.bundle-total-price').each(function(e){         
+                $(this).text(html);
+                flash($(this));
+            });
         });
     });
 
@@ -91,7 +97,10 @@ $(document).ready(function () {
         }
         updateBundlePrice(function (output) {
             var html = `€${output}`
-            $('#bundle-total-price').text(html);
+            $('.bundle-total-price').each(function(e){         
+                $(this).text(html);
+                flash($(this));
+            });
         });
     });
 
@@ -171,7 +180,11 @@ $(document).ready(function () {
     // https://stackoverflow.com/questions/6677035/jquery-scroll-to-element
     function scrollTo(elem) {
         $([document.documentElement, document.body]).animate({
-            scrollTop: $(elem).offset().top
+            scrollTop: $(elem).offset().top - 250
         }, 1000);
+    };
+
+    function flash(elem){
+        elem.fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
     };
 });
