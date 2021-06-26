@@ -4,10 +4,10 @@
 {% block content %}
 <div class="container bg-container-dark text-light px-2 pb-5">
     <div class="row">
-        <div class="col-12 col-md-10 text-center text-md-left my-1">
+        <div class="col-lg-10 offset-lg-1 text-center text-md-left my-1">
             <!--PRODUCT MANAGEMENT CONTROLS-->
             <div class="row">
-                <div class="col-10 offset-1">
+                <div class="col-lg-10 offset-lg-1">
                     <h3>Edit a Product</h3>
                     <a href="{% url 'load_products' %}" class="btn btn-warning text-uppercase text-center"><i
                             class="fas fa-chevron-left"></i> product management</a>
@@ -17,12 +17,14 @@
             <!--PRODUCT MANAGEMENT FORM-->
             {% if form %}
                 <div class="row">
-                    <div class="col-10 offset-1">
-                        <div class="col-12 text-center my-auto">
-                            <a href="{% url 'delete_product' product.id %}"
+                    <div class="col-lg-10 offset-lg-1">
+                        <div class="row text-center">
+                            <div class="col">
+                                <a href="{% url 'delete_product' product.id %}"
                                 class="btn btn-danger text-uppercase text-center"
                                 onClick="return confirm('Are you sure you want to delete {{ product.name }}?')"
                                 id="product-delete"><i class="fas fa-trash"></i> delete {{ product.name }}</a>
+                            </div>
                         </div>
                         <form action="{% url 'edit_product' %}" method="POST" class="mt-2 mb-5"
                             enctype="multipart/form-data">
