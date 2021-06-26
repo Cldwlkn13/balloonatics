@@ -321,6 +321,17 @@ def checkout_success(request, order_id):
             extra_tags='render_toast')
         return redirect(reverse('checkout'))
 
+    # get rid of the cart as we don't need it anymore
+    if 'cart' in request.session:
+        del request.session['cart']
+
+    context = {
+        'order': order,
+        'order_items': order_items_of_product,
+        'order_bundles': order_bundles,
+        'order_prints': order_items_of_print
+    }
+
     if request.user.is_authenticated:
         # match up the user profile and attach
         profile = UserProfile.objects.get(user=request.user)
@@ -346,16 +357,6 @@ def checkout_success(request, order_id):
             user_profile_form = ProfileForm(profile_data, instance=profile)
             if user_profile_form.is_valid():
                 user_profile_form.save()
+    
+    return render(request, 'checkout/checkout_success.html', context)
 
-        # get rid of the cart as we don't need it anymore
-        if 'cart' in request.session:
-            del request.session['cart']
-
-        context = {
-            'order': order,
-            'order_items': order_items_of_product,
-            'order_bundles': order_bundles,
-            'order_prints': order_items_of_print
-        }
-
-        return render(request, 'checkout/checkout_success.html', context)
