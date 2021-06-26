@@ -22,7 +22,7 @@
         </div>
     </div>
     <!--CUSTOMER DETAILS-->
-    <div class="row mb-2 mb-lg-5">
+    <div class="row mb-3 mb-lg-5">
         <div class="col-lg-10 offset-lg-1 text-left">
             <p class="mb-0">Your Details</p>
             <table class="table-responsive">
@@ -45,7 +45,7 @@
     </div>
     {% if order_items %}
         <!--PRODUCTS IN ORDER-->
-        <div class="row mb-2 mb-lg-5">
+        <div class="row mb-3 mb-lg-5">
             <div class="col-lg-10 offset-lg-1 text-left">
                 <p class="mb-0">Your Items</p>
                 <table class="table-responsive w-100">
@@ -73,11 +73,11 @@
     {% endif %}
     {% if order_bundles %}
         <!--BUNDLES IN ORDER-->
-        <div class="row mb-2 mb-lg-5">
+        <div class="row mb-3 mb-lg-5">
             <div class="col-lg-10 offset-lg-1 text-left">
                 <p class="mb-0">Your Bundles</p>
                 {% for bundle, items in order_bundles.items %}
-                <table class="table-responsive">
+                <table class="table-responsive mb-4">
                     <thead class="bg-info">
                         <th>name</th>
                         <th>id</th>
@@ -105,7 +105,7 @@
     {% endif %}
     {% if order_prints %}
         <!--PRINTS IN ORDER-->
-        <div class="row mb-2 mb-lg-5">
+        <div class="row mb-3 mb-lg-5">
             <div class="col-lg-10 offset-lg-1 text-left">
                 <p class="mb-0">Your Custom Prints</p>
                 <table class="table-responsive">
