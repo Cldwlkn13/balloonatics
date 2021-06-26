@@ -13,7 +13,7 @@
     </div>
     <hr class="bg-light">
     {% if not cart_items %}
-        <h6>Your cart is empty.</h6>
+        <h6 class="text-center text-lg-left">Your cart is empty.</h6>
     {% else %}
         {% for item in cart_items %}
             {% if item.type == 'product' %}
