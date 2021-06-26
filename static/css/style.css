@@ -293,6 +293,10 @@ img.card-img-tn {
         left: 10px;
         z-index: 2000;
     }
+
+    .dropdown-menu{
+        font-size: 10px;
+    }
 }
 
 /* ---------------XS AND BELOW */
