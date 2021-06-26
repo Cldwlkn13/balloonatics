@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="container bg-container-dark text-center">
+<div class="container bg-container-dark text-center px-1">
     <!--CONTENT HEADER-->
     <div class="row">
         <div class="col-md-8 offset-md-2">
@@ -26,15 +26,15 @@
             <form action="{% url 'checkout' %}" method="POST" id="payment-form" class="mt-lg-5">
                 {% csrf_token %}
                 <!--CUSTOMER DETAILS-->
-                <fieldset class="rounded px-3 mb-lg-5" id="customer-fieldset">
-                    <legend class="fieldset-label small text-light text-left">Details</legend>
+                <fieldset class="rounded px-3 mb-2 mb-lg-5" id="customer-fieldset">
+                    <legend class="fieldset-label small text-left">Details</legend>
                     {{ order_form.cust_name | as_crispy_field }}
                     {{ order_form.cust_email | as_crispy_field }}
                     {{ order_form.cust_phone | as_crispy_field }}
                 </fieldset>
                 <!--ADDRESS-->
-                <fieldset class="rounded px-3 mb-5" id="address-fieldset">
-                    <legend class="fieldset-label small text-light text-left">Address</legend>
+                <fieldset class="rounded px-3 mb-2 mb-lg-5" id="address-fieldset">
+                    <legend class="fieldset-label small text-left">Address</legend>
                     {{ address_form.street_address_1 | as_crispy_field }}
                     {{ address_form.street_address_2 | as_crispy_field }}
                     {{ address_form.city_town | as_crispy_field }}
@@ -45,7 +45,7 @@
                         {% if user.is_authenticated %}
                         <label class="form-check-label" for="id-save-info">Save this delivery information to my
                             profile</label>
-                        <input class="form-check-input ml-2 mr-0" type="checkbox" id="id-save-info" name="save-info"
+                        <input class="form-check-input ml-lg-2 mr-lg-0" type="checkbox" id="id-save-info" name="save-info"
                             checked>
                         {% else %}
                         <label class="form-check-label small" for="id-save-info">
@@ -63,7 +63,7 @@
                 </button>
                 {% if proceed %}
                     <input type="hidden" name="proceed" value="true">
-                    <a href="{% url 'checkout' %}" class="btn btn-warning text-uppercase">Edit Details</a>
+                    <a href="{% url 'checkout' %}" class="btn btn-warning text-uppercase mb-2">Edit Details</a>
                 {% else %}
                     <input type="hidden" name="proceed" value="false">
                 {% endif %}
@@ -165,13 +165,13 @@
                 {% endif %}
             {% endfor%}
             <!--ORDER TOTALS-->
-            <div class="row mt-5">
+            <div class="row mt-2 mt-lg-5">
                 <div class="col-lg-4 offset-lg-8 text-center">
                     <p class="text-muted mb-0"><small>Items Total</small></p>
                     <p>€{{ total }}</p>
                     <p class="text-muted mb-0"><small>Delivery Charges</small></p>
                     <p>€{{ delivery }}</p>
-                    <h6 class="text-muted text-center mt-3"><small>Grand Total</small></h6>
+                    <h6 class="text-muted text-center mt-lg-3"><small>Grand Total</small></h6>
                     <h4 class="text-center"><strong> €{{ grand_total|floatformat:2 }}</strong></h4>
                 </div>
             </div>

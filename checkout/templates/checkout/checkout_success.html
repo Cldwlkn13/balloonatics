@@ -14,7 +14,7 @@
     <div class="row">
         <div class="col-lg-8 offset-lg-2">
             <p class="mb-0 text-light-muted"><small>Your Order Id:</small></p>
-            <p> <strong>{{ order.order_id }}</strong></p>
+            <p style="word-wrap: break-word;"><strong>{{ order.order_id }}</strong></p>
             <p class="mb-0 text-light-muted"><small>A confirmation email has been sent to</small></p>
             <p><u>{{ order.cust_email }}</u></p>
             <a href="{% url 'categories' %}" class="btn btn-warning text-uppercase mt-lg-5 mb-5"><i

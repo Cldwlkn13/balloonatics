@@ -18,7 +18,7 @@ $(document).ready(function() {
     // https://stackoverflow.com/questions/6677035/jquery-scroll-to-element
     function scrollTo(elem) {
         $([document.documentElement, document.body]).animate({
-            scrollTop: $(elem).offset().top
+            scrollTop: $(elem).offset().top - 100
         }, 1000);
     };
 })
