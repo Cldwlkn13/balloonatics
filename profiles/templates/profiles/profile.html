@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="container bg-container-dark text-center pb-5">
+<div class="container bg-container-dark text-center px-2 pb-5">
     <!--CONTENT HEADER-->
     <div class="row">
         <div class="col-lg-8 offset-lg-2">
@@ -39,7 +39,7 @@
                     {{ profile_form.postal_code | as_crispy_field }}
                 </fieldset>
                 <!--SUBMIT-->
-                <button id="submit-button" class="btn btn-warning text-uppercase mt-lg-3">
+                <button id="submit-button" class="btn btn-warning text-uppercase mt-lg-3 mb-5">
                     <span>Update Profile</span>
                     <span class="icon">
                         <i class="fas fa-user"></i>
@@ -48,7 +48,7 @@
             </form>
         </div>
         <!--ORDER HISTORY-->
-        <div class="col-lg-6 mt-5 text-center">
+        <div class="col-lg-6 text-center">
             <h6>Your Order History</h6>
             <hr class="bg-light">
             {% if orders %}
