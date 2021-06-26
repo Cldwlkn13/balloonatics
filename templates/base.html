@@ -158,7 +158,7 @@
 
     {% if messages %}
     <!--MESSAGE CONTAINER-->
-    <div class="message-container d-none d-lg-block">
+    <div class="message-container">
         {% for message in messages %}
             {% with message.extra_tags as extra_tags %}
                 {% if message.level == 40 %}

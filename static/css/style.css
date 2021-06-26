@@ -112,13 +112,6 @@ td {
     min-height: 45px;
 }
 
-/* ---------------MESSAGES */
-.message-container {
-    position: absolute;
-    top: 70px;
-    right: 20px;
-    z-index: 2000;
-}
 
 /* ---------------PRODUCT CARDS & IMGS */
 .product-card,
@@ -212,6 +205,13 @@ img.card-img-tn {
 
 
 /* ---------------TOASTS */
+.message-container {
+    position: absolute;
+    top: 70px;
+    right: 20px;
+    z-index: 2000;
+}
+
 .fade-toast {
       transition: opacity 0.5s linear !important;
 }
@@ -279,6 +279,13 @@ img.card-img-tn {
 
     th, td {
         font-size: 12px;
+    }
+
+    .message-container {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 2000;
     }
 }
 
