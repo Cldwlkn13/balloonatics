@@ -52,6 +52,10 @@ $(document).ready(function () {
 
     // update the total price on form input change event
     $('#order-form').find('input').on('change', function (e) {
+        var qty = $('input[name="qty"]').val();
+        if(qty < 1) {
+            $('input[name="qty"]').val(1);
+        }
         updateTotalPrice();
     });
 
