@@ -40,13 +40,13 @@
                     <div class="col-8 d-none d-lg-block">
                         <div class="row align-items-top px-1">
                             {% for key, values in menu_context.items %}
-                                <div class="col-3 d-none d-md-block text-center mr-2">
+                                <div class="col-3 d-none d-md-block mr-2 border-left border-dark">
                                     <a href="{% url 'sub_categories' %}?category={{ key }}"
-                                        class="text-light text-bold text-decoration-none home-cat-link"><strong>{{ key }}</strong></a>
+                                        class=" text-bold"><small>{{ key }}</small></a>
                                     {% for sub_cat in values %}
                                         <p class="my-0">
                                             <a href="{% url 'products' %}?category={{ key }}&sub_category={{ sub_cat }}"
-                                                class="text-light-muted text-decoration-none home-sub-cat-link"><small>{{ sub_cat }}</small></a>
+                                                class="text-light-muted home-sub-cat-link"><small>{{ sub_cat }}</small></a>
                                         </p>
                                     {% endfor %}
                                 </div>
