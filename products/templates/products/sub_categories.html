@@ -2,11 +2,11 @@
 {% load static %}
 
 {% block content %}
-<div class="container bg-container-dark text-light">
+<div class="container bg-container-dark text-light pb-5">
     <!--CONTENT HEADER-->
     <div class="row">
-        <div class="col text-center text-lg-left my-5">
-            <h2><strong>{{ category }}</strong></h2>
+        <div class="col text-center text-lg-left my-2 my-lg-5">
+            <h3><strong>{{ category }}</strong></h3>
             <hr class="bg-light">
         </div>
     </div>
@@ -18,7 +18,7 @@
     </div>
     <!--NAVIGATE-->
     <div class="row mt-5">
-        <div class="col-12">
+        <div class="col-12 text-center">
             <a href="{% url 'categories' %}" class="btn btn-warning text-uppercase mb-5"><i
                     class="fas fa-chevron-left"></i> back</a>
         </div>

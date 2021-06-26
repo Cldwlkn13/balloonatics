@@ -6,8 +6,12 @@
     <!--CONTENT HEADER-->
     <div class="row">
        <!--SUB CATEGORY HEADER-->
-        <div class="col-md-8 text-center text-md-left my-1">
-            <h2><strong>{{ sub_category }}</strong></h2>
+        <div class="col-md-8 text-center text-md-left my-2 my-lg-5">
+            {% if products %}
+                <h3><strong>{{ products.0.category.name }} > {{ sub_category }}</strong></h3>
+            {% else %}
+                <h3><strong>{{ sub_category }}</strong></h3>
+            {% endif %}
         </div>
         <!--SORT BTN-->
         <div class="col-md-4 text-center text-lg-left my-1">

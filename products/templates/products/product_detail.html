@@ -2,10 +2,10 @@
 {% load static %}
 
 {% block content %}
-<div class="container bg-container-dark text-light py-5" id="product-detail-container">
+<div class="container bg-container-dark text-light py-5 text-center text-lg-left" id="product-detail-container">
     <div class="row mt-2">
         <!--PRODUCT IMAGE PANEL-->
-        <div class="col-6">
+        <div class="col-lg-6">
             <!--NAVIGATE BACK BTN-->
             <div class="row mt-0 mb-2">
                 <div class="col-12">
@@ -22,7 +22,7 @@
             {% endif %}
         </div>
         <!--PRODUCT DETAILS PANEL-->
-        <div class="col-6">
+        <div class="col-lg-6">
             <!--PRODUCT NAME-->
             <h3>{{ product.name }}</h3>
             <!--CAT SUB_CAT BREADCRUMBS-->
@@ -62,8 +62,8 @@
             <!--ADD TO CART FORM-->
             <form action="{% url 'add_product_to_cart' product.id %}" method="POST">
                 {% csrf_token %}
-                <div class="form-row">
-                    <div class="col-12 align-content-left mb-3">
+                <div class="form">
+                    <div class="col-md-4 offset-md-4 col-lg-12 offset-lg-0 mb-3 pl-5 pl-lg-3">
                         <!--QTY WIDGET-->
                         <div class="input-group">
                             <span class="input-group-btn">
@@ -84,8 +84,8 @@
                         </div>
                     </div>
                     <!--SUBMIT-->
-                    <div class="col-12 align-content-left mt-3">
-                        <input type="submit" class="btn btn-warning py-1 mt-2 mb-5 text-uppercase" value="add to cart">
+                    <div class="col-12 mt-3">
+                        <input type="submit" class="btn btn-warning mt-2 mb-5 text-uppercase" value="add to cart">
                     </div>
                 </div>
                 <input type="hidden" name="this_url" value="{{ request.get_full_path }}">
