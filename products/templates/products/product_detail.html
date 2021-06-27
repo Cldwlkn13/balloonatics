@@ -43,6 +43,12 @@
             <hr class="bg-light">
             <!--PRODUCT DESC-->
             <p><i>{{ product.description }}</i></p>
+            <!--PRICE-->
+            {% if result.full_price != result.discounted_price %}
+                <p class="my-0"><s class="text-muted">€{{ product.full_price }}</s><strong>&nbsp&nbsp€{{ product.discounted_price }}</strong></p>
+            {% else %}
+                <p class="my-0"><strong>€{{ product.discounted_price }}</strong></p>
+            {% endif %}
             {% if product.message %}
                 <!--SHOP ONLINE-->
                 <p><span class="text-muted">printed message: </span><span>"{{ product.message }}"</span></p>
