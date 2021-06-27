@@ -95,6 +95,7 @@ $(document).ready(function () {
         };
     }
     updateTotalPrice();
+    scrollTo('#order-form');
 
     //ajax call to server for updated price
     function getTotalPrintPrice(handleData) {
@@ -113,6 +114,14 @@ $(document).ready(function () {
             }
         });
     }
+
+    // scroll to the new row added
+    // https://stackoverflow.com/questions/6677035/jquery-scroll-to-element
+    function scrollTo(elem) {
+        $([document.documentElement, document.body]).animate({
+            scrollTop: $(elem).offset().top - 250
+        }, 1000);
+    };
 
     function flash(elem){
         elem.fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);

@@ -47,34 +47,34 @@
     </div>
     {% endif %}
     {% if order_form %}
-    <hr class="bg-light">
-    <!--CUSTOM MESSAGE AND QTY FORM-->
-    <div class="row">
-        <div class="col-lg-6 offset-lg-3">
-            <p id="step-2" class="text-center"> 2. Add your message {% if cntxt == 'update' %}<i
-                    class="fas fa-check text-success"></i>{% endif %}</p>
-            <form action="{% url 'new_order_handler' %}" method="POST" id="order-form" class="mb-5">
-                {% csrf_token %}
-                {{ order_form|crispy }}
-                <!--PRINT PRICE-->
-                <div class="text-center">
-                    <span class="text-muted">total price:</span>
-                    <span id="print-total-price"></span>
-                </div>
-                <!--ADD TO CART-->
-                <div class="text-center">
-                    {% if cntxt == 'add' %}
-                    <button type="submit" class="btn btn-warning mt-3" id="submit-btn">add to cart</button>
-                    {% else %}
-                    <button type="submit" method="POST"
-                        formaction="{% url 'update_order_handler' custom_print_order.id %}" class="btn btn-warning mt-3"
-                        id="submit-btn">update your print item</button>
-                    {% endif %}
-                    <input type="hidden" name="p_id" value="{{ product.id }}">
-                </div>
-            </form>
+        <hr class="bg-light">
+        <!--CUSTOM MESSAGE AND QTY FORM-->
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3">
+                <p id="step-2" class="text-center"> 2. Add your personalised message {% if cntxt == 'update' %}<i
+                        class="fas fa-check text-success"></i>{% endif %}</p>
+                <form action="{% url 'new_order_handler' %}" method="POST" id="order-form" class="mb-5">
+                    {% csrf_token %}
+                    {{ order_form|crispy }}
+                    <!--PRINT PRICE-->
+                    <div class="text-center">
+                        <span class="text-muted">total price:</span>
+                        <span id="print-total-price"></span>
+                    </div>
+                    <!--ADD TO CART-->
+                    <div class="text-center">
+                        {% if cntxt == 'add' %}
+                        <button type="submit" class="btn btn-warning mt-3 text-uppeercase" id="submit-btn">add to cart</button>
+                        {% else %}
+                        <button type="submit" method="POST"
+                            formaction="{% url 'update_order_handler' custom_print_order.id %}" class="btn btn-warning mt-3 text-uppeercase"
+                            id="submit-btn">update your print item</button>
+                        {% endif %}
+                        <input type="hidden" name="p_id" value="{{ product.id }}">
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
     {% endif %}
 </div>
 {% endblock %}
