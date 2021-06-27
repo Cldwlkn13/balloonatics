@@ -1,7 +1,7 @@
 # Balloonatics 
 [the site is available here](https://balloonatics.herokuapp.com/)
 
-[Link to Header](##testing)
+[Link to Header](#testing)
 
 - The products and images used on this site are purely for demonstration. They have been acquired from various sources across the web including [Balloons For You](https://www.balloonsforyou.ie/), [Barrys Balloons](https://barryballoons.ie/), [Balloons Direct](https://balloonsdirect.ie/). If you are looking for Balloons in Dublin, then please visit these legends. 
 
