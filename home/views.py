@@ -8,21 +8,23 @@ def index(request):
 
     # load up the slideshow images 
     slideshow_images_bundle = {
-        'age_2_pink.jpg': 'Our Wedding Bundle',
-        'mr_mrs.jpg': 'Our Wedding Bundle 2',
-        'red-balloon.jpg': 'Our Wedding Bundle 3',
+        'graduation-bundle.jpg': 'Our #1 Graduation Bundle',
+        'Wedding_Bundle.png': 'Our #1 Wedding Bundle',
+        'happy-21stbundle.jpg': 'Happy 21st!',
     }
 
     slideshow_images_printing = {
-        'age_2_pink.jpg': 'Our Wedding Bundle',
-        'mr_mrs.jpg': 'Our Wedding Bundle 2',
+        'print-idea-1.jpg': 'Welcome someone home!',
+        'print-idea-2.jpg': 'Say Happy Birthday',
+        'print-idea-3.jpg': 'Some cool ideas!',
+        'print-idea-4.jpg': 'Say a special Congratulaions!',
     }
 
     slideshow_images_event = {
-        'age_2_pink.jpg': 'Our Wedding Bundle',
-        'mr_mrs.jpg': 'Our Wedding Bundle 2',
-        'leopard.jpg': 'Leopard yoke',
-        'foil_A_lg.jpg': 'Our Wedding Bundle 4',
+        'balloon-arch-blue-white.jpg': 'Balloon Arches!',
+        'balloon-store-opening.jpg': 'Store Openings!',
+        'balloon-arch-rainbow.jpg': 'Our Rainbow Arch!',
+        'balloon-wall-blue.jpg': 'A great Balloon wall idea',
     }
     
     context = {

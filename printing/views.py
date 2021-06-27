@@ -21,7 +21,10 @@ def load_print_selector(request):
 
     # load up slideshow images
     slideshow_images = {
-        'age_2_pink.jpg': 'Our Wedding Bundle',
+        'print-idea-1.jpg': 'Welcome someone home!',
+        'print-idea-2.jpg': 'Say Happy Birthday',
+        'print-idea-3.jpg': 'Some cool ideas!',
+        'print-idea-4.jpg': 'Say a special Congratulaions!',
     }
 
     context = {

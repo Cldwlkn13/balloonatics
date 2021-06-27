@@ -13,7 +13,9 @@ def bundle_categories(request):
     selector_form = BundleSelectorForm()
 
     slideshow_images = {
-        'age_2_pink.jpg': 'Our Wedding Bundle',
+        'graduation-bundle.jpg': 'Our #1 Graduation Bundle',
+        'Wedding_Bundle.png': 'Our #1 Wedding Bundle',
+        'happy-21stbundle.jpg': 'Happy 21st!',
     }
     
     context = {
