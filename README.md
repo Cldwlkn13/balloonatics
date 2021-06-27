@@ -1,12 +1,18 @@
 # Balloonatics 
 [the site is available here](https://balloonatics.herokuapp.com/)
 
-[Link to Header](#testing)
-
-- The products and images used on this site are purely for demonstration. They have been acquired from various sources across the web including [Balloons For You](https://www.balloonsforyou.ie/), [Barrys Balloons](https://barryballoons.ie/), [Balloons Direct](https://balloonsdirect.ie/). If you are looking for Balloons in Dublin, then please visit these legends. 
+## Contents
+- [UX](#ux)
+- [Features](#features)
+- [Technologies](#technologies)
+- [Testing](#testing)
+- [Deployment](#deployment)
+- [credits](#credits)
 
 Am I Responsive?
 ![](readme-files/amiresponsive.jpg)
+
+- The products and images used on this site are purely for demonstration. They have been acquired from various sources across the web including [Balloons For You](https://www.balloonsforyou.ie/), [Barrys Balloons](https://barryballoons.ie/), [Balloons Direct](https://balloonsdirect.ie/). If you are looking for Balloons in Dublin, then please visit these legends. 
 
 ## UX
 ### Brief
@@ -147,7 +153,7 @@ Balloonatics is a real company founded by Niamh Traynor & Ruth Holbrook in Dubli
     - When I want to delete that product
     - Then I have a space where I can do that easily
 
-
+---------------------------------------------------------------------------------------------------------------
 #### As a shopping customer...
 ##### US101 I want to be able to select a category of products, so that I can quickly locate the product I am interested in
     - Given I have navigated to the products pages 
@@ -202,7 +208,7 @@ Balloonatics is a real company founded by Niamh Traynor & Ruth Holbrook in Dubli
     - When I submit my details incorrectly
     - Then I am given a warning and instructions as to what went wrong
 
-
+---------------------------------------------------------------------------------------------------------------
 #### As an existing customer...
 ##### US201 I want to be able to login to my profile so that I can perform actions agaisnt my profile and purchase more products
     - Given I have navigated to the site 
@@ -681,7 +687,7 @@ Testing conducted on [Responsive Design Checker](https://www.browserstack.com/re
 ![](readme-files/testing/us-images/US109b1.jpg)
 ![](readme-files/testing/us-images/US109b2.jpg)
 
-
+---------------------------------------------------------------------------------------------------------------
 #### As an existing customer...
 ##### <ins>US201 I want to be able to login to my profile so that I can perform actions agaisnt my profile and purchase more products &check;</ins>
     - Given I have navigated to the site 
