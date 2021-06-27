@@ -37,6 +37,8 @@ def index(request):
 
     return render(request, 'home/index.html', context)
 
+def terms_and_conditions(request):
+    return render(request, 'site-terms/terms-conditions.html')
 
 ''' error views '''
 def bad_request_view(request, exception):
