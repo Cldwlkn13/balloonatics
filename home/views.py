@@ -22,7 +22,7 @@ def index(request):
 
     slideshow_images_event = {
         'balloon-arch-blue-white.jpg': 'Balloon Arches!',
-        'balloon-store-opening.jpg': 'Store Openings!',
+        'balloon-store-opening.jpeg': 'Store Openings!',
         'balloon-arch-rainbow.jpg': 'Our Rainbow Arch!',
         'balloon-wall-blue.jpg': 'A great Balloon wall idea',
     }
