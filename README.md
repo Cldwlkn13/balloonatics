@@ -166,7 +166,7 @@ Balloonatics is a real company founded by Niamh Traynor & Ruth Holbrook in Dubli
     - When I click on an item
     - Then I am redirected to a page with more details regarding that item.
 
-##### US105 I want to view the total in my shopping bag at any time, so that I can keep track of the total of the items I have added
+##### US105 I want to be able to view the total in my shopping bag at any time, so that I can keep track of the total of the items I have added
     - Given I have added items to the shopping cart
     - Whenever I am present on the site
     - Then I can view the total in my shopping cart
@@ -227,7 +227,7 @@ Balloonatics is a real company founded by Niamh Traynor & Ruth Holbrook in Dubli
     - When I have forgotten my password
     - Then I click a link to set a new one
 
-##### US202 I want to be able to log out of my account
+##### US203 I want to be able to log out of my account
     - Given I am logged in to my account
     - When I wish to log out
     - Then I can click a link to log out, and I am logged out
@@ -426,105 +426,127 @@ Testing conducted on [Responsive Design Checker](https://www.browserstack.com/re
     - Given a user has navigated to the home page
     - When the page loads
     - Then they are met with an attractive and simple layout with relevant information
-**Features laid out in a nice grid, clearly labelled. Keep text to a minimum to avoid information overload.** 
+**Features laid out in a nice grid, clearly labelled. Keep text to a minimum to avoid information overload.**
  
 ##### <ins>US002 I want prospective users/providers to see some examples of the products and services we offer in a visual format &check;</ins>
     - Given a user has navigated to the home page
     - When the page loads
     - They have various examples of the products and services we offer in a digestable, appealing format
 **Interactive slideshows of related products for the site features give to user a compact, accessible way to view content**
+![](readme-files/testing/us-images/US002.jpg)
 
 ##### <ins>US003 I want users to be able to contact us when necessary, so we can provide them with the best service possible &check;</ins>
     - Given a user has navigated to the site (not necessarily logged in)
     - When they search for contact details
     - Then they are easily available
 **Contact details present in the Footer of each page** 
+![](readme-files/testing/us-images/US003.jpg)
 
 ##### <ins>US004 I want to ensure users are given relevant and accurate information about site operational or user errors (e.g. Toasts/Messages/Error Pages) &check;</ins>
     - Given an operation within the application is triggered
     - When that operation succeeds or fails
     - Then the user is given information pertaining to that operations' success/failure
 **Toasts pop up to display messages to the user across the site.**
+![](readme-files/testing/us-images/US004a.jpg)
+
 **Custom error pages display human readable exception content to the user when something serious goes awry**
+![](readme-files/testing/us-images/US004b.jpg)
 
 ##### <ins>US005 I want to be able to have a space where we can promote products in line woith upcoming seasons or other promotions &check;</ins>
     - Given it is coming up to a particular season (Communion, Christmas, etc)
     - When I have decided on the promotion we would like to run
     - Then the the details of that promotion is prominent and visible to customers
 **Promotional banner sits just underneath the header content on all > large screens**
+![](readme-files/testing/us-images/US005.jpg)
 
 ##### <ins>US006 I want customers to be able to combine products into bundles in line with our brand usp &check;</ins>
     - Given a user has navigated to the bundle page
     - When they select a category of bundle (birthday, wedding, etc)
     - Then they are presented with the relevant bundles to choose from
 **Bundles from the correct category show up when selected**
+![](readme-files/testing/us-images/US006a.jpg)
 
     - Given a user has selected a bundle
     - When the contents of that bundle is presented to them
     - Then they are able to edit the contents and quantaties of the components of that bundle
-**When a bundle is selected the user is redirected to bundle/withitems and its conmponents are displayed**
+**When a bundle is selected the user is redirected to bundle/withitems and its components are displayed**
+![](readme-files/testing/us-images/US006b.jpg)
 
     - Given a user wants to edit the contents of a bundle
     - When the user clicks 'add new product'
     - Then they are given somewhere to choose the product
 **When the user selects 'add new product' then a row row is added to the bottom of the formset with default selections**
+![](readme-files/testing/us-images/US006c.jpg)
 
     - Given a user is editing their bundle and is adding a new component product to it 
     - When a user selects the product they want
     - They the total price of the bundle is adjusted and shown
 **When the user is adding a component product and they change the 'Balloon' input selection, the price is updated to reflect**
+![](readme-files/testing/us-images/US006d.jpg)
 
     - Given a user is editing their bundle and is changing the quantity of a component product
     - When a user selects the quantity they want
     - They the total price of the bundle is adjusted and shown
 **When the user is editing the quantity value, the price is updated to reflect**
+![](readme-files/testing/us-images/US006e.jpg)
 
     - Given a user wants to remove a product from their bundle
     - When a user clicks remove on the row
     - They the componenent product is removed from the bundle and the total price is updated
 **When the user clicks the little red trash can to remove the component, the row is hidden and that component is disabled. The price is also updated once more**
+![](readme-files/testing/us-images/US006f.jpg)
 
     - Given the user has finalised the composition of their bundle
     - When they add the bundle to the cart
     - Then that bundle is added to the cart and the grand total is updated
 **When the user clicks to add the finalised bundle to the cart then the bundle appears in the cart and the grand total is updated**
+![](readme-files/testing/us-images/US006g.jpg)
 
     - Given the user would like to edit the bundle again having added it to the cart
     - When they click on the bundle link in the cart
     - Then they are directed to the page where they can edit the bundle once more
 **From either the cart page or the toast bag preview, the user can click the name of the bundle and it will link them back to the bundle/withitems where they can make any amendments they desire**
+![](readme-files/testing/us-images/US006h1.jpg)
+![](readme-files/testing/us-images/US006h2.jpg)
 
     - Given the user would like to remove the bundle from the cart
     - When they click to remove the bundle
     - The bundle is removed and the saved customised bundle in the database is deleted
 **When the user clicks on the little red trash can within the cart, the item is removed from the cart, deleted from the custom bundles in the db and the cart total is updated**
+![](readme-files/testing/us-images/US006i.jpg)
 
 
 ##### <ins>US007 I want customers to be able to customise printed messages onto balloons, so they can build their own customised orders &check;</ins>
     - Given a user has navigated to the printing page
     - When they select a balloon product they wish to use to print on
     - Then they are given the option to compose the message and select a quantity
-**When the user selects a printable balloon product the form appears to custimise the message and update the qty**
+**When the user selects a printable balloon product the form appears to customise the message and update the qty**
+![](readme-files/testing/us-images/US007a.jpg)
 
     - Given the user is adding a message to the balloon
     - When they have completed the message
     - Then they are given the appropriate feedback on the validity of the message
 **The message the user is adding is validated on the client side and appropriate information is displayed to them**
+![](readme-files/testing/us-images/US007b1.jpg)
+![](readme-files/testing/us-images/US007b2.jpg)
 
     - Given the user has compiled a valid message to print onto the balloon
     - When the user adjusted the quantity required
     - Then the the total price is shown to them
 **Once the message is validated, and the user updates the qty, then the total price for the print order is updated to reflect**
+![](readme-files/testing/us-images/US007c.jpg)
 
     - Given the user has compiled a valid message to print onto the balloon
     - When the user clicks add to cart 
     - Then the print order is added to the cart
-**Once the message is validated, then the total price for the print order is displayed**
+**Once the message is validated, then the print order is added to the cart**
+![](readme-files/testing/us-images/US007d.jpg)
 
     - Given the user has added a print order to the cart
     - When the user decides they want to edit the print order and click the link in the cart
     - Then they are redirected to the page where they can edit the print order details
 **From any cart view, the user can click on the print order name and be directed back to the print order page to make any amendments they desire**
+![](readme-files/testing/us-images/US007e.jpg)
 
     - Given the user wishes to delete the product from the cart
     - When they click delete link
@@ -536,18 +558,23 @@ Testing conducted on [Responsive Design Checker](https://www.browserstack.com/re
     - When the page loads
     - They can see examples the packages we offer
 **At the top of the Your Event page the user can see three types of example packages and their costs**
+![](readme-files/testing/us-images/US008a.jpg)
 
     - Given a user wishes to contact us regarding an event they are holding
-    - When the user fills in the query form and submits 
+    - When the user fills in the query form and submits u
     - Then the query is recieved and they are given the relevant feedback
 **When the user submits the form correctly, they are thanked and the query appears in the database to be actioned**
+![](readme-files/testing/us-images/US008b1.jpg)
+![](readme-files/testing/us-images/US008b2.jpg)
 
 ##### <ins>US009 I want to be able to add new products to the site, so we can keep the product inventory fresh &check;</ins>
     - Given we have a new product available for sale 
     - When I want to add that product 
     - Then I have a space where I can do that easily
 **When logged in as a superuser, the user can navigate to product management and click to add a product. They are then presented with a form to complete to add the required details**
+![](readme-files/testing/us-images/US009a1.jpg)
 **If the form is completed adequately then a new product entry is added to the Products table of the database**
+![](readme-files/testing/us-images/US009a2.jpg)
 
 ##### <ins>US010 I want to be able to edit products we have on the site, so I can keep the product inventory up to date &check;</ins>
     - Given there is a product who's information has changed
@@ -555,6 +582,7 @@ Testing conducted on [Responsive Design Checker](https://www.browserstack.com/re
     - Then I have a space where I can do that easily
 **At the same url (products/loadproducts), the user can click to edit an existing product from the list of all products. Selecting a product loads the form**
 **If the form is completed adequately then the product entry is updated on the Products table of the database**
+![](readme-files/testing/us-images/US010.jpg)
 
 ##### <ins>US011 I want to be able to delete products we have on the site, so we do not have a lot of legacy products we do not want in the system &check;</ins>
     - Given there is a product that is no longer for sale
@@ -562,13 +590,16 @@ Testing conducted on [Responsive Design Checker](https://www.browserstack.com/re
     - Then I have a space where I can do that easily
 **At the same url (products/loadproducts), when the user selects a product to edit, they are given an option to delete the product when the form loads**
 **The product entry is deleted on the Products table of the database**
+![](readme-files/testing/us-images/US011.jpg)
 
+---------------------------------------------------------------------------------------------------------------
 #### As a shopping customer...
 ##### <ins>US101 I want to be able to select a category of products, so that I can quickly locate the product I am interested in &check;</ins>
     - Given I have navigated to the products pages 
     - When I click on a product category
     - Then I am presented with products only from that category
 **Selecting a product category will load all the available sub categories with products. No sub categories should be shown to the user that do no have products with that associated Category key**
+![](readme-files/testing/us-images/US101.jpg)
 
 ##### <ins>US102 I want to view a list of products, so that I can add the ones I wish to purchase to my shopping bag &check;</ins>
     - Given I have navigated to the products pages 
@@ -576,41 +607,49 @@ Testing conducted on [Responsive Design Checker](https://www.browserstack.com/re
     - Then that item is added to my shopping bag and the bag total is adjusted accordingly
 **Users can select a group of products from the sub categories, or they can filter by name in the header search bar**
 **Users can hit the 'add' btn to add the product to their bag. The cart total is updated accordingly**
+![](readme-files/testing/us-images/US102.jpg)
 
 ##### <ins>US103 I want to sort a list of products by different properties (price, name, etc), so that I can quickly identify ones I may wish to purchase &check;</ins>
     - Given I have navigated to the products pages 
     - When I want to see products listed by a certain property
     - Then the items are displayed according to my selection
 **On the products page, users can sort their products by both name and price for convinience**
+![](readme-files/testing/us-images/US103a1.jpg)
+![](readme-files/testing/us-images/us103a2.jpg)
 
 ##### <ins>US104 I want to view more details of a particular product, so that I can gather more information and decide whether I wish to purchase it &check;</ins>
     - Given I have navigated to the products pages 
     - When I click on an item
     - Then I am redirected to a page with more details regarding that item.
 **When a user clicks on a product image, they a redirected to the url for that product where they can view more information**
+![](readme-files/testing/us-images/US104.jpg)
 
-##### <ins>US105 I want to view the total in my shopping bag at any time, so that I can keep track of the total of the items I have added &check;</ins>
+##### <ins>US105 I want to be able to view the total in my shopping bag at any time, so that I can keep track of the total of the items I have added &check;</ins>
     - Given I have added items to the shopping cart
     - Whenever I am present on the site
     - Then I can view the total in my shopping cart
 **Cart links are available on all screens in the top right of the header bar. A total in the bag is displayed for convinience and clicking the icon links to the cart page**
+![](readme-files/testing/us-images/US105.jpg)
 
 ##### <ins>US106 I want to add products to my shopping cart so that I can purchase them &check;</ins>
     - Given I have decided that I wish to purchase a product, and selected the appropriate quantity
     - When click add to bag
     - Then product is added to my shoppping cart
 **Users can add products to their cart from the product-card previews for convinience, or from the product detail url for each product**
+![](readme-files/testing/us-images/US106a1.jpg)
+![](readme-files/testing/us-images/US106a2.jpg)
 
 ##### <ins>US107 I want to be able to edit the items in my shopping bag &check;</ins>
     - Given I have items in my shopping bag
     - When I decide I want to remove one and click delete
     - Then product is removed from my shopping bag and the bag total is updated
-**Users can remove an item from their bag by clicking the little red trash can on any cart view**
+**Users update qtys or remove an item from their bag by clicking the little red trash can on any cart view**
 
     - Given I have items in my shopping bag
     - When I decide I want to edit the quantity of one and adjust the quantity
     - Then the quantity is amended and the bag total is updated
 **With the cart page, users can edit quantities on a product in their bag and the totals will automatically update**
+![](readme-files/testing/us-images/US107.jpg)
 
 ##### <ins>US108 I wish to be able to register for an account &check;</ins>
     - Given I have decided I would like an account
@@ -618,6 +657,9 @@ Testing conducted on [Responsive Design Checker](https://www.browserstack.com/re
     - Then an account is created for me
 **Users can register for a new account in the register form which can be linked to from any page in the header 'Login/Register' link**
 **A new row for the user is added to the Users table in the database**
+![](readme-files/testing/us-images/US108a1.jpg)
+![](readme-files/testing/us-images/US108a2.jpg)
+![](readme-files/testing/us-images/US108a3.jpg)
 
 ##### <ins>US109 I wish to be able complete my purchase of items in my shopping bag &check;</ins>
     - Given I have selected all the items I wish to purchase 
@@ -626,11 +668,15 @@ Testing conducted on [Responsive Design Checker](https://www.browserstack.com/re
 **Users can fill in the details, address & payment forms on the checkout page.**
 **If completed correctly then the payment intent is forwarded to stripe.**
 **If payment is successful, then the order is processed in the server and recorded in the Order table in the database**
+![](readme-files/testing/us-images/US109a1.jpg)
+![](readme-files/testing/us-images/US109a2.jpg)
 
     - Given I have selected all the items I wish to purchase 
     - When I submit my details incorrectly
     - Then I am given a warning and instructions as to what went wrong
 **The forms listed above are all validated defensively and an order will not process with insuffcient or inadequate data**
+![](readme-files/testing/us-images/US109b1.jpg)
+![](readme-files/testing/us-images/US109b2.jpg)
 
 
 #### As an existing customer...
@@ -639,6 +685,7 @@ Testing conducted on [Responsive Design Checker](https://www.browserstack.com/re
     - When I want to log in
     - Then I can easily do so
 **Users can login via the login form, which is linked to from any page in the 'Login/Register' menu in the header**
+![](readme-files/testing/us-images/US201a.jpg)
 
     - Given I have navigated to the login page
     - When I fill in the form incorrectly
@@ -649,27 +696,32 @@ Testing conducted on [Responsive Design Checker](https://www.browserstack.com/re
     - When I view my profile page
     - Then I am able to edit and save my details
 **Once a user has registered (and logged in) they will be able to navigate to their profile page from the Account Menu**
+![](readme-files/testing/us-images/US201c.jpg)
 
     - Given I have logged into my account 
     - When I view my profile page
     - Then I am able to view my order history and their contents
 **Users can view their order history on their profile page**
+![](readme-files/testing/us-images/US201d.jpg)
 
 ##### <ins>US202 I want to be able to recover my password, so that I can always access my account even if I forget it &check;</ins>
     - Given I am trying to log in 
     - When I have forgotten my password
     - Then I click a link to set a new one
-**On the login page, users can hit the 'forgot password' link where they are invited to add their registered email address to a form and will be sent a link**
+**On the login page, users can hit the 'forgot password' link whereUSD they are invited to add their registered email address to a form and will be sent a link**
+![](readme-files/testing/us-images/US202a1.jpg)
+![](readme-files/testing/us-images/US202a2.jpg)
 
-##### <ins>US202 I want to be able to log out of my account &check;</ins>
+##### <ins>US203 I want to be able to log out of my account &check;</ins>
     - Given I am logged in to my account
     - When I wish to log out
     - Then I can click a link to log out, and I am logged out
-**Once logged in, users can log out from any page in the 'My Account' menu in the header bar** 
+**Once logged in, users can log out from any page in the 'My Account' menu in the header bar**
+![](readme-files/testing/us-images/US203.jpg)
 
 **Bugs**
 - Slideshows can occasionally be a little sticky in transition
-- The order history table 
+- The qty widget does not center very well in some scenarios 
 
 
 ## Deployment
