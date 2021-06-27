@@ -7,7 +7,7 @@
 - [Technologies](#technologies)
 - [Testing](#testing)
 - [Deployment](#deployment)
-- [credits](#credits)
+- [Credits](#credits)
 
 Am I Responsive?
 ![](readme-files/amiresponsive.jpg)
@@ -731,6 +731,7 @@ Testing conducted on [Responsive Design Checker](https://www.browserstack.com/re
 **Bugs**
 - Slideshows can occasionally be a little sticky in transition
 - The qty widget does not center very well in some scenarios 
+- Please be aware bundle images and their contents do no match up
 
 
 ## Deployment
