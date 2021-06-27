@@ -4,15 +4,15 @@
 
 /* Slideshow container */
 .slideshow-container {
-  max-width: 175px;
-  max-height: 175px;
+  max-width: 250px;
+  max-height: 250px;
   position: relative;
   color: #000;
 }
 
 .slideshow-container img {
-  width: 175px;
-  height: 175px;
+  width: 250px;
+  height: 250px;
   border-radius: 12px;
 }
 
