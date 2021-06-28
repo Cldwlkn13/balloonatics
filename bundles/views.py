@@ -58,8 +58,8 @@ def with_items(request, bundle_id):
 
     if not bundle_items:
         messages.error(request, 
-                      'Could not retrieve bundle items',
-                      extra_tags='render_toast')
+            'Could not retrieve bundle items',
+            extra_tags='render_toast')
         return redirect(reverse('bundle_categories'))
 
     # get the adjusted bundle items from the request
