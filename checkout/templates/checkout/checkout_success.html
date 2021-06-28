@@ -138,6 +138,7 @@
             <table class="table-responsive">
                 <thead class="bg-info">
                     <th>date</th>
+                    <th>estimated delivery</th>
                     <th>delivery charges</th>
                     <th>items total</th>
                     <th>grand total</th>
@@ -145,6 +146,7 @@
                 <tbody>
                     <tr>
                         <td>{{ order.date }}</td>
+                        <td>{{ estimated_delivery }}</td>
                         <td>€{{ order.delivery_surcharge }}</td>
                         <td>€{{ order.items_total }}</td>
                         <td><strong>€{{ order.grand_total }}</strong></td>

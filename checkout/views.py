@@ -20,6 +20,8 @@ from cart.contexts import cart_contents
 import stripe
 import json
 import uuid
+import datetime
+import pytz
 
 
 @require_POST
@@ -236,9 +238,6 @@ def checkout(request):
             }
             return render(request, 'checkout/checkout.html', context)
     else:
-        # load up the cart
-        cart = request.session.get('cart',
-            {'products':{},'bundles':{},'custom_prints':{}})
         if not cart['products'] and not cart['bundles'] and not cart['custom_prints']:
             messages.error(request, 
                 "Cannot checkout, your cart is empty",
@@ -280,11 +279,16 @@ def checkout(request):
             order_form = OrderForm()
             address_form = AddressForm()
 
+        utc=pytz.UTC
+        estimated_delivery = get_estimated_delivery(
+            utc.localize(datetime.datetime.now()))
+
         context = {
             'order_form': order_form,
             'address_form': address_form,
             'stripe_public_key': stripe_public_key,
-            'client_secret': intent.client_secret
+            'client_secret': intent.client_secret,
+            'estimated_delivery': estimated_delivery 
         }
 
         return render(request, 'checkout/checkout.html', context)
@@ -325,11 +329,14 @@ def checkout_success(request, order_id):
     if 'cart' in request.session:
         del request.session['cart']
 
+    estimated_delivery = get_estimated_delivery(order.date)
+
     context = {
         'order': order,
         'order_items': order_items_of_product,
         'order_bundles': order_bundles,
-        'order_prints': order_items_of_print
+        'order_prints': order_items_of_print,
+        'estimated_delivery': estimated_delivery
     }
 
     if request.user.is_authenticated:
@@ -360,3 +367,12 @@ def checkout_success(request, order_id):
     
     return render(request, 'checkout/checkout_success.html', context)
 
+
+def get_estimated_delivery(date):  
+    utc=pytz.UTC
+    delivery_cutoff = utc.localize(datetime.datetime.now().replace(
+        hour=int(settings.DELIVERY_CUTOFF), minute=0, second=0, microsecond=0))
+    if date < delivery_cutoff:
+        return datetime.date.today() + datetime.timedelta(days=1)
+    else: 
+        return datetime.date.today() + datetime.timedelta(days=2)
