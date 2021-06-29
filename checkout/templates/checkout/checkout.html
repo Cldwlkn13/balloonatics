@@ -9,7 +9,7 @@
 <div class="container bg-container-dark text-center px-1">
     <!--CONTENT HEADER-->
     <div class="row">
-        <div class="col-md-8 offset-md-2">
+        <div class="col-lg-8 offset-lg-2">
             <h3>Checkout</h3>
             <div class="div">
                 <a href="{% url 'view_cart' %}" class="btn btn-warning text-uppercase my-1"><i
@@ -20,20 +20,20 @@
     <hr class="bg-light">
     <!--CHECKOUT FORM-->
     <div class="row">
-        <div class="col-md-6 p-md-5">
+        <div class="col-lg-6 p-lg-5">
             <h6>Please fill in your details below</h6>
             <hr class="bg-light">
             <form action="{% url 'checkout' %}" method="POST" id="payment-form" class="mt-lg-5">
                 {% csrf_token %}
                 <!--CUSTOMER DETAILS-->
-                <fieldset class="rounded px-3 mb-2 mb-lg-5" id="customer-fieldset">
+                <fieldset class="px-3 mb-2 mb-lg-5" id="customer-fieldset">
                     <legend class="fieldset-label small text-left">Details</legend>
                     {{ order_form.cust_name | as_crispy_field }}
                     {{ order_form.cust_email | as_crispy_field }}
                     {{ order_form.cust_phone | as_crispy_field }}
                 </fieldset>
                 <!--ADDRESS-->
-                <fieldset class="rounded px-3 mb-2 mb-lg-5" id="address-fieldset">
+                <fieldset class="px-3 mb-2 mb-lg-5" id="address-fieldset">
                     <legend class="fieldset-label small text-left">Address</legend>
                     {{ address_form.street_address_1 | as_crispy_field }}
                     {{ address_form.street_address_2 | as_crispy_field }}
