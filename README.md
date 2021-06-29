@@ -247,11 +247,11 @@ Wireframes were designed using JustInMind and images of the slides can be viewed
 
 |      Desktop    |      Mobile     | 
 |       :----:    |      :----:     | 
-|[Home]('readme-files/wireframes/Desktop/Home.JPG')|[Home]('readme-files/wireframes/Mobile/Home.JPG')|
-|[Shop]('readme-files/wireframes/Desktop/Shop.JPG')|[Shop]('readme-files/wireframes/Mobile/Shop.JPG')|
-|[Bundles]('readme-files/wireframes/Desktop/Bundle.JPG')|[Bundles]('readme-files/wireframes/Mobile/Bundle.JPG')|
-|[Printing]('readme-files/wireframes/Desktop/Printing.JPG')|[Printing]('readme-files/wireframes/Mobile/Printing.JPG')|
-|[Event]('readme-files/wireframes/Desktop/Event.JPG')|
+|[Home](readme-files/wireframes/Desktop/Home.JPG)|[Home](readme-files/wireframes/Mobile/Home.JPG)|
+|[Shop](readme-files/wireframes/Desktop/Shop.JPG)|[Shop](readme-files/wireframes/Mobile/Shop.JPG)|
+|[Bundles](readme-files/wireframes/Desktop/Bundle.JPG)|[Bundles](readme-files/wireframes/Mobile/Bundle.JPG)|
+|[Printing](readme-files/wireframes/Desktop/Printing.JPG)|[Printing](readme-files/wireframes/Mobile/Printing.JPG)|
+|[Event](readme-files/wireframes/Desktop/Event.JPG)|
 
 ---
 
